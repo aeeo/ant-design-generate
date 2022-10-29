@@ -6,7 +6,8 @@ export default defineConfig({
   },
   routes: [
     { path: '/', component: '@/pages/index' },
-    { path: '/temp', component: '@/pages/Template' },
+    { path: '/template', component: '@/pages/Template' },
+    { path: '/generate', component: '@/pages/Generate' },
   ],
   fastRefresh: {},
   proxy: {

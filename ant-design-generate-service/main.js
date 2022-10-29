@@ -6,6 +6,8 @@ var bodyParser = require("body-parser");
 var moment = require("moment");
 const puppeteer = require("puppeteer");
 const opn = require("opn");
+
+const generate = require("./utils/generateProTable");
 //在原有的基础上加上下面代码即可
 app.use(
   bodyParser.json({
@@ -28,8 +30,13 @@ app.get("/Success", async (req, res) => {
   return ResultSuccess(res, "成功");
 });
 
-app.get("/generate", async (req, res) => {
-  return ResultSuccess(res, "成功");
+app.post("/generate", async (req, res) => {
+  console.log(req.body);
+  try {
+    return generate.generateProTable(res, req.body);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 // 监听

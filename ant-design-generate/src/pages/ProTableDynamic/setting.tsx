@@ -58,14 +58,14 @@ const ProTableDynamicSettings = (props: any) => {
       message.error('后执行脚本出错。');
       return;
     }
-    // request
-    //   .get(url)
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    request
+      .get(url)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     // 模拟响应的数据
     const tableDataList = [
       {
@@ -131,7 +131,7 @@ const ProTableDynamicSettings = (props: any) => {
     }
 
     // setting
-    setColumns(() => ({ ...tableColumn }));
+    setColumns(() => [...tableColumn]);
     config.columns = tableColumn;
     setConfig(() => ({ ...config }));
     rightFormRef.current?.resetFields(); // 更新所有表单表单
@@ -142,7 +142,7 @@ const ProTableDynamicSettings = (props: any) => {
     // 反填代码生成表单值
     const generateFormData = {
       initData: JSON.stringify({ ...config }),
-      columns: JSON.stringify({ ...tableColumn }),
+      columns: JSON.stringify([...tableColumn]),
     };
     setGenerateFormData(generateFormData);
     generateFormRef?.current?.resetFields();
@@ -159,17 +159,32 @@ const ProTableDynamicSettings = (props: any) => {
   //#endregion
 
   //#region 代码生成表单配置
-
   // 一键填写
   const fillGenerate = () => {
+    const currentValue = generateFormRef?.current?.getFieldsValue();
     generateFormRef?.current?.setFieldsValue({
-      name: 'ComponentName',
-      // type: 'CommonTable',
-      templatePath: '',
-      generatePath: '',
-      initData: '',
-      columns: '',
+      currentValue,
+      ...{
+        name: 'ComponentName',
+        // type: 'CommonTable',
+        templatePath:
+          'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
+        generatePath:
+          'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
+      },
     });
+  };
+  // 生成
+  const generate = (values: any) => {
+    const url = '/api/generate';
+    request
+      .post(url, { data: values })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   //#endregion
   return (
@@ -745,6 +760,12 @@ const ProTableDynamicSettings = (props: any) => {
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
+                        rules={[
+                          {
+                            required: true,
+                            message: '请输入URL',
+                          },
+                        ]}
                       />
                       <ProFormSelect
                         fieldProps={{
@@ -805,7 +826,7 @@ const ProTableDynamicSettings = (props: any) => {
                       }}
                       onFinish={async (values) => {
                         // console.log(values);
-                        exetDataSource();
+                        generate(values);
                         message.success('提交成功');
                         return true;
                       }}

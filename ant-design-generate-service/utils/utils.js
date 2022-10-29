@@ -1,5 +1,4 @@
 var moment = require("moment");
-var moment = require("moment");
 // 转驼峰 border-bottom-color => borderBottomColor
 exports.toHump = function (value) {
   var arr = value.split("-");
