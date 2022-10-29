@@ -22,8 +22,8 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import request from 'umi-request';
-import type { DataType } from './config';
-import { valueTypeArray, columns as columnsConfig, initConfig } from './config';
+import { valueTypeArray } from './types';
+import { columns as columnsConfig, initConfig } from './config';
 import { configSettingUI } from './configSetting';
 import './index.css';
 const ProTableDynamicSettings = (props: any) => {
@@ -44,7 +44,7 @@ const ProTableDynamicSettings = (props: any) => {
   }, [config]);
 
   const rightFormRef = useRef<ProFormInstance>(); // 右侧全部表单
-  const actionRef = useRef<FormListActionType<DataType>>(); // 动态数据项表单
+  const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
   //#region 数据源表单配置
@@ -113,7 +113,7 @@ const ProTableDynamicSettings = (props: any) => {
     const responseDataFirst =
       tableDataList.length > 0 ? tableDataList[0] : undefined;
 
-    let tableColumn: ProColumnType<DataType>[] = [];
+    let tableColumn: ProColumnType<any>[] = [];
     // 处理数据（给数据赋title、valueType）
     if (responseDataFirst) {
       Object.entries(responseDataFirst).forEach(([k, v]) => {
@@ -141,8 +141,8 @@ const ProTableDynamicSettings = (props: any) => {
 
     // 反填代码生成表单值
     const generateFormData = {
-      initData: JSON.stringify({ ...config }),
-      columns: JSON.stringify([...tableColumn]),
+      columns: JSON.stringify(tableColumn),
+      tableDataList: JSON.stringify(tableDataList),
     };
     setGenerateFormData(generateFormData);
     generateFormRef?.current?.resetFields();
@@ -161,24 +161,24 @@ const ProTableDynamicSettings = (props: any) => {
   //#region 代码生成表单配置
   // 一键填写
   const fillGenerate = () => {
-    const currentValue = generateFormRef?.current?.getFieldsValue();
     generateFormRef?.current?.setFieldsValue({
-      currentValue,
-      ...{
-        name: 'ComponentName',
-        // type: 'CommonTable',
-        templatePath:
-          'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
-        generatePath:
-          'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
-      },
+      name: 'ComponentName',
+      // type: 'CommonTable',
+      templatePath:
+        'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
+      generatePath:
+        'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
+      previewUrl: 'http://localhost:8000/generate',
+      initData: JSON.stringify({ ...config }),
     });
   };
   // 生成
   const generate = (values: any) => {
     const url = '/api/generate';
     request
-      .post(url, { data: values })
+      .post(url, {
+        data: { ...values, initData: JSON.stringify({ ...config }) }, // initData用最新的
+      })
       .then(function (response) {
         console.log(response);
       })
@@ -835,6 +835,21 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
+                        name="previewUrl"
+                        label="预览地址"
+                        tooltip="预览地址"
+                        placeholder="请输入预览地址"
+                        rules={[
+                          {
+                            required: true,
+                            message: '请输入预览地址',
+                          },
+                        ]}
+                      />
+                      <ProFormText
+                        fieldProps={{
+                          size: configSettingUI.textSize,
+                        }}
                         name="name"
                         label="组件名"
                         tooltip="组件名"
@@ -921,6 +936,21 @@ const ProTableDynamicSettings = (props: any) => {
                           {
                             required: true,
                             message: '请输入列配置',
+                          },
+                        ]}
+                      />
+                      <ProFormTextArea
+                        fieldProps={{
+                          size: configSettingUI.textSize,
+                        }}
+                        name="tableDataList"
+                        label="表格数据"
+                        tooltip="表格数据"
+                        placeholder="请输入表格数据"
+                        rules={[
+                          {
+                            required: true,
+                            message: '请输入表格数据',
                           },
                         ]}
                       />
