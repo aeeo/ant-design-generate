@@ -6,6 +6,14 @@ export default defineConfig({
   },
   routes: [
     { path: '/', component: '@/pages/index' },
+    { path: '/temp', component: '@/pages/Template' },
   ],
   fastRefresh: {},
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8081/',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
 });

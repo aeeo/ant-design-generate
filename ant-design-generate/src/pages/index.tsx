@@ -1,9 +1,14 @@
 import styles from './index.less';
+import ProTableDynamic from './ProTableDynamic';
+import ProFormListActionRef from './ProFormListActionRef';
+import Layout from './Layout';
 
 export default function IndexPage() {
   return (
-    <div>
-      <h1 className={styles.title}>Page index</h1>
-    </div>
+    <>
+      {/* <ProFormListActionRef /> */}
+      <ProTableDynamic />
+      {/* <Layout /> */}
+    </>
   );
 }
