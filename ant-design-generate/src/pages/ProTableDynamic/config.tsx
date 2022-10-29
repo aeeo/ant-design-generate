@@ -1,6 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
 import type { ProColumnType } from '@ant-design/pro-components';
-
+import { message } from 'antd';
 // 初始数据列配置
 export const columns: ProColumnType<any>[] =
   ///开始1
@@ -144,6 +144,10 @@ export const genData = (total: number) => {
     },
   ];
   ///结束3
+  if (tableDataList.length < total) {
+    console.error('数据量不足，请减小分页大小');
+    message.error('数据量不足，请减小分页大小');
+  }
   const data: any[] = [];
   for (let i = 1; i <= total; i += 1) {
     data.push(tableDataList[i]);
