@@ -36,18 +36,8 @@ export const valueTypeArray = [
   'jsonCode',
 ];
 
-// 初始数据实体
-export type DataType = {
-  age: number;
-  address: string;
-  name: string;
-  time: number;
-  key: number;
-  description: string;
-};
-
 // 初始数据列配置
-export const columns: ProColumnType<DataType>[] = [
+export const columns: ProColumnType<any>[] = [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -92,7 +82,7 @@ export const genData = (total: number) => {
   if (total < 1) {
     return [];
   }
-  const data: DataType[] = [];
+  const data: any[] = [];
   for (let i = 1; i <= total; i += 1) {
     data.push({
       key: i,

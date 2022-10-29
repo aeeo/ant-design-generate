@@ -35,7 +35,7 @@ export default () => {
               }
         }
         rowKey={'key'}
-        search={config.search?.show ? config.search : false}
+        search={config.showSearch ? config.search : config.showSearch}
         expandable={
           config.expandable && {
             expandedRowRender: (record: any) => <p>{record.description}</p>,
