@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
-import type {
-  ProColumnType,
-  ProFormInstance,
-} from '@ant-design/pro-components';
+import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
+import { FileSearchOutlined } from '@ant-design/icons';
 import {
   ProCard,
   ProForm,
@@ -24,7 +22,8 @@ import { useRef, useState } from 'react';
 import request from 'umi-request';
 import { valueTypeArray } from './types';
 import { columns as columnsConfig, initConfig } from './config';
-import { configSettingUI } from './configSetting';
+import { configSettingUI } from './configSettingUI';
+import dataSource from '../../../server/dataSource';
 import './index.css';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
@@ -49,23 +48,10 @@ const ProTableDynamicSettings = (props: any) => {
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
   //#region 数据源表单配置
   // 获取数据
-  const exetDataSource = () => {
-    const { url, method, afterScript } =
-      dataSourceFormRef.current?.getFieldsValue();
-    try {
-      eval(afterScript);
-    } catch (err) {
-      message.error('后执行脚本出错。');
-      return;
-    }
-    request
-      .get(url)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const exetDataSource = async () => {
+    const { url, method, afterScript } = dataSourceFormRef.current?.getFieldsValue();
+    const a = await dataSource('tableList', url, method, afterScript);
+    console.log(a);
     // 模拟响应的数据
     const tableDataList = [
       {
@@ -150,8 +136,7 @@ const ProTableDynamicSettings = (props: any) => {
       },
     ];
     // 获取响应数据的第一条
-    const responseDataFirst =
-      tableDataList.length > 0 ? tableDataList[0] : undefined;
+    const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
 
     let tableColumn: ProColumnType<any>[] = [];
     // 处理数据（给数据赋title、valueType）
@@ -169,6 +154,24 @@ const ProTableDynamicSettings = (props: any) => {
         }
       });
     }
+    // 操作栏
+    tableColumn.push({
+      title: '操作',
+      dataIndex: 'operation',
+      valueType: 'option',
+      render: (_: React.ReactNode, entity: any, index: number) => {
+        return [
+          <a
+            key="detail"
+            onClick={() => {
+              props.onEvent(_, 'detail', entity, index);
+            }}
+          >
+            <FileSearchOutlined />
+          </a>,
+        ];
+      },
+    });
 
     // setting
     setColumns(() => [...tableColumn]);
@@ -187,13 +190,12 @@ const ProTableDynamicSettings = (props: any) => {
     setGenerateFormData(generateFormData);
     generateFormRef?.current?.resetFields();
   };
-
   // 一键填写
   const fillDataSource = () => {
     dataSourceFormRef?.current?.setFieldsValue({
       url: '/api/Success',
       method: 'GET',
-      afterScript: "console.log('打印后执行脚本')", // 后执行脚本
+      afterScript: 'data=response', // 后执行脚本
     });
   };
   //#endregion
@@ -204,39 +206,24 @@ const ProTableDynamicSettings = (props: any) => {
     generateFormRef?.current?.setFieldsValue({
       name: 'ComponentName',
       // type: 'CommonTable',
-      templatePath:
-        'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
-      generatePath:
-        'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
+      templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
+      generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
     });
   };
   // 生成
-  const generate = (values: any) => {
+  const generate = async (values: any) => {
     const url = '/api/generate';
-    request
-      .post(url, {
-        data: { ...values, initData: JSON.stringify({ ...config }) }, // initData用最新的
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    await request(url, {
+      method: 'post',
+      data: { ...values, initData: JSON.stringify({ ...config }) }, // initData用最新的
+    });
   };
   //#endregion
   return (
     <>
-      <ProForm
-        layout="inline"
-        formRef={rightFormRef}
-        initialValues={config}
-        submitter={false}
-        colon={false}
-        onValuesChange={(_, values) => updateConfig.run(values)}
-      >
+      <ProForm layout="inline" formRef={rightFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
         <ProCard
           colSpan="420px"
           style={{
@@ -259,13 +246,7 @@ const ProTableDynamicSettings = (props: any) => {
                 key: 'tab1',
                 children: (
                   <>
-                    <ProForm.Group
-                      title="表格配置"
-                      size={0}
-                      collapsible
-                      direction="horizontal"
-                      labelLayout="twoLine"
-                    >
+                    <ProForm.Group title="表格配置" size={0} collapsible direction="horizontal" labelLayout="twoLine">
                       <ProFormSwitch
                         fieldProps={{
                           size: configSettingUI.switchSize,
@@ -540,7 +521,7 @@ const ProTableDynamicSettings = (props: any) => {
                             size: configSettingUI.switchSize,
                           }}
                           noStyle
-                          name={['pagination', 'show']}
+                          name={['showPagination']}
                         />
                       }
                     >
@@ -563,6 +544,16 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                         name={['pagination', 'size']}
                       />
+                      {/* <ProFormRadio.Group
+                        tooltip={`pagination={size:"middle"}`}
+                        radioType="button"
+                        fieldProps={{
+                          size: configSettingUI.radioGroupSize,
+                        }}
+                        label="位置"
+                        options={[]}
+                        name={['pagination', 'position']}
+                      /> */}
                       <ProFormDigit
                         fieldProps={{
                           size: configSettingUI.digitSize,
@@ -693,6 +684,14 @@ const ProTableDynamicSettings = (props: any) => {
                           label="是否Key"
                           name="key"
                         />
+                        <ProFormSwitch
+                          fieldProps={{
+                            size: configSettingUI.switchSize,
+                          }}
+                          tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age,"
+                          label="开启排序"
+                          name="sorter"
+                        />
                       </ProFormGroup>
                       <ProFormGroup size={8}>
                         <ProFormSelect
@@ -711,7 +710,7 @@ const ProTableDynamicSettings = (props: any) => {
                           }}
                         />
                         <ProFormSelect
-                          width="xs"
+                          width="sm"
                           label="值类型"
                           name="valueType"
                           fieldProps={{
@@ -720,9 +719,9 @@ const ProTableDynamicSettings = (props: any) => {
                               ref.current?.resetFields();
                             },
                           }}
-                          options={valueTypeArray.map((value) => ({
-                            label: value,
-                            value,
+                          options={valueTypeArray.map((valueType) => ({
+                            label: valueType.label,
+                            value: valueType.value,
                           }))}
                         />
                       </ProFormGroup>
@@ -775,11 +774,7 @@ const ProTableDynamicSettings = (props: any) => {
                         render: (props, doms) => {
                           return [
                             ...doms,
-                            <Button
-                              htmlType="button"
-                              onClick={fillDataSource}
-                              key="edit"
-                            >
+                            <Button htmlType="button" onClick={fillDataSource} key="edit">
                               一键填写
                             </Button>,
                           ];
@@ -834,7 +829,7 @@ const ProTableDynamicSettings = (props: any) => {
                         }}
                         name="afterScript"
                         label="后执行脚本"
-                        tooltip="后执行脚本"
+                        tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm>
@@ -854,11 +849,7 @@ const ProTableDynamicSettings = (props: any) => {
                         render: (props, doms) => {
                           return [
                             ...doms,
-                            <Button
-                              htmlType="button"
-                              onClick={fillGenerate}
-                              key="edit"
-                            >
+                            <Button htmlType="button" onClick={fillGenerate} key="edit">
                               一键填写
                             </Button>,
                           ];
@@ -1008,6 +999,7 @@ const ProTableDynamicSettings = (props: any) => {
 ProTableDynamicSettings.propTypes = {
   dynamicSetConfig: PropTypes.func,
   dynamicSetDataSource: PropTypes.func,
+  onEvent: PropTypes.func,
 };
 
 export default ProTableDynamicSettings;

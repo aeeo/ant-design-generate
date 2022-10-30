@@ -1,18 +1,24 @@
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, ProTable } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
-import type { DataType } from './config';
 import { columns, genData, initConfig } from './config';
 import './index.css';
 import ProTableDynamicSettings from './setting';
+// import Form from '../FormClient';
+
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [config, setConfig] = useState<any>(initConfig);
-  const generateData = genData(config.pagination?.total || 10);
+  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
   const [tableData, setTableData] = useState<any>(generateData);
+
+  const toggleModalStatus = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   React.useEffect(() => {
     console.log('表格的config发生变化:', config);
@@ -26,30 +32,29 @@ const ProTableDynamic = () => {
 
   //#region 数据源
   // 获取数据
-  const exetDataSource = (
-    newConfig: any,
-    tableColumn: any,
-    tableDataList: any,
-  ) => {
+  const exetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
     if (!tableColumn || !tableDataList) return;
     setTableData(() => [...tableDataList]);
     newConfig.columns = tableColumn;
-    setConfig(() => ({ ...newConfig }));
+    // setConfig(() => ({ ...newConfig }));
   };
   //#endregion
 
+  //#region props方法
   // 更新配置
   const dynamicSetConfig = (newConfig: any) => {
     setConfig(() => ({ ...newConfig }));
   };
   // 更新数据源
-  const dynamicSetDataSource = (
-    newConfig: any,
-    tableColumn: any,
-    tableDataList: any,
-  ) => {
+  const dynamicSetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
     exetDataSource(newConfig, tableColumn, tableDataList);
   };
+  // 组件事件
+  const onEvent = (_: any, type: string, entity: any, index: number) => {
+    console.log(type, entity, index);
+    toggleModalStatus();
+  };
+  //#endregion
   return (
     <>
       <ProCard
@@ -70,14 +75,12 @@ const ProTableDynamic = () => {
           <ProTable
             {...config}
             formRef={ref}
-            pagination={config.pagination?.show ? config.pagination : false}
+            pagination={config.showPagination ? config.pagination : config.showPagination}
             rowKey={'key'}
             search={config.showSearch ? config.search : config.showSearch}
             expandable={
               config.expandable && {
-                expandedRowRender: (record: DataType) => (
-                  <p>{record.description}</p>
-                ),
+                expandedRowRender: (record: any) => <p>{record.description}</p>,
               }
             }
             options={config.options?.show ? config.options : false}
@@ -96,11 +99,22 @@ const ProTableDynamic = () => {
             dataSource={tableData}
             scroll={config.scroll}
           />
+          <Modal
+            title="详情"
+            open={isModalOpen}
+            onOk={toggleModalStatus}
+            onCancel={toggleModalStatus}
+            width={600}
+            footer={[
+              <Button key="back" onClick={toggleModalStatus}>
+                取消
+              </Button>,
+            ]}
+          >
+            {/* <Form /> */}
+          </Modal>
         </ProCard>
-        <ProTableDynamicSettings
-          dynamicSetConfig={dynamicSetConfig}
-          dynamicSetDataSource={dynamicSetDataSource}
-        />
+        <ProTableDynamicSettings dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} onEvent={onEvent} />
       </ProCard>
     </>
   );
