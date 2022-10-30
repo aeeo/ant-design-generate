@@ -21,7 +21,7 @@ export const genData = (total: number) => {
       id: 1,
       name: '赵通1',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -29,7 +29,7 @@ export const genData = (total: number) => {
       id: 2,
       name: '赵通2',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -37,7 +37,7 @@ export const genData = (total: number) => {
       id: 3,
       name: '赵通3',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -45,7 +45,7 @@ export const genData = (total: number) => {
       id: 4,
       name: '赵通4',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -53,7 +53,7 @@ export const genData = (total: number) => {
       id: 5,
       name: '赵通5',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -61,7 +61,7 @@ export const genData = (total: number) => {
       id: 6,
       name: '赵通6',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -69,7 +69,7 @@ export const genData = (total: number) => {
       id: 7,
       name: '赵通7',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -77,7 +77,7 @@ export const genData = (total: number) => {
       id: 8,
       name: '赵通8',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -85,7 +85,7 @@ export const genData = (total: number) => {
       id: 9,
       name: '赵通9',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
     {
@@ -93,7 +93,7 @@ export const genData = (total: number) => {
       id: 10,
       name: '赵通10',
       age: 19,
-      createTime: 1667047381901,
+      createTime: 1667098982487,
       phone: 18700871300,
     },
   ];
@@ -107,7 +107,7 @@ export const genData = (total: number) => {
 // 初始化配置
 export const initConfig = {
   bordered: true,
-  size: 'small',
+  size: 'default',
   loading: false,
   showHeader: true,
   footer: true,
@@ -126,10 +126,10 @@ export const initConfig = {
   },
   pagination: { show: true, size: 'small', current: 1, pageSize: 5, total: 10 },
   columns: [
-    { title: 'key', dataIndex: 'key', valueType: 'digit', hideInTable: true },
+    { title: 'key', dataIndex: 'key', valueType: 'digit' },
     { title: 'id', dataIndex: 'id', valueType: 'digit' },
-    { title: '姓名', dataIndex: 'name', valueType: 'text' },
-    { title: '年龄', dataIndex: 'age', valueType: 'digit' },
+    { title: 'name', dataIndex: 'name', valueType: 'text' },
+    { title: 'age', dataIndex: 'age', valueType: 'digit' },
     { title: 'createTime', dataIndex: 'createTime', valueType: 'digit' },
     { title: 'phone', dataIndex: 'phone', valueType: 'digit' },
   ],

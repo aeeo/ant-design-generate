@@ -44,7 +44,10 @@ exports.generateProTable = function (res: any, generateData: any) {
   generateConfigFilePathStr = generateConfigFilePathStr.replace(initDataRegExp, initData);
   generateConfigFilePathStr = generateConfigFilePathStr.replace(tableDataListRegExp, "const tableDataList = " + tableDataList);
 
-  fs.writeFileSync(generateConfigFilePath, generateConfigFilePathStr, (error: any) => {
+  // 美化代码
+  const [prettierStr, prettierSuccess] = prettierFile(generateConfigFilePathStr);
+  // 重新写入
+  fs.writeFileSync(generateConfigFilePath, prettierStr, (error: any) => {
     if (error) console.error(`${path}创建失败：${error}`);
   });
 
@@ -54,7 +57,7 @@ exports.generateProTable = function (res: any, generateData: any) {
 };
 
 // 默认的prettier配置
-const defaultPrettierOptions = {
+const defaultPrettierOptions1 = {
   singleQuote: true,
   trailingComma: "all",
   printWidth: 120,
@@ -75,6 +78,18 @@ const defaultPrettierOptions = {
       options: {
         parser: "html"
       }
+    }
+  ]
+};
+// Admin项目配置
+const defaultPrettierOptions = {
+  singleQuote: true,
+  trailingComma: "all",
+  printWidth: 180,
+  overrides: [
+    {
+      files: ".prettierrc",
+      options: { parser: "json" }
     }
   ]
 };
