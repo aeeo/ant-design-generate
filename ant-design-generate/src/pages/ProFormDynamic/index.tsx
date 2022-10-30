@@ -69,33 +69,34 @@ const columns = [
     valueType: 'option',
   },
 ];
-const initConfig = { columns };
 
-const initFormFields = [{ type: 'ProFormText' }, { type: 'ProFormSelect' }];
 const ProFormDynamic = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
   }, 20);
 
-  const [formFields, setFormFields] = useState(initFormFields);
+  const newformFields = props.formFields ? props.formFields : columns;
+  newformFields.forEach((formField: any) => {
+    formField.formFieldType = 'ProFormText';
+  });
+
+  const [formFields, setFormFields] = useState<any>(newformFields);
+  // 默认赋formFieldType类型为ProFormText
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
-  const sInitConfig = props.formFields ? { columns: props.formFields } : initConfig;
-  console.log('动态表单：', props.formFields, sInitConfig);
-  const [config, setConfig] = useState<any>(sInitConfig); // 优先使用组件传过来的
-  settingFormRef.current?.resetFields();
-
+  const [config, setConfig] = useState<any>({ columns: newformFields });
   React.useEffect(() => {
-    console.log('表单配置的config发生变化', config);
-
     // 更新表单项
     const newFormFields: any = [];
     config?.columns?.forEach((columnsItem: any) => {
-      if (columnsItem.formFieldType) newFormFields.push({ type: columnsItem.formFieldType });
+      if (columnsItem.formFieldType) {
+        newFormFields.push({ ...columnsItem });
+      }
     });
-    console.log('更新动态表单字段：', newFormFields);
+    console.log('更新动态表单字段：', config, newformFields, newFormFields);
+    setFormFields(newFormFields);
   }, [config]);
 
   return (

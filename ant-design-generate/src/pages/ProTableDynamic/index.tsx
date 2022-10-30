@@ -18,6 +18,7 @@ const ProTableDynamic = () => {
 
   const toggleModalStatus = () => {
     setIsModalOpen(!isModalOpen);
+    // if (!isModalOpen) Modal.destroyAll();
   };
 
   React.useEffect(() => {
@@ -113,7 +114,7 @@ const ProTableDynamic = () => {
             ]}
           >
             <div style={{ height: '700px', overflow: 'auto' }}>
-              <ProFormDynamic formFields={[...config.columns]} />
+              <ProFormDynamic formFields={config.columns} />
             </div>
           </Modal>
         </ProCard>
