@@ -7,7 +7,7 @@ import { columns, genData, initConfig } from './config';
 import './index.css';
 import ProTableDynamicSettings from './setting';
 // import Form from '../FormClient';
-
+import ProFormDynamic from '../ProFormDynamic';
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
@@ -104,14 +104,17 @@ const ProTableDynamic = () => {
             open={isModalOpen}
             onOk={toggleModalStatus}
             onCancel={toggleModalStatus}
-            width={600}
+            style={{ top: 20 }}
+            width={1300}
             footer={[
               <Button key="back" onClick={toggleModalStatus}>
                 取消
               </Button>,
             ]}
           >
-            {/* <Form /> */}
+            <div style={{ height: '700px', overflow: 'auto' }}>
+              <ProFormDynamic formFields={[...config.columns]} />
+            </div>
           </Modal>
         </ProCard>
         <ProTableDynamicSettings dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} onEvent={onEvent} />

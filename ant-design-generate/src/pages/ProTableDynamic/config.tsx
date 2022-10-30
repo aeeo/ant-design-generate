@@ -41,7 +41,7 @@ export const columns: ProColumnType<any>[] =
     },
     {
       title: '操作',
-      key: 'operation',
+      key: 'table-operation',
       valueType: 'option',
       render: () => [
         <a key="delete">删除</a>,

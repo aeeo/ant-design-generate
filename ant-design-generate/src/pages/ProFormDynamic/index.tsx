@@ -17,225 +17,232 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { Button, message } from 'antd';
-import { valueTypeArray } from '../../components/types';
+import React from 'react';
+import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
+import { valueTypeArray, formFieldArray } from '../../components/types';
 import ProFormItemDynamic from '../../components/ProFormItemDynamic';
 import { configSettingUI } from '../../components/configSettingUI';
 import { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+
+// 初始数据列
+const columns = [
+  {
+    title: '姓名',
+    dataIndex: 'name',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+    hideInDetailForm: false,
+  },
+  {
+    title: '时间',
+    dataIndex: 'time',
+    valueType: 'date',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+    hideInDetailForm: false,
+  },
+  {
+    title: '地址',
+    dataIndex: 'address',
+    valueType: 'select',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+    filters: true,
+    onFilter: true,
+    hideInDetailForm: false,
+    valueEnum: {
+      陕西: {
+        text: '陕西',
+      },
+      广东: {
+        text: '广东',
+      },
+    },
+  },
+  {
+    title: '操作',
+    key: 'table-operation',
+    valueType: 'option',
+  },
+];
+const initConfig = { columns };
 
 const initFormFields = [{ type: 'ProFormText' }, { type: 'ProFormSelect' }];
-const Demo = () => {
-  const [stateValue, setStateValue] = useState({});
+const ProFormDynamic = (props: any) => {
+  /** 去抖配置 */
+  const updateConfig = useDebounceFn(async (state) => {
+    setConfig(state);
+  }, 20);
+
   const [formFields, setFormFields] = useState(initFormFields);
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
+  const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
+  const sInitConfig = props.formFields ? { columns: props.formFields } : initConfig;
+  console.log('动态表单：', props.formFields, sInitConfig);
+  const [config, setConfig] = useState<any>(sInitConfig); // 优先使用组件传过来的
+  settingFormRef.current?.resetFields();
+
+  React.useEffect(() => {
+    console.log('表单配置的config发生变化', config);
+
+    // 更新表单项
+    const newFormFields: any = [];
+    config?.columns?.forEach((columnsItem: any) => {
+      if (columnsItem.formFieldType) newFormFields.push({ type: columnsItem.formFieldType });
+    });
+    console.log('更新动态表单字段：', newFormFields);
+  }, [config]);
 
   return (
     <ProCard split="vertical">
       <ProCard>
         <ProFormItemDynamic formFields={formFields} />
       </ProCard>
-      {/* <ProForm layout="inline" submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}> */}
-
-      <ProCard
-        colSpan="400px"
-        // title="配置菜单"
-        style={{
-          height: '100vh',
-          overflow: 'auto',
-          boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)',
-          top: 0,
-          right: 0,
-          width: 400,
-        }}
-        tabs={{
-          items: [
-            {
-              label: '基本配置',
-              key: 'tab1',
-              children: <></>,
-            },
-            {
-              label: '表单项',
-              key: 'tab2',
-              children: (
-                <>
-                  <Button
-                    type="dashed"
-                    onClick={() => {
-                      const row = actionRef.current?.getList();
-                      console.log(row);
-                    }}
-                  >
-                    打印所有数据
-                  </Button>
-                  <Button
-                    danger
-                    onClick={() => {
-                      actionRef.current?.remove(0);
-                    }}
-                  >
-                    删除一行
-                  </Button>
-                  <ProFormList
-                    actionRef={actionRef}
-                    name="columns"
-                    itemRender={({ listDom, action }) => {
-                      return (
-                        <ProCard
-                          bordered
-                          style={{
-                            marginBlockEnd: 8,
-                            position: 'relative',
-                            padding: '10px 0px',
-                          }}
-                          bodyStyle={{
-                            padding: 8,
-                            paddingInlineEnd: 32,
-                            paddingBlockStart: 16,
-                          }}
-                        >
-                          <div
+      <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
+        <ProCard
+          colSpan="420px"
+          // title="配置菜单"
+          style={{
+            height: '700px',
+            overflow: 'auto',
+            top: 0,
+            right: 0,
+            width: 420,
+          }}
+          tabs={{
+            items: [
+              {
+                label: '基本配置',
+                key: 'tab1',
+                children: <></>,
+              },
+              {
+                label: '表单项',
+                key: 'tab2',
+                children: (
+                  <>
+                    <ProFormList
+                      actionRef={actionRef}
+                      name="columns"
+                      itemRender={({ listDom, action }) => {
+                        return (
+                          <ProCard
+                            bordered
                             style={{
-                              position: 'absolute',
-                              top: -4,
-                              right: 2,
+                              marginBlockEnd: 8,
+                              position: 'relative',
+                              padding: '10px 0px',
+                            }}
+                            bodyStyle={{
+                              padding: 8,
+                              paddingInlineEnd: 32,
+                              paddingBlockStart: 16,
                             }}
                           >
-                            {action}
-                          </div>
-                          {listDom}
-                        </ProCard>
-                      );
-                    }}
-                  >
-                    <ProFormText
-                      fieldProps={{
-                        size: configSettingUI.textSize,
+                            <div
+                              style={{
+                                position: 'absolute',
+                                top: -4,
+                                right: 2,
+                              }}
+                            >
+                              {action}
+                            </div>
+                            {listDom}
+                          </ProCard>
+                        );
                       }}
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                      name="title"
-                      label="标题"
-                    />
-                    <ProFormGroup style={{}}>
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        label="过长省略"
-                        name="ellipsis"
-                      />
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        label="复制按钮"
-                        name="copyable"
-                      />
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        label="表格中隐藏"
-                        name="hideInTable"
-                      />
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        label="筛选中隐藏"
-                        name="hideInSearch"
-                      />
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        label="是否Key"
-                        name="key"
-                      />
-                      <ProFormSwitch
-                        fieldProps={{
-                          size: configSettingUI.switchSize,
-                        }}
-                        tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age,"
-                        label="开启排序"
-                        name="sorter"
-                      />
-                    </ProFormGroup>
-                    <ProFormGroup size={8}>
-                      <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
-                        label="dataIndex"
-                        width="xs"
-                        name="dataIndex"
-                        valueEnum={{
-                          age: 'age',
-                          address: 'address',
-                          name: 'name',
-                          time: 'time',
-                          description: 'string',
-                        }}
-                      />
-                      <ProFormSelect
-                        width="sm"
-                        label="值类型"
-                        name="valueType"
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
-                        options={valueTypeArray.map((valueType) => ({
-                          label: valueType.label,
-                          value: valueType.value,
-                        }))}
-                      />
-                    </ProFormGroup>
-                    <ProFormGroup size={8}>
+                    >
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        width="xs"
-                        label="列提示"
-                        name="tooltip"
+                        rules={[
+                          {
+                            required: true,
+                          },
+                        ]}
+                        name="title"
+                        label="标题"
                       />
-                    </ProFormGroup>
-                    <ProFormDependency name={['valueType', 'valueEnum']}>
-                      {({ valueType, valueEnum }) => {
-                        if (valueType !== 'select') {
-                          return null;
-                        }
-                        return (
-                          <ProFormTextArea
-                            formItemProps={{}}
-                            fieldProps={{
-                              size: configSettingUI.textAreaSize,
-                              value: JSON.stringify(valueEnum),
-                            }}
-                            normalize={(value) => {
-                              return JSON.parse(value);
-                            }}
-                            label="数据枚举"
-                            name="valueEnum"
-                          />
-                        );
-                      }}
-                    </ProFormDependency>
-                  </ProFormList>
-                </>
-              ),
-            },
-          ],
-        }}
-      ></ProCard>
-
-      {/* </ProForm> */}
+                      <ProFormGroup>
+                        <ProFormSwitch
+                          fieldProps={{
+                            size: configSettingUI.switchSize,
+                          }}
+                          label="隐藏"
+                          name="hide"
+                        />
+                        {/* <ProFormSwitch
+                          fieldProps={{
+                            size: configSettingUI.switchSize,
+                          }}
+                          label="是否Key"
+                          name="key"
+                        /> */}
+                      </ProFormGroup>
+                      <ProFormGroup size={8}>
+                        <ProFormSelect
+                          label="控件类型"
+                          name="formFieldType"
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          options={formFieldArray.map((formField) => ({
+                            label: formField.label,
+                            value: formField.value,
+                          }))}
+                        />
+                      </ProFormGroup>
+                      <ProFormGroup size={8}>
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          width="xs"
+                          label="列提示"
+                          name="tooltip"
+                        />
+                      </ProFormGroup>
+                      <ProFormDependency name={['valueType', 'valueEnum']}>
+                        {({ valueType, valueEnum }) => {
+                          if (valueType !== 'select') {
+                            return null;
+                          }
+                          return (
+                            <ProFormTextArea
+                              formItemProps={{}}
+                              fieldProps={{
+                                size: configSettingUI.textAreaSize,
+                                value: JSON.stringify(valueEnum),
+                              }}
+                              normalize={(value) => {
+                                return JSON.parse(value);
+                              }}
+                              label="数据枚举"
+                              name="valueEnum"
+                            />
+                          );
+                        }}
+                      </ProFormDependency>
+                    </ProFormList>
+                  </>
+                ),
+              },
+            ],
+          }}
+        ></ProCard>
+      </ProForm>
     </ProCard>
   );
 };
 
-export default Demo;
+ProFormItemDynamic.propTypes = {
+  formFields: PropTypes.array,
+};
+export default ProFormDynamic;

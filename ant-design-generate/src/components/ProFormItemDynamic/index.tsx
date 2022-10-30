@@ -15,8 +15,8 @@ export const waitTime = (time: number = 100) => {
 
 const ProFormItemDynamic = (props: any) => {
   const [readonly, setReadonly] = useState(false);
-  const [formFields] = useState(props.formFields);
-  console.log('---');
+  const formFields = props.formFields;
+  console.log('---', formFields);
 
   return (
     <>
@@ -56,7 +56,7 @@ const ProFormItemDynamic = (props: any) => {
         }}
         onFinish={async (value) => console.log(value)}
       >
-        {formFields.map((formFieldInfo: any, index: number) => {
+        {formFields?.map((formFieldInfo: any, index: number) => {
           return <MyFormItem formFieldInfo={formFieldInfo} key={index} />;
         })}
       </ProForm>

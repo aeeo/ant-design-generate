@@ -4,6 +4,7 @@ import {
   ProFormDigit,
   ProFormDigitRange,
   ProFormGroup,
+  ProFormTextArea,
   ProFormRadio,
   ProFormRate,
   ProFormSegmented,
@@ -28,13 +29,17 @@ export const waitTime = (time: number = 100) => {
 };
 
 const MyFormItem = (props: any) => {
-  const [formFieldInfo] = useState(props.formFieldInfo);
+  const formFieldInfo = props.formFieldInfo;
   console.log(formFieldInfo);
   let returnComponent = <></>;
   switch (formFieldInfo.type) {
     case 'ProFormText':
       returnComponent = <ProFormText width="md" name="name" label="name" />;
       break;
+    case 'ProFormTextArea':
+      returnComponent = <ProFormTextArea width="md" name="text" label="名称" placeholder="请输入名称" />;
+      break;
+
     case 'ProFormTextPassword':
       returnComponent = <ProFormText.Password width="md" name="password" label="password" />;
       break;

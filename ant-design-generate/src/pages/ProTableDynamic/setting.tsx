@@ -31,7 +31,7 @@ const ProTableDynamicSettings = (props: any) => {
     setConfig(state);
   }, 20);
 
-  const rightFormRef = useRef<ProFormInstance>(); // 右侧全部表单
+  const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
@@ -156,7 +156,7 @@ const ProTableDynamicSettings = (props: any) => {
     // 操作栏
     tableColumn.push({
       title: '操作',
-      dataIndex: 'operation',
+      dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
       render: (_: React.ReactNode, entity: any, index: number) => {
         return [
@@ -176,7 +176,7 @@ const ProTableDynamicSettings = (props: any) => {
     setColumns(() => [...tableColumn]);
     config.columns = tableColumn;
     setConfig(() => ({ ...config }));
-    rightFormRef.current?.resetFields(); // 更新所有表单表单
+    settingFormRef.current?.resetFields(); // 更新所有表单表单
 
     // index
     props.dynamicSetDataSource(config, tableColumn, tableDataList);
@@ -222,7 +222,7 @@ const ProTableDynamicSettings = (props: any) => {
   //#endregion
   return (
     <>
-      <ProForm layout="inline" formRef={rightFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
+      <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
         <ProCard
           colSpan="420px"
           style={{
@@ -694,7 +694,7 @@ const ProTableDynamicSettings = (props: any) => {
                         />
                       </ProFormGroup>
                       <ProFormGroup size={8}>
-                        <ProFormSelect
+                        {/* <ProFormSelect
                           fieldProps={{
                             size: configSettingUI.textSize,
                           }}
@@ -708,7 +708,7 @@ const ProTableDynamicSettings = (props: any) => {
                             time: 'time',
                             description: 'string',
                           }}
-                        />
+                        /> */}
                         <ProFormSelect
                           width="sm"
                           label="值类型"

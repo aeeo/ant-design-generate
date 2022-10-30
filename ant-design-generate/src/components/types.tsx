@@ -35,6 +35,11 @@ export const valueTypeArray = [
   { value: `jsonCode`, label: `JSON代码框`, initialValue: '{ "name":"qixian" }' },
   { value: `color`, label: `颜色选择器`, initialValue: '#1890ff' },
 ];
+// 控件
+export const formFieldArray = [
+  { value: `ProFormText`, label: `文本框` },
+  { value: `ProFormTextArea`, label: `文本域` },
+];
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
 // // 初始化配置
