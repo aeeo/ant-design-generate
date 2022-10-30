@@ -20,9 +20,9 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import request from 'umi-request';
-import { valueTypeArray } from './types';
+import { valueTypeArray } from '../../components/types';
 import { columns as columnsConfig, initConfig } from './config';
-import { configSettingUI } from './configSettingUI';
+import { configSettingUI } from '../../components/configSettingUI';
 import dataSource from '../../../server/dataSource';
 import './index.css';
 const ProTableDynamicSettings = (props: any) => {
@@ -31,7 +31,10 @@ const ProTableDynamicSettings = (props: any) => {
     setConfig(state);
   }, 20);
 
-  const ref = useRef<ProFormInstance>();
+  const rightFormRef = useRef<ProFormInstance>(); // 右侧全部表单
+  const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
+  const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
+  const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
 
   const [config, setConfig] = useState<any>(initConfig);
   const [columns, setColumns] = useState<any>(columnsConfig);
@@ -42,10 +45,6 @@ const ProTableDynamicSettings = (props: any) => {
     props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue());
   }, [config]);
 
-  const rightFormRef = useRef<ProFormInstance>(); // 右侧全部表单
-  const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
-  const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
-  const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
   //#region 数据源表单配置
   // 获取数据
   const exetDataSource = async () => {
@@ -235,6 +234,7 @@ const ProTableDynamicSettings = (props: any) => {
             width: 420,
           }}
           tabs={{
+            // tabPosition: 'right',
             cardProps: {
               bodyStyle: {
                 padding: 12,
@@ -715,9 +715,6 @@ const ProTableDynamicSettings = (props: any) => {
                           name="valueType"
                           fieldProps={{
                             size: configSettingUI.textSize,
-                            onChange: () => {
-                              ref.current?.resetFields();
-                            },
                           }}
                           options={valueTypeArray.map((valueType) => ({
                             label: valueType.label,

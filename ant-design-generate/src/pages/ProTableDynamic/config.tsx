@@ -1,6 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
 import type { ProColumnType } from '@ant-design/pro-components';
-import { TablePaginationPosition } from './types';
+import { TablePaginationPosition } from '../../components/types';
 import { message } from 'antd';
 // 初始数据列配置
 export const columns: ProColumnType<any>[] =
