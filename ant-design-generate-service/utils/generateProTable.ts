@@ -4,12 +4,13 @@ var { existsSync } = require("fs");
 var path = require("path");
 var utils = require("./utils");
 const opn = require("opn");
+const prettier = require("prettier");
 
 const indexFile = "index.tsx";
 const configFile = "config.tsx";
 const tags = ["///开始", "///结束"];
 
-exports.generateProTable = function (res, generateData) {
+exports.generateProTable = function (res: any, generateData: any) {
   const { name, templatePath, generatePath, columns, tableDataList, initData, previewUrl } = generateData;
 
   const indexFilePath = path.join(templatePath, indexFile); // 文件绝对路径
@@ -25,7 +26,7 @@ exports.generateProTable = function (res, generateData) {
 
   // 如果目录不存在则创建目录
   if (!existsSync(generatePath)) {
-    mkdir("/tmp/a/apple");
+    fs.mkdir("/tmp/a/apple");
   }
 
   fs.copyFileSync(indexFilePath, generateIndexFilePath);
@@ -43,11 +44,53 @@ exports.generateProTable = function (res, generateData) {
   generateConfigFilePathStr = generateConfigFilePathStr.replace(initDataRegExp, initData);
   generateConfigFilePathStr = generateConfigFilePathStr.replace(tableDataListRegExp, "const tableDataList = " + tableDataList);
 
-  fs.writeFileSync(generateConfigFilePath, generateConfigFilePathStr, (error) => {
+  fs.writeFileSync(generateConfigFilePath, generateConfigFilePathStr, (error: any) => {
     if (error) console.error(`${path}创建失败：${error}`);
   });
 
   // 打开组件预览
   opn(previewUrl);
   return utils.ResultSuccess(res);
+};
+
+// 默认的prettier配置
+const defaultPrettierOptions = {
+  singleQuote: true,
+  trailingComma: "all",
+  printWidth: 120,
+  tabWidth: 2,
+  proseWrap: "always",
+  endOfLine: "lf",
+  bracketSpacing: false,
+  arrowFunctionParentheses: "avoid",
+  overrides: [
+    {
+      files: ".prettierrc",
+      options: {
+        parser: "json"
+      }
+    },
+    {
+      files: "document.ejs",
+      options: {
+        parser: "html"
+      }
+    }
+  ]
+};
+
+// 格式化美化文件
+type prettierFileType = (content: string) => [string, boolean];
+export const prettierFile: prettierFileType = (content: string) => {
+  let result = content;
+  let hasError = false;
+  try {
+    result = prettier.format(content, {
+      parser: "typescript",
+      ...defaultPrettierOptions
+    });
+  } catch (error) {
+    hasError = true;
+  }
+  return [result, hasError];
 };
