@@ -79,6 +79,7 @@ const ProFormDynamic = (props: any) => {
   const newformFields = props.formFields ? props.formFields : columns;
   newformFields.forEach((formField: any) => {
     formField.formFieldType = 'ProFormText';
+    formField.placeholder = '请输入';
   });
 
   const [formFields, setFormFields] = useState<any>(newformFields);
@@ -91,7 +92,7 @@ const ProFormDynamic = (props: any) => {
     // 更新表单项
     const newFormFields: any = [];
     config?.columns?.forEach((columnsItem: any) => {
-      if (columnsItem.formFieldType) {
+      if (columnsItem.formFieldType && !columnsItem.hide) {
         newFormFields.push({ ...columnsItem });
       }
     });
@@ -201,6 +202,14 @@ const ProFormDynamic = (props: any) => {
                         />
                       </ProFormGroup>
                       <ProFormGroup size={8}>
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          width="xs"
+                          label="输入提示"
+                          name="placeholder"
+                        />
                         <ProFormText
                           fieldProps={{
                             size: configSettingUI.textSize,

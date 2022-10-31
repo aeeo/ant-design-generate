@@ -31,23 +31,28 @@ export const waitTime = (time: number = 100) => {
 const MyFormItem = (props: any) => {
   const formFieldInfo = props.formFieldInfo;
   console.log('表单项：', formFieldInfo);
+  const name = formFieldInfo.dataIndex;
   let returnComponent = <></>;
+  if (!name) {
+    console.error('name不能为空。');
+    return returnComponent;
+  }
+  const formFieldProp = { ...formFieldInfo, name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder };
   if (!formFieldInfo?.formFieldType) return returnComponent;
   switch (formFieldInfo.formFieldType) {
     case 'ProFormText':
-      returnComponent = <ProFormText width="md" name="name" label={formFieldInfo.title} />;
+      returnComponent = <ProFormText width="md" {...formFieldProp} />;
       break;
     case 'ProFormTextArea':
-      returnComponent = <ProFormTextArea width="md" name="text" label={formFieldInfo.title} placeholder="请输入名称" />;
+      returnComponent = <ProFormTextArea width="md" {...formFieldProp} />;
       break;
     case 'ProFormTextPassword':
-      returnComponent = <ProFormText.Password width="md" name="password" label={formFieldInfo.title} />;
+      returnComponent = <ProFormText.Password width="md" {...formFieldProp} />;
       break;
     case 'ProFormSelect':
       returnComponent = (
         <ProFormSelect
-          name="select"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           valueEnum={{
             china: 'China',
             usa: 'U.S.A',
@@ -70,16 +75,14 @@ const MyFormItem = (props: any) => {
             { label: '已解决', value: 'closed' },
             { label: '解决中', value: 'processing' },
           ]}
-          name="useMode"
-          label={formFieldInfo.title}
+          {...formFieldProp}
         />
       );
       break;
     case 'ProFormSelectMultiple':
       returnComponent = (
         <ProFormSelect
-          name="select-multiple"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           valueEnum={{
             red: 'Red',
             green: 'Green',
@@ -96,8 +99,7 @@ const MyFormItem = (props: any) => {
     case 'ProFormRadioGroup':
       returnComponent = (
         <ProFormRadio.Group
-          name="radio"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           options={[
             {
               label: 'item 1',
@@ -118,9 +120,8 @@ const MyFormItem = (props: any) => {
     case 'ProFormRadioGroupVertical':
       returnComponent = (
         <ProFormRadio.Group
-          name="radio-vertical"
+          {...formFieldProp}
           layout="vertical"
-          label={formFieldInfo.title}
           options={[
             {
               label: 'item 1',
@@ -141,8 +142,7 @@ const MyFormItem = (props: any) => {
     case 'ProFormRadioGroupButton':
       returnComponent = (
         <ProFormRadio.Group
-          name="radio-button"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           radioType="button"
           options={[
             {
@@ -162,22 +162,21 @@ const MyFormItem = (props: any) => {
       );
       break;
     case 'ProFormCheckboxGroup':
-      returnComponent = <ProFormCheckbox.Group name="checkbox-group" label={formFieldInfo.title} options={['A', 'B', 'C', 'D', 'E', 'F']} />;
+      returnComponent = <ProFormCheckbox.Group {...formFieldProp} options={['A', 'B', 'C', 'D', 'E', 'F']} />;
       break;
     case 'ProFormDigitRange':
-      returnComponent = <ProFormDigitRange label={formFieldInfo.title} name="input-number-range" separator="-" separatorWidth={60} />;
+      returnComponent = <ProFormDigitRange {...formFieldProp} separator="-" separatorWidth={60} />;
       break;
     case 'ProFormDigit':
-      returnComponent = <ProFormDigit label={formFieldInfo.title} name="input-number" width="sm" min={1} max={10} />;
+      returnComponent = <ProFormDigit {...formFieldProp} width="sm" min={1} max={10} />;
       break;
     case 'ProFormSwitch':
-      returnComponent = <ProFormSwitch name="switch" label={formFieldInfo.title} />;
+      returnComponent = <ProFormSwitch {...formFieldProp} />;
       break;
     case 'ProFormSlider':
       returnComponent = (
         <ProFormSlider
-          name="slider"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           width="lg"
           marks={{
             0: 'A',
@@ -191,19 +190,18 @@ const MyFormItem = (props: any) => {
       );
       break;
     case 'ProFormRate':
-      returnComponent = <ProFormRate name="rate" label={formFieldInfo.title} />;
+      returnComponent = <ProFormRate {...formFieldProp} />;
       break;
     case 'ProFormUploadButton':
-      returnComponent = <ProFormUploadButton name="pic" label={formFieldInfo.title} />;
+      returnComponent = <ProFormUploadButton {...formFieldProp} />;
       break;
     case 'ProFormUploadDragger':
-      returnComponent = <ProFormUploadDragger name="drag-pic" label={formFieldInfo.title} />;
+      returnComponent = <ProFormUploadDragger {...formFieldProp} />;
       break;
     case 'ProFormSegmented':
       returnComponent = (
         <ProFormSegmented
-          name="segmented"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           valueEnum={{
             open: '未解决',
             closed: '已解决',
@@ -214,8 +212,7 @@ const MyFormItem = (props: any) => {
     case 'ProFormSegmentedAsync':
       returnComponent = (
         <ProFormSegmented
-          name="segmented2"
-          label={formFieldInfo.title}
+          {...formFieldProp}
           request={async () => [
             { label: '全部', value: 'all' },
             { label: '未解决', value: 'open' },
