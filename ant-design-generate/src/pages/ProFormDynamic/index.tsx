@@ -26,7 +26,7 @@ import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // 初始数据列
-const columns = [
+const myColumns = [
   {
     title: '姓名',
     dataIndex: 'name',
@@ -69,18 +69,23 @@ const columns = [
     valueType: 'option',
   },
 ];
-
 const ProFormDynamic = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
   }, 20);
 
-  const newformFields = props.formFields ? props.formFields : columns;
-  newformFields.forEach((formField: any) => {
-    formField.formFieldType = 'ProFormText';
-    formField.placeholder = '请输入';
-  });
+  // 处理数据
+  const dealFormFields = (formFields: any) => {
+    formFields.forEach((formField: any) => {
+      formField.formFieldType = 'ProFormText';
+      formField.placeholder = '请输入';
+      formField.tooltip = '';
+    });
+    return formFields;
+  };
+
+  const newformFields = dealFormFields(props.columns ? props.columns : myColumns);
 
   const [formFields, setFormFields] = useState<any>(newformFields);
   // 默认赋formFieldType类型为ProFormText
@@ -88,6 +93,13 @@ const ProFormDynamic = (props: any) => {
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
   const [config, setConfig] = useState<any>({ columns: newformFields });
+  React.useEffect(() => {
+    // 更新表单项
+    // console.log('更新动态表单字段：props');
+    const dealFormFields1 = dealFormFields(props.columns ? props.columns : myColumns);
+    setFormFields(dealFormFields1);
+    setConfig({ columns: dealFormFields1 });
+  }, [props]);
   React.useEffect(() => {
     // 更新表单项
     const newFormFields: any = [];
@@ -99,6 +111,7 @@ const ProFormDynamic = (props: any) => {
     console.log('更新动态表单字段：', config, newformFields, newFormFields);
     setFormFields(newFormFields);
   }, [config]);
+  console.log('ProFormDynamic', props.columns, formFields, config);
 
   return (
     <ProCard split="vertical">
@@ -118,11 +131,6 @@ const ProFormDynamic = (props: any) => {
           }}
           tabs={{
             items: [
-              {
-                label: '基本配置',
-                key: 'tab1',
-                children: <></>,
-              },
               {
                 label: '表单项',
                 key: 'tab2',
@@ -244,6 +252,11 @@ const ProFormDynamic = (props: any) => {
                   </>
                 ),
               },
+              {
+                label: '基本配置',
+                key: 'tab1',
+                children: <></>,
+              },
             ],
           }}
         ></ProCard>
@@ -252,7 +265,7 @@ const ProFormDynamic = (props: any) => {
   );
 };
 
-ProFormItemDynamic.propTypes = {
-  formFields: PropTypes.array,
+ProFormDynamic.propTypes = {
+  columns: PropTypes.array,
 };
 export default ProFormDynamic;

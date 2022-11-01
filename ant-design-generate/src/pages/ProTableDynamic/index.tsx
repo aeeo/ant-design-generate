@@ -4,7 +4,6 @@ import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import { columns, genData, initConfig } from './config';
-import './index.css';
 import ProTableDynamicSettings from './setting';
 // import Form from '../FormClient';
 import ProFormDynamic from '../ProFormDynamic';
@@ -18,7 +17,10 @@ const ProTableDynamic = () => {
 
   const toggleModalStatus = () => {
     setIsModalOpen(!isModalOpen);
-    // if (!isModalOpen) Modal.destroyAll();
+    // if (!isModalOpen === false) {
+    //   Modal.destroyAll();
+    //   console.log('销毁');
+    // }
   };
 
   React.useEffect(() => {
@@ -114,7 +116,7 @@ const ProTableDynamic = () => {
             ]}
           >
             <div style={{ height: '700px', overflow: 'auto' }}>
-              <ProFormDynamic formFields={config.columns} />
+              <ProFormDynamic columns={config.columns} />
             </div>
           </Modal>
         </ProCard>

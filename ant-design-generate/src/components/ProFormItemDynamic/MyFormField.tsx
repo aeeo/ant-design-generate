@@ -37,7 +37,7 @@ const MyFormItem = (props: any) => {
     console.error('name不能为空。');
     return returnComponent;
   }
-  const formFieldProp = { ...formFieldInfo, name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder };
+  const formFieldProp = { name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder, tooltip: formFieldInfo.tooltip };
   if (!formFieldInfo?.formFieldType) return returnComponent;
   switch (formFieldInfo.formFieldType) {
     case 'ProFormText':

@@ -15,9 +15,9 @@ export const waitTime = (time: number = 100) => {
 
 const ProFormItemDynamic = (props: any) => {
   const [readonly, setReadonly] = useState(false);
-  const [formData, setFormData] = useState<any>({ name: '赵通' });
+  const [formData, setFormData] = useState<any>({});
   const formFields = props.formFields;
-  console.log('---', formFields);
+  console.log('ProFormItemDynamic', formFields);
 
   return (
     <>

@@ -24,7 +24,6 @@ import { valueTypeArray } from '../../components/types';
 import { columns as columnsConfig, initConfig } from './config';
 import { configSettingUI } from '../../components/configSettingUI';
 import dataSource from '../../../server/dataSource';
-import './index.css';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
