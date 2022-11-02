@@ -78,6 +78,7 @@ const ProFormDynamic = (props: any) => {
   // 处理数据
   const dealFormFields = (formFields: any) => {
     formFields.forEach((formField: any) => {
+      // 默认赋formFieldType类型为ProFormText
       formField.formFieldType = 'ProFormText';
       formField.placeholder = '请输入';
       formField.tooltip = '';
@@ -86,9 +87,7 @@ const ProFormDynamic = (props: any) => {
   };
 
   const newformFields = dealFormFields(props.columns ? props.columns : myColumns);
-
   const [formFields, setFormFields] = useState<any>(newformFields);
-  // 默认赋formFieldType类型为ProFormText
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单

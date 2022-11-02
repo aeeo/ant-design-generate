@@ -87,6 +87,10 @@ export const genData = (total: number) => {
 export const initConfig =
   ///开始2
   {
+    event: {
+      showEditModal: false, // 显示编辑Modal
+      showDetailModal: false, // 显示详情Modal
+    },
     bordered: true, // 显示表格边框
     loading: false, // 加载中
     columns, // 表格的列

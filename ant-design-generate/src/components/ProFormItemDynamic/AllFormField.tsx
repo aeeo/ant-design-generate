@@ -30,7 +30,7 @@ export const waitTime = (time: number = 100) => {
 
 const MyFormItem = (props: any) => {
   const formFieldInfo = props.formFieldInfo;
-  console.log('表单项：', formFieldInfo);
+  // console.debug('表单项：', formFieldInfo);
   const name = formFieldInfo.dataIndex;
   let returnComponent = <></>;
   if (!name) {

@@ -162,7 +162,7 @@ const ProTableDynamicSettings = (props: any) => {
           <a
             key="detail"
             onClick={() => {
-              props.onEvent(_, 'detail', entity, index);
+              onEvent(_, 'detail', entity, index);
             }}
           >
             <FileSearchOutlined />
@@ -219,6 +219,18 @@ const ProTableDynamicSettings = (props: any) => {
     });
   };
   //#endregion
+
+  // 组件事件
+  const onEvent = (_: any, type: string, entity: any, index: number) => {
+    console.log(type, entity, index);
+    switch (type) {
+      case 'detail':
+        config.event.showDetailModal = !config.event.showDetailModal;
+        console.log('更新Modal', config, config.event.showDetailModal);
+        // setConfig({ ...config });
+        break;
+    }
+  };
   return (
     <>
       <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
@@ -245,6 +257,24 @@ const ProTableDynamicSettings = (props: any) => {
                 key: 'tab1',
                 children: (
                   <>
+                    <ProForm.Group title="事件配置" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                      <ProFormSwitch
+                        fieldProps={{
+                          size: configSettingUI.switchSize,
+                        }}
+                        label="显示编辑弹框"
+                        tooltip="showEditModal"
+                        name={['event', 'showEditModal']}
+                      />
+                      <ProFormSwitch
+                        fieldProps={{
+                          size: configSettingUI.switchSize,
+                        }}
+                        label="显示详情弹框"
+                        tooltip="showDetailModal"
+                        name={['event', 'showDetailModal']}
+                      />
+                    </ProForm.Group>
                     <ProForm.Group title="表格配置" size={0} collapsible direction="horizontal" labelLayout="twoLine">
                       <ProFormSwitch
                         fieldProps={{

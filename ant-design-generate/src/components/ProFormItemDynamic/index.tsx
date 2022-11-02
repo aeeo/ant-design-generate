@@ -1,6 +1,6 @@
 import { ProForm } from '@ant-design/pro-components';
 import { Switch } from 'antd';
-import MyFormItem from './MyFormField';
+import MyFormItem from './AllFormField';
 // import Mock from 'mockjs';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -17,8 +17,7 @@ const ProFormItemDynamic = (props: any) => {
   const [readonly, setReadonly] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const formFields = props.formFields;
-  console.log('ProFormItemDynamic', formFields);
-
+  console.debug('ProFormItemDynamic', formFields);
   return (
     <>
       <Switch

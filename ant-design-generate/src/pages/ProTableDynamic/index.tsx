@@ -5,6 +5,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import { columns, genData, initConfig } from './config';
 import ProTableDynamicSettings from './setting';
+import DynamicProTable from './table';
 // import Form from '../FormClient';
 import ProFormDynamic from '../ProFormDynamic';
 const ProTableDynamic = () => {
@@ -14,18 +15,6 @@ const ProTableDynamic = () => {
   const [config, setConfig] = useState<any>(initConfig);
   const generateData = genData(config.showPagination ? config.pagination?.total : 10);
   const [tableData, setTableData] = useState<any>(generateData);
-
-  const toggleModalStatus = () => {
-    setIsModalOpen(!isModalOpen);
-    // if (!isModalOpen === false) {
-    //   Modal.destroyAll();
-    //   console.log('销毁');
-    // }
-  };
-
-  React.useEffect(() => {
-    console.log('表格的config发生变化:', config);
-  }, [config]);
 
   // (config.columns || columns) 配置缓存
   const tableColumns = (config.columns || columns)?.map((item: any) => ({
@@ -38,7 +27,7 @@ const ProTableDynamic = () => {
   const exetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
     if (!tableColumn || !tableDataList) return;
     setTableData(() => [...tableDataList]);
-    newConfig.columns = tableColumn;
+    // newConfig.columns = tableColumn;
     // setConfig(() => ({ ...newConfig }));
   };
   //#endregion
@@ -52,12 +41,7 @@ const ProTableDynamic = () => {
   const dynamicSetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
     exetDataSource(newConfig, tableColumn, tableDataList);
   };
-  // 组件事件
-  const onEvent = (_: any, type: string, entity: any, index: number) => {
-    console.log(type, entity, index);
-    toggleModalStatus();
-  };
-  //#endregion
+  //#region props方法
   return (
     <>
       <ProCard
@@ -75,52 +59,9 @@ const ProTableDynamic = () => {
             overflow: 'auto',
           }}
         >
-          <ProTable
-            {...config}
-            formRef={ref}
-            pagination={config.showPagination ? config.pagination : config.showPagination}
-            rowKey={'key'}
-            search={config.showSearch ? config.search : config.showSearch}
-            expandable={
-              config.expandable && {
-                expandedRowRender: (record: any) => <p>{record.description}</p>,
-              }
-            }
-            options={config.options?.show ? config.options : false}
-            toolBarRender={
-              config?.toolBarRender
-                ? () => [
-                    <Button key="refresh" type="primary">
-                      刷新
-                    </Button>,
-                  ]
-                : false
-            }
-            footer={config.footer ? () => 'Here is footer' : false}
-            headerTitle={config.headerTitle}
-            columns={tableColumns}
-            dataSource={tableData}
-            scroll={config.scroll}
-          />
-          <Modal
-            title="详情"
-            open={isModalOpen}
-            onOk={toggleModalStatus}
-            onCancel={toggleModalStatus}
-            style={{ top: 20 }}
-            width={1300}
-            footer={[
-              <Button key="back" onClick={toggleModalStatus}>
-                取消
-              </Button>,
-            ]}
-          >
-            <div style={{ height: '700px', overflow: 'auto' }}>
-              <ProFormDynamic columns={config.columns} />
-            </div>
-          </Modal>
+          <DynamicProTable config={config} tableData={tableData} />
         </ProCard>
-        <ProTableDynamicSettings dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} onEvent={onEvent} />
+        <ProTableDynamicSettings dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
       </ProCard>
     </>
   );
