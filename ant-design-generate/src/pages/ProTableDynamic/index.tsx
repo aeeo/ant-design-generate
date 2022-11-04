@@ -3,7 +3,7 @@ import { ProCard, ProTable } from '@ant-design/pro-components';
 import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
-import { columns, genData, initConfig } from './config';
+import { genData, initConfig } from './config';
 import ProTableDynamicSettings from './setting';
 import DynamicProTable from './table';
 // import Form from '../FormClient';
@@ -11,7 +11,6 @@ import ProFormDynamic from '../ProFormDynamic';
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [config, setConfig] = useState<any>(initConfig);
   const generateData = genData(config.showPagination ? config.pagination?.total : 10);
   const [tableData, setTableData] = useState<any>(generateData);

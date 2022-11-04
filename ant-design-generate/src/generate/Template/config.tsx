@@ -1,51 +1,59 @@
 import { DownOutlined } from '@ant-design/icons';
 import type { ProColumnType } from '@ant-design/pro-components';
-import { ColumnParams } from '../../components/types';
+import { TablePaginationPosition, ColumnParams } from '../../components/types';
+import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-
-// 初始数据列配置
-export const columns = ({ onEvent = () => {}, columns }: ColumnParams) => {
-  const tableColumns: ProColumns<any, 'text'>[] = columns || [
-    ///开始1
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      hideInTable: false,
-      hideInSearch: false,
-    },
-    {
-      title: 'time',
-      dataIndex: 'time',
-      valueType: 'date',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      valueType: 'select',
-      filters: true,
-      onFilter: true,
-      valueEnum: {
-        london: {
-          text: '伦敦',
-        },
-        'New York': {
-          text: '纽约',
-        },
+const staticColumns = [
+  {
+    title: '姓名',
+    dataIndex: 'name',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+  },
+  {
+    title: '时间',
+    dataIndex: 'time',
+    valueType: 'date',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+  },
+  {
+    title: '地址',
+    dataIndex: 'address',
+    valueType: 'select',
+    hideInTable: false,
+    hideInSearch: false,
+    sorter: true,
+    filters: true,
+    onFilter: true,
+    valueEnum: {
+      陕西: {
+        text: '陕西',
+      },
+      广东: {
+        text: '广东',
       },
     },
-    {
-      title: 'Action',
-      key: 'action',
-      sorter: true,
-      valueType: 'option',
-      render: () => [
-        <a key="delete">Delete</a>,
-        <a key="link" className="ant-dropdown-link">
-          More actions <DownOutlined />
-        </a>,
-      ],
-    },
-  ];
+  },
+  {
+    title: '操作',
+    key: 'table-operation',
+    valueType: 'option',
+    render: (_: React.ReactNode, entity: any, index: number) => [
+      <a key="delete">删除</a>,
+      <a key="link" className="ant-dropdown-link">
+        更多 <DownOutlined />
+      </a>,
+    ],
+  },
+];
+// 初始数据列配置
+export const genColumns = (columnParams: ColumnParams) => {
+  if (!columnParams) return staticColumns;
+  ///开始1
+  const tableColumns = columnParams.columns ?? staticColumns;
   ///结束1
   return tableColumns;
 };
@@ -56,91 +64,25 @@ export const genData = (total: number) => {
     return [];
   }
   ///开始3
-  const tableDataList = [
-    {
-      key: 1,
-      name: 'John Brown',
-      age: 11,
-      time: 1661136794649,
-      address: 'New York',
-      description: 'My name is John Brown, I am 12 years old, living in New York No. 1 Lake Park.',
-    },
-    {
-      key: 2,
-      name: 'John Brown',
-      age: 12,
-      time: 1661136795649,
-      address: 'london',
-      description: 'My name is John Brown, I am 22 years old, living in New York No. 2 Lake Park.',
-    },
-    {
-      key: 3,
-      name: 'John Brown',
-      age: 13,
-      time: 1661136796649,
-      address: 'New York',
-      description: 'My name is John Brown, I am 32 years old, living in New York No. 3 Lake Park.',
-    },
-    {
-      key: 4,
-      name: 'John Brown',
-      age: 14,
-      time: 1661136797649,
-      address: 'london',
-      description: 'My name is John Brown, I am 42 years old, living in New York No. 4 Lake Park.',
-    },
-    {
-      key: 5,
-      name: 'John Brown',
-      age: 15,
-      time: 1661136798649,
-      address: 'New York',
-      description: 'My name is John Brown, I am 52 years old, living in New York No. 5 Lake Park.',
-    },
-    {
-      key: 6,
-      name: 'John Brown',
-      age: 16,
-      time: 1661136799649,
-      address: 'london',
-      description: 'My name is John Brown, I am 62 years old, living in New York No. 6 Lake Park.',
-    },
-    {
-      key: 7,
-      name: 'John Brown',
-      age: 17,
-      time: 1661136800649,
-      address: 'New York',
-      description: 'My name is John Brown, I am 72 years old, living in New York No. 7 Lake Park.',
-    },
-    {
-      key: 8,
-      name: 'John Brown',
-      age: 18,
-      time: 1661136801649,
-      address: 'london',
-      description: 'My name is John Brown, I am 82 years old, living in New York No. 8 Lake Park.',
-    },
-    {
-      key: 9,
-      name: 'John Brown',
-      age: 19,
-      time: 1661136802649,
-      address: 'New York',
-      description: 'My name is John Brown, I am 92 years old, living in New York No. 9 Lake Park.',
-    },
-    {
-      key: 10,
-      name: 'John Brown',
-      age: 20,
-      time: 1661136803649,
-      address: 'london',
-      description: 'My name is John Brown, I am 102 years old, living in New York No. 10 Lake Park.',
-    },
-  ];
-  ///结束3
-  const data: any[] = [];
+  const tableDataList = [];
   for (let i = 1; i <= total; i += 1) {
+    tableDataList.push({
+      key: i,
+      name: '佩奇',
+      age: i + 10,
+      time: 1661136793649 + i * 1000,
+      address: i % 2 === 0 ? '广东' : '陕西',
+      description: `我的名字是佩奇, 我今年 ${i} 岁了, 我生活在${i % 2 === 0 ? '广东' : '陕西'}.`,
+    });
+  }
+  ///结束3
+  if (tableDataList.length < total) {
+    console.error('数据量不足，请减小分页大小');
+    message.error('数据量不足，请减小分页大小');
+    return;
+  }
+  const data: any[] = [];
+  for (let i = 0; i < total; i += 1) {
     data.push(tableDataList[i]);
   }
   return data;
@@ -150,12 +92,17 @@ export const genData = (total: number) => {
 export const initConfig =
   ///开始2
   {
+    event: {
+      showEditModal: false, // 显示编辑Modal
+      showDetailModal: false, // 显示详情Modal
+    },
     bordered: true, // 显示表格边框
     loading: false, // 加载中
-    columns, // 表格的列
+    columns: genColumns({ onEvent: () => {} }), // 表格的列
     // 分页
+    showPagination: true, // 显示
     pagination: {
-      show: true, // 显示
+      position: 'bottomLeft', // 位置 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
       size: 'small', // 显示 default small
       pageSize: 5, // 分页大小
       current: 1, // 当前页

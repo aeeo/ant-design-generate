@@ -4,35 +4,38 @@ import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { columns, genData, initConfig } from './config';
+import { genColumns, genData, initConfig } from './config';
 import ProFormDynamic from '../ProFormDynamic';
 import type { ProColumns } from '@ant-design/pro-components';
 
 const DynamicProTable = (props: any) => {
   const [config, setConfig] = useState<any>(props.config);
-  //#region 开发阶段Props相关
-  React.useEffect(() => {
-    console.debug('table的config发生变化:', config);
-    setConfig(props.config);
-  }, [props.config]);
+  if (props) {
+    //#region 开发阶段Props相关
+    React.useEffect(() => {
+      console.debug('table的config发生变化:', config);
+      setConfig(props.config);
+    }, [props.config]);
 
-  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-  const [tableData, setTableData] = useState<any>(generateData);
-  React.useEffect(() => {
-    console.debug('table的tableData发生变化:', tableData, props.tableData);
-    setTableData(props.tableData);
-  }, [props.tableData]);
+    const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+    const [tableData, setTableData] = useState<any>(generateData);
+    React.useEffect(() => {
+      console.debug('table的tableData发生变化:', tableData, props.tableData);
+      setTableData(props.tableData);
+    }, [props.tableData]);
 
-  // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
-  const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
-  React.useEffect(() => {
-    console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
-    // setEventInfo(props.eventInfo);
-    const { reactNode, entity, index, type } = props.eventInfo;
-    onEvent(reactNode, entity, index, type);
-  }, [props.eventInfo]);
-  //#endregion
-
+    // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
+    const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
+    React.useEffect(() => {
+      console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
+      // setEventInfo(props.eventInfo);
+      if (!props.eventInfo) return;
+      const { reactNode, entity, index, type } = props.eventInfo;
+      onSubEvent(reactNode, entity, index, type);
+    }, [props.eventInfo]);
+    //#endregion
+  } else {
+  }
   const proTableRef = useRef<ProFormInstance>();
 
   // 控制弹框显示隐藏
@@ -43,19 +46,19 @@ const DynamicProTable = (props: any) => {
   };
 
   // (config.columns || columns) 配置缓存
-  const tableColumns = columns({ onEvent: () => {}, columns: config.columns })?.map((item: any) => ({
+  const myColumns = genColumns({
+    onEvent: (_, entity: any, index: number, type: string) => {
+      onSubEvent(_, entity, index, type);
+    },
+    columns: config.columns,
+  });
+  const tableColumns = myColumns?.map((item: any) => ({
     ...item,
     ellipsis: config.ellipsis,
   }));
 
-  // ({
-  //   onEvent: (_, entity: any, index: number, type: string) => {
-  //     onSettingEvent(_, entity, index, type);
-  //   },
-  // })
-
   // 子组件事件
-  const onEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
     switch (type) {
       case 'detail':
         toggleModalStatus();

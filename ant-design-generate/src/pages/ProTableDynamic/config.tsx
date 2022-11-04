@@ -3,8 +3,8 @@ import type { ProColumnType } from '@ant-design/pro-components';
 import { TablePaginationPosition, ColumnParams } from '../../components/types';
 import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-// 初始数据列配置
-export const columns1 = [
+
+const staticColumns = [
   {
     title: '姓名',
     dataIndex: 'name',
@@ -42,7 +42,7 @@ export const columns1 = [
     title: '操作',
     key: 'table-operation',
     valueType: 'option',
-    render: () => [
+    render: (_: React.ReactNode, entity: any, index: number) => [
       <a key="delete">删除</a>,
       <a key="link" className="ant-dropdown-link">
         更多 <DownOutlined />
@@ -50,57 +50,12 @@ export const columns1 = [
     ],
   },
 ];
-
-export const columns = ({ onEvent = () => {}, columns }: ColumnParams) => {
-  const tableColumns: ProColumns<any, 'text'>[] = columns || [
-    ///开始1
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      hideInTable: false,
-      hideInSearch: false,
-      sorter: true,
-    },
-    {
-      title: '时间',
-      dataIndex: 'time',
-      valueType: 'date',
-      hideInTable: false,
-      hideInSearch: false,
-      sorter: true,
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-      valueType: 'select',
-      hideInTable: false,
-      hideInSearch: false,
-      sorter: true,
-      filters: true,
-      onFilter: true,
-      valueEnum: {
-        陕西: {
-          text: '陕西',
-        },
-        广东: {
-          text: '广东',
-        },
-      },
-    },
-    {
-      title: '操作',
-      key: 'table-operation',
-      valueType: 'option',
-      render: () => [
-        <a key="delete">删除</a>,
-        <a key="link" className="ant-dropdown-link">
-          更多 <DownOutlined />
-        </a>,
-      ],
-    },
-  ];
+// 初始数据列配置
+export const genColumns = (columnParams: ColumnParams) => {
+  if (!columnParams) return staticColumns;
+  ///开始1
+  const tableColumns = columnParams.columns ?? staticColumns;
   ///结束1
-  debugger;
   return tableColumns;
 };
 
@@ -144,7 +99,7 @@ export const initConfig =
     },
     bordered: true, // 显示表格边框
     loading: false, // 加载中
-    columns, // 表格的列
+    columns: genColumns({ onEvent: () => {} }), // 表格的列
     // 分页
     showPagination: true, // 显示
     pagination: {

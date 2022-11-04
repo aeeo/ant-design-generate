@@ -20,7 +20,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import request from 'umi-request';
 import { valueTypeArray } from '../../components/types';
-import { columns as columnsConfig, initConfig } from './config';
+import { genColumns as columnsConfig, initConfig } from './config';
 import { configSettingUI } from '../../components/configSettingUI';
 import dataSource from '../../../server/dataSource';
 import IconsDynamic from '../../components/IconsDynamic';
@@ -205,9 +205,9 @@ const ProTableDynamicSettings = (props: any) => {
     generateFormRef?.current?.setFieldsValue({
       name: 'ComponentName',
       // type: 'CommonTable',
-      templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Template',
-      generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\pages\\Generate',
-      previewUrl: 'http://localhost:8000/generate',
+      templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\generate\\Template',
+      generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\generate\\Temporary',
+      previewUrl: 'http://localhost:8000/temporary',
       initData: JSON.stringify({ ...config }),
     });
   };

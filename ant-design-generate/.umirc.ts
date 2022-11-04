@@ -8,7 +8,7 @@ export default defineConfig({
     { path: '/', component: '@/pages/index' },
     { path: '/pro-form-dynamic', component: '@/pages/ProFormDynamic' },
     { path: '/template', component: '@/generate/Template' },
-    // { path: '/generate', component: '@/pages/Generate' },
+    { path: '/temporary', component: '@/generate/Temporary' },
   ],
   fastRefresh: {},
   proxy: {
