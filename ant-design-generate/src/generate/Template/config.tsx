@@ -4,49 +4,48 @@ import { ColumnParams } from '../../components/types';
 import type { ProColumns } from '@ant-design/pro-components';
 
 // 初始数据列配置
-export const columns = ({ onEvent = () => {} }: ColumnParams) => {
-  const tableColumns: ProColumns<any, 'text'>[] =
+export const columns = ({ onEvent = () => {}, columns }: ColumnParams) => {
+  const tableColumns: ProColumns<any, 'text'>[] = columns || [
     ///开始1
-    [
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        hideInTable: false,
-        hideInSearch: false,
-      },
-      {
-        title: 'time',
-        dataIndex: 'time',
-        valueType: 'date',
-      },
-      {
-        title: 'Address',
-        dataIndex: 'address',
-        valueType: 'select',
-        filters: true,
-        onFilter: true,
-        valueEnum: {
-          london: {
-            text: '伦敦',
-          },
-          'New York': {
-            text: '纽约',
-          },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      hideInTable: false,
+      hideInSearch: false,
+    },
+    {
+      title: 'time',
+      dataIndex: 'time',
+      valueType: 'date',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      valueType: 'select',
+      filters: true,
+      onFilter: true,
+      valueEnum: {
+        london: {
+          text: '伦敦',
+        },
+        'New York': {
+          text: '纽约',
         },
       },
-      {
-        title: 'Action',
-        key: 'action',
-        sorter: true,
-        valueType: 'option',
-        render: () => [
-          <a key="delete">Delete</a>,
-          <a key="link" className="ant-dropdown-link">
-            More actions <DownOutlined />
-          </a>,
-        ],
-      },
-    ];
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      sorter: true,
+      valueType: 'option',
+      render: () => [
+        <a key="delete">Delete</a>,
+        <a key="link" className="ant-dropdown-link">
+          More actions <DownOutlined />
+        </a>,
+      ],
+    },
+  ];
   ///结束1
   return tableColumns;
 };

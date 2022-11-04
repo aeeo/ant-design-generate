@@ -6,6 +6,8 @@ import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { columns, genData, initConfig } from './config';
 import ProFormDynamic from '../ProFormDynamic';
+import type { ProColumns } from '@ant-design/pro-components';
+
 const DynamicProTable = (props: any) => {
   const [config, setConfig] = useState<any>(props.config);
   //#region 开发阶段Props相关
@@ -41,7 +43,7 @@ const DynamicProTable = (props: any) => {
   };
 
   // (config.columns || columns) 配置缓存
-  const tableColumns = config.columns?.map((item: any) => ({
+  const tableColumns = columns({ onEvent: () => {}, columns: config.columns })?.map((item: any) => ({
     ...item,
     ellipsis: config.ellipsis,
   }));

@@ -4,7 +4,7 @@ import { TablePaginationPosition, ColumnParams } from '../../components/types';
 import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
 // 初始数据列配置
-export const columns = [
+export const columns1 = [
   {
     title: '姓名',
     dataIndex: 'name',
@@ -51,55 +51,54 @@ export const columns = [
   },
 ];
 
-export const columns1 = ({ onEvent = () => {} }: ColumnParams) => {
-  const tableColumns: ProColumns<any, 'text'>[] =
+export const columns = ({ onEvent = () => {}, columns }: ColumnParams) => {
+  const tableColumns: ProColumns<any, 'text'>[] = columns || [
     ///开始1
-    [
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        hideInTable: false,
-        hideInSearch: false,
-        sorter: true,
-      },
-      {
-        title: '时间',
-        dataIndex: 'time',
-        valueType: 'date',
-        hideInTable: false,
-        hideInSearch: false,
-        sorter: true,
-      },
-      {
-        title: '地址',
-        dataIndex: 'address',
-        valueType: 'select',
-        hideInTable: false,
-        hideInSearch: false,
-        sorter: true,
-        filters: true,
-        onFilter: true,
-        valueEnum: {
-          陕西: {
-            text: '陕西',
-          },
-          广东: {
-            text: '广东',
-          },
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '时间',
+      dataIndex: 'time',
+      valueType: 'date',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      valueType: 'select',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+      filters: true,
+      onFilter: true,
+      valueEnum: {
+        陕西: {
+          text: '陕西',
+        },
+        广东: {
+          text: '广东',
         },
       },
-      {
-        title: '操作',
-        key: 'table-operation',
-        valueType: 'option',
-        render: () => [
-          <a key="delete">删除</a>,
-          <a key="link" className="ant-dropdown-link">
-            更多 <DownOutlined />
-          </a>,
-        ],
-      },
-    ];
+    },
+    {
+      title: '操作',
+      key: 'table-operation',
+      valueType: 'option',
+      render: () => [
+        <a key="delete">删除</a>,
+        <a key="link" className="ant-dropdown-link">
+          更多 <DownOutlined />
+        </a>,
+      ],
+    },
+  ];
   ///结束1
   debugger;
   return tableColumns;

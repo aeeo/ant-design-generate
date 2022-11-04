@@ -46,6 +46,7 @@ export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bo
 // 表格列参数类型
 export type ColumnParams = {
   onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void;
+  columns: ProColumns<any, 'text'>[];
 };
 // // 初始化配置
 // export interface config {
