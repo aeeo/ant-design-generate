@@ -42,6 +42,11 @@ export const formFieldArray = [
 ];
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+
+// 表格列参数类型
+export type ColumnParams = {
+  onEvent: (dom: React.ReactNode, type: string, entity: any, index: number) => void;
+};
 // // 初始化配置
 // export interface config {
 //   bordered: boolean; // 显示表格边框

@@ -7,9 +7,8 @@ import PropTypes from 'prop-types';
 import { columns, genData, initConfig } from './config';
 import ProFormDynamic from '../ProFormDynamic';
 const DynamicProTable = (props: any) => {
-  const ref = useRef<ProFormInstance>();
-
   const [config, setConfig] = useState<any>(props.config);
+  //#region 开发阶段Props相关
   React.useEffect(() => {
     console.debug('table的config发生变化:', config);
     setConfig(props.config);
@@ -28,18 +27,15 @@ const DynamicProTable = (props: any) => {
     console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
     // setEventInfo(props.eventInfo);
     const { reactNode, entity, index, type } = props.eventInfo;
-    debugger;
-
     switch (type) {
       case 'detail':
         toggleModalStatus();
-        // props.onSettingEvent(_, entity, index, type);
-        // config.event.showDetailModal = !config.event.showDetailModal;
-        // console.log('更新Modal', config, config.event.showDetailModal);
-        // setConfig({ ...config });
         break;
     }
   }, [props.eventInfo]);
+  //#endregion
+
+  const proTableRef = useRef<ProFormInstance>();
 
   // 控制弹框显示隐藏
   const toggleModalStatus = () => {
@@ -58,7 +54,7 @@ const DynamicProTable = (props: any) => {
     <>
       <ProTable
         {...config}
-        formRef={ref}
+        formRef={proTableRef}
         pagination={config.showPagination ? config.pagination : config.showPagination}
         rowKey={'key'}
         search={config.showSearch ? config.search : config.showSearch}
