@@ -6,7 +6,7 @@ var utils = require("./utils");
 const opn = require("opn");
 const prettier = require("prettier");
 
-const indexFile = "index.tsx";
+const indexFile = "table.tsx";
 const configFile = "config.tsx";
 const tags = ["///开始", "///结束"];
 
@@ -32,6 +32,7 @@ exports.generateProTable = function (res: any, generateData: any) {
   fs.copyFileSync(indexFilePath, generateIndexFilePath);
   fs.copyFileSync(configFilePath, generateConfigFilePath);
 
+  let generateIndexFilePathStr = fs.readFileSync(generateIndexFilePath, "utf-8");
   let generateConfigFilePathStr = fs.readFileSync(generateConfigFilePath, "utf-8");
   const columnsPattern = `${tags[0]}1[\\d\\D]*${tags[1]}1`;
   const columnsRegExp = new RegExp(columnsPattern, "g");
@@ -40,14 +41,24 @@ exports.generateProTable = function (res: any, generateData: any) {
   const tableDataListPattern = `${tags[0]}3[\\d\\D]*${tags[1]}3`;
   const tableDataListRegExp = new RegExp(tableDataListPattern, "g");
 
-  generateConfigFilePathStr = generateConfigFilePathStr.replace(columnsRegExp, columns);
+  const deletePattern = `${tags[0]}删除[\\d\\D]*${tags[1]}删除`;
+  const deleteRegExp = new RegExp(deletePattern, "g");
+
+  generateConfigFilePathStr = generateConfigFilePathStr.replace(columnsRegExp, "const tableColumns = " + columns + "?? staticColumns;");
   generateConfigFilePathStr = generateConfigFilePathStr.replace(initDataRegExp, initData);
   generateConfigFilePathStr = generateConfigFilePathStr.replace(tableDataListRegExp, "const tableDataList = " + tableDataList);
 
+  // 删除无用代码片段
+  generateIndexFilePathStr = generateIndexFilePathStr.replace(deleteRegExp, "");
+  generateConfigFilePathStr = generateConfigFilePathStr.replace(deleteRegExp, "");
   // 美化代码
-  const [prettierStr, prettierSuccess] = prettierFile(generateConfigFilePathStr);
+  const [generateIndexFilePrettierStr, generateIndexFilePrettierSuccess] = prettierFile(generateIndexFilePathStr);
+  const [generateConfigFilePrettierStr, generateConfigFilePrettierSuccess] = prettierFile(generateConfigFilePathStr);
   // 重新写入
-  fs.writeFileSync(generateConfigFilePath, prettierStr, (error: any) => {
+  fs.writeFileSync(generateIndexFilePath, generateIndexFilePrettierStr, (error: any) => {
+    if (error) console.error(`${path}创建失败：${error}`);
+  });
+  fs.writeFileSync(generateConfigFilePath, generateConfigFilePrettierStr, (error: any) => {
     if (error) console.error(`${path}创建失败：${error}`);
   });
 

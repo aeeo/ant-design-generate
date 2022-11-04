@@ -70,7 +70,7 @@ const ProTableDynamic = () => {
             overflow: 'auto',
           }}
         >
-          <DynamicProTable config={config} tableData={tableData} eventInfo={eventInfo} />
+          <DynamicProTable dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
         </ProCard>
         <ProTableDynamicSettings onSettingEvent={onSettingEvent} dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
       </ProCard>
