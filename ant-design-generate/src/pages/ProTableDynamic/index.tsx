@@ -41,6 +41,12 @@ const ProTableDynamic = () => {
   const dynamicSetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
     exetDataSource(newConfig, tableColumn, tableDataList);
   };
+  // 配置的事件
+  const [eventInfo, setEventInfo] = useState<any>({});
+  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+    console.debug('操作事件监听', entity, index, type);
+    setEventInfo({ reactNode: _, entity, index, type });
+  };
   //#region props方法
   return (
     <>
@@ -59,9 +65,9 @@ const ProTableDynamic = () => {
             overflow: 'auto',
           }}
         >
-          <DynamicProTable config={config} tableData={tableData} />
+          <DynamicProTable config={config} tableData={tableData} eventInfo={eventInfo} />
         </ProCard>
-        <ProTableDynamicSettings dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
+        <ProTableDynamicSettings onSettingEvent={onSettingEvent} dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
       </ProCard>
     </>
   );

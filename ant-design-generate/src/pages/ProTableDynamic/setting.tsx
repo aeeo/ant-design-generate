@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
-import { FileSearchOutlined } from '@ant-design/icons';
 import {
   ProCard,
   ProForm,
@@ -24,6 +23,7 @@ import { valueTypeArray } from '../../components/types';
 import { columns as columnsConfig, initConfig } from './config';
 import { configSettingUI } from '../../components/configSettingUI';
 import dataSource from '../../../server/dataSource';
+import IconsDynamic from '../../components/IconsDynamic';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
@@ -159,14 +159,15 @@ const ProTableDynamicSettings = (props: any) => {
       valueType: 'option',
       render: (_: React.ReactNode, entity: any, index: number) => {
         return [
-          <a
-            key="detail"
-            onClick={() => {
-              onEvent(_, 'detail', entity, index);
+          <IconsDynamic
+            onEvent={onSettingEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'detail',
             }}
-          >
-            <FileSearchOutlined />
-          </a>,
+          />,
         ];
       },
     });
@@ -221,12 +222,13 @@ const ProTableDynamicSettings = (props: any) => {
   //#endregion
 
   // 组件事件
-  const onEvent = (_: any, type: string, entity: any, index: number) => {
+  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
     console.log(type, entity, index);
     switch (type) {
       case 'detail':
-        config.event.showDetailModal = !config.event.showDetailModal;
-        console.log('更新Modal', config, config.event.showDetailModal);
+        props.onSettingEvent(_, entity, index, type);
+        // config.event.showDetailModal = !config.event.showDetailModal;
+        // console.log('更新Modal', config, config.event.showDetailModal);
         // setConfig({ ...config });
         break;
     }
@@ -1025,7 +1027,7 @@ const ProTableDynamicSettings = (props: any) => {
 ProTableDynamicSettings.propTypes = {
   dynamicSetConfig: PropTypes.func,
   dynamicSetDataSource: PropTypes.func,
-  onEvent: PropTypes.func,
+  onSettingEvent: PropTypes.func,
 };
 
 export default ProTableDynamicSettings;

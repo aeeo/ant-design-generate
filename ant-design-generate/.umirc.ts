@@ -7,8 +7,8 @@ export default defineConfig({
   routes: [
     { path: '/', component: '@/pages/index' },
     { path: '/pro-form-dynamic', component: '@/pages/ProFormDynamic' },
-    { path: '/template', component: '@/pages/Template' },
-    { path: '/generate', component: '@/pages/Generate' },
+    { path: '/template', component: '@/generate/Template' },
+    // { path: '/generate', component: '@/pages/Generate' },
   ],
   fastRefresh: {},
   proxy: {
