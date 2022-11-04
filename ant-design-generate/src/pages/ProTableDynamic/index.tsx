@@ -17,10 +17,16 @@ const ProTableDynamic = () => {
   const [tableData, setTableData] = useState<any>(generateData);
 
   // (config.columns || columns) 配置缓存
-  const tableColumns = (config.columns || columns)?.map((item: any) => ({
-    ...item,
-    ellipsis: config.ellipsis,
-  }));
+  // const tableColumns = (config.columns || columns)?.map((item: any) => ({
+  //   ...item,
+  //   ellipsis: config.ellipsis,
+  // }));
+
+  // ({
+  //   onEvent: (_, entity: any, index: number, type: string) => {
+  //     onSettingEvent(_, entity, index, type);
+  //   },
+  // })
 
   //#region 数据源
   // 获取数据

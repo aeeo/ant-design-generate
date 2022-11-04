@@ -27,11 +27,7 @@ const DynamicProTable = (props: any) => {
     console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
     // setEventInfo(props.eventInfo);
     const { reactNode, entity, index, type } = props.eventInfo;
-    switch (type) {
-      case 'detail':
-        toggleModalStatus();
-        break;
-    }
+    onEvent(reactNode, entity, index, type);
   }, [props.eventInfo]);
   //#endregion
 
@@ -45,10 +41,25 @@ const DynamicProTable = (props: any) => {
   };
 
   // (config.columns || columns) 配置缓存
-  const tableColumns = (config.columns || columns)?.map((item: any) => ({
+  const tableColumns = config.columns?.map((item: any) => ({
     ...item,
     ellipsis: config.ellipsis,
   }));
+
+  // ({
+  //   onEvent: (_, entity: any, index: number, type: string) => {
+  //     onSettingEvent(_, entity, index, type);
+  //   },
+  // })
+
+  // 子组件事件
+  const onEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+    switch (type) {
+      case 'detail':
+        toggleModalStatus();
+        break;
+    }
+  };
 
   return (
     <>
