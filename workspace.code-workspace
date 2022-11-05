@@ -1,10 +1,13 @@
 {
-	"folders": [
-		{
-			"path": "ant-design-generate"
-		},
-		{
-			"path": "ant-design-generate-service"
-		}
-	]
+  "folders": [
+    {
+      "path": "ant-design-generate"
+    },
+    {
+      "path": "ant-design-generate-service"
+    },
+    {
+      "path": "ant-design-generate-umi"
+    }
+  ]
 }

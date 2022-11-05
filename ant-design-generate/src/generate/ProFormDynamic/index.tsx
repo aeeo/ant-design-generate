@@ -20,7 +20,7 @@ import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { valueTypeArray, formFieldArray } from '../../components/types';
-import ProFormItemDynamic from '../../components/ProFormItemDynamic';
+import ProFormItemDynamic from '../../pages/ProTableDynamic/subComps/ProFormItemDynamic';
 import { configSettingUI } from '../../components/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';

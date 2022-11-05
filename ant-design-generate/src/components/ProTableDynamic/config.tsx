@@ -1,9 +1,9 @@
 import { DownOutlined } from '@ant-design/icons';
 import type { ProColumnType } from '@ant-design/pro-components';
-import { TablePaginationPosition, ColumnParams } from '../../components/types';
+import { TablePaginationPosition, ColumnParams } from '../types';
 import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-import IconsDynamic from '../../components/IconsDynamic';
+import IconsDynamic from '../common/IconsDynamic';
 
 const staticColumns = [
   {

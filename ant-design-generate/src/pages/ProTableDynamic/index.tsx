@@ -3,11 +3,11 @@ import { ProCard, ProTable } from '@ant-design/pro-components';
 import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
-import { genData, initConfig } from './config';
+import { genData, initConfig } from '../../components/ProTableDynamic/config';
 import ProTableDynamicSettings from './setting';
-import DynamicProTable from './table';
+import DynamicProTable from '../../components/ProTableDynamic/table';
 // import Form from '../FormClient';
-import ProFormDynamic from '../ProFormDynamic';
+import ProFormDynamic from './subComps/ProFormDynamic';
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
