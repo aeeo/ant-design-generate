@@ -15,18 +15,6 @@ const ProTableDynamic = () => {
   const generateData = genData(config.showPagination ? config.pagination?.total : 10);
   const [tableData, setTableData] = useState<any>(generateData);
 
-  // (config.columns || columns) 配置缓存
-  // const tableColumns = (config.columns || columns)?.map((item: any) => ({
-  //   ...item,
-  //   ellipsis: config.ellipsis,
-  // }));
-
-  // ({
-  //   onEvent: (_, entity: any, index: number, type: string) => {
-  //     onSettingEvent(_, entity, index, type);
-  //   },
-  // })
-
   //#region 数据源
   // 获取数据
   const exetDataSource = (newConfig: any, tableColumn: any, tableDataList: any) => {
