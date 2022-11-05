@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import { genData, initConfig } from '../../components/ProTableDynamic/config';
-import ProTableDynamicSettings from './setting';
+import ProTableDynamicSettings from '../../components/Settings/ProTableDynamic/setting';
 import DynamicProTable from '../../components/ProTableDynamic/table';
 // import Form from '../FormClient';
 import ProFormDynamic from '../../components/ProTableDynamic/subComps/ProFormDynamic';

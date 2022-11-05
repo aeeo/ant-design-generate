@@ -5,9 +5,6 @@
     },
     {
       "path": "ant-design-generate-service"
-    },
-    {
-      "path": "ant-design-generate-umi"
     }
   ]
 }

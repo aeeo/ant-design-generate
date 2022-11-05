@@ -19,12 +19,12 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import request from 'umi-request';
-import { valueTypeArray } from '../../components/types';
-import { genColumns as columnsConfig, initConfig } from '../../components/ProTableDynamic/config';
-import { configSettingUI } from '../../components/configSettingUI';
-import dataSource from '../../../server/dataSource';
-import IconsDynamic from '../../components/common/IconsDynamic';
-import generateUtil from '../../utils/generate';
+import { valueTypeArray } from '../../../entity/types';
+import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
+import { configSettingUI } from '../configSettingUI';
+import dataSource from '../../../../server/dataSource';
+import IconsDynamic from '../../common/IconsDynamic';
+import generateUtil from '../../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
