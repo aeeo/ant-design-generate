@@ -17,6 +17,7 @@ const ProFormDynamic = (props: any) => {
   const [formData, setFormData] = useState<any>({});
   const formFields = props.formFields;
   console.debug('ProFormItemDynamic', formFields);
+
   return (
     <>
       <Switch

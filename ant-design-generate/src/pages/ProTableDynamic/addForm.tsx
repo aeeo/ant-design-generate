@@ -88,10 +88,10 @@ const AddFormDynamic = (props: any) => {
 
   const newformFields = dealFormFields(props.columns ? props.columns : myColumns);
   const [formFields, setFormFields] = useState<any>(newformFields);
+  const [config, setConfig] = useState<any>({ columns: newformFields });
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
-  const [config, setConfig] = useState<any>({ columns: newformFields });
   React.useEffect(() => {
     // 更新表单项
     // console.log('更新动态表单字段：props');
