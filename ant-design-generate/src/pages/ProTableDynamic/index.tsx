@@ -7,7 +7,7 @@ import { genData, initConfig } from '../../components/ProTableDynamic/config';
 import ProTableDynamicSettings from './setting';
 import DynamicProTable from '../../components/ProTableDynamic/table';
 // import Form from '../FormClient';
-import ProFormDynamic from './subComps/ProFormDynamic';
+import ProFormDynamic from '../../components/ProTableDynamic/subComps/ProFormDynamic';
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
