@@ -79,7 +79,6 @@ export const genData = (total: number) => {
   }
   ///结束3
   if (tableDataList.length < total) {
-    console.error('数据量不足，请减小分页大小');
     message.error('数据量不足，请减小分页大小');
     return;
   }

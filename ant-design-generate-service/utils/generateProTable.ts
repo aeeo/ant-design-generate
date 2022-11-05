@@ -9,6 +9,7 @@ const prettier = require("prettier");
 const indexFile = "table.tsx";
 const configFile = "config.tsx";
 const tags = ["///开始", "///结束"];
+const tagsQuo = ["'///去除引号", "\\'///去除引号", "///去除引号\\'", '\\"///去除引号', '///去除引号\\"', "///去除引号"];
 
 exports.generateProTable = function (res: any, generateData: any) {
   const { name, templatePath, generatePath, columns, tableDataList, initData, previewUrl } = generateData;
@@ -51,6 +52,9 @@ exports.generateProTable = function (res: any, generateData: any) {
   // 删除无用代码片段
   generateIndexFilePathStr = generateIndexFilePathStr.replace(deleteRegExp, "");
   generateConfigFilePathStr = generateConfigFilePathStr.replace(deleteRegExp, "");
+  // 删除引号
+  generateIndexFilePathStr = replaceStringByRegExpArr(tagsQuo, generateIndexFilePathStr, "");
+  generateConfigFilePathStr = replaceStringByRegExpArr(tagsQuo, generateConfigFilePathStr, "");
   // 美化代码
   const [generateIndexFilePrettierStr, generateIndexFilePrettierSuccess] = prettierFile(generateIndexFilePathStr);
   const [generateConfigFilePrettierStr, generateConfigFilePrettierSuccess] = prettierFile(generateConfigFilePathStr);
@@ -65,6 +69,21 @@ exports.generateProTable = function (res: any, generateData: any) {
   // 打开组件预览
   opn(previewUrl);
   return utils.ResultSuccess(res);
+};
+
+/** 替换字符串中的标签
+ * @param regExpArr 正则数组
+ * @param str 要替换的字符串
+ * @param replaceStr 要替换成的字符串
+ */
+const replaceStringByRegExpArr = (regExpArr: string[], str: string, replaceStr: string) => {
+  for (const i in regExpArr) {
+    const regExp = regExpArr[i];
+    const pattern = `${regExp}`;
+    const runRegExp = new RegExp(pattern, "g");
+    str = str.replace(runRegExp, replaceStr);
+  }
+  return str;
 };
 
 // 默认的prettier配置

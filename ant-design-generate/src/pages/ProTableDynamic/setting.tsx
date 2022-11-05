@@ -24,6 +24,7 @@ import { genColumns as columnsConfig, initConfig } from './config';
 import { configSettingUI } from '../../components/configSettingUI';
 import dataSource from '../../../server/dataSource';
 import IconsDynamic from '../../components/IconsDynamic';
+import generateUtil from '../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
@@ -37,7 +38,7 @@ const ProTableDynamicSettings = (props: any) => {
 
   const [config, setConfig] = useState<any>(initConfig);
   const [columns, setColumns] = useState<any>(columnsConfig);
-  const [columnsString, setColumnsString] = useState<any>(JSON.stringify(columnsConfig)); // 存储无法被序列化的columns数据
+  const [columnsStr, setColumnsStr] = useState<any>(JSON.stringify(columnsConfig)); // 存储无法被序列化的columns数据
   const [generateFormData, setGenerateFormData] = useState<any>({});
 
   React.useEffect(() => {
@@ -138,7 +139,7 @@ const ProTableDynamicSettings = (props: any) => {
     const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
 
     let tableColumn: ProColumnType<any>[] = []; // 表格的列信息
-    let tableColumnString: string = ''; // 表格列中会有函数，无法序列化，用此字符串存储序列化后的值
+    let columnsStr = ''; // 表格列中会有函数，无法序列化，用此字符串存储序列化后的值
     // 处理数据（给数据赋title、valueType）
     if (responseDataFirst) {
       Object.entries(responseDataFirst).forEach(([k, v]) => {
@@ -174,13 +175,13 @@ const ProTableDynamicSettings = (props: any) => {
       },
     };
     const operationColumnString =
-      '{' +
+      '///去除引号{' +
       '  title: "操作",' +
       '  dataIndex: "table-operation",' +
       '  valueType: "option",' +
       '  render: (_: React.ReactNode, entity: any, index: number) => {' +
       '    return [' +
-      '      <IconsDynamic onEvent={onSettingEvent} ' +
+      '      <IconsDynamic onEvent={columnParams.onEvent} ' +
       '        columnRender={{' +
       '          reactNode: _,' +
       '          entity,' +
@@ -190,14 +191,15 @@ const ProTableDynamicSettings = (props: any) => {
       '      />,' +
       '    ];' +
       '  },' +
-      '}';
+      '}///去除引号';
+
     tableColumn.push(operationColumn);
-    tableColumnString += operationColumnString;
+    columnsStr = operationColumnString;
     //#endregion
 
     // setting
     // setColumns(() => [...tableColumn]);
-    setColumnsString(() => tableColumnString);
+    setColumnsStr(() => columnsStr);
     config.columns = tableColumn;
     setConfig(() => ({ ...config }));
     settingFormRef.current?.resetFields(); // 更新所有表单表单
@@ -239,13 +241,13 @@ const ProTableDynamicSettings = (props: any) => {
   const generate = async (values: any) => {
     const url = '/api/generate';
     let initData = { ...config };
-    initData.columns.push(columnsString); // columns中无法被序列化的数据
-    initData = JSON.stringify(initData);
+    const [newInitData, tempColumnsStr] = generateUtil(initData, columnsStr);
     await request(url, {
       method: 'post',
-      data: { ...values, initData }, // initData用最新的
+      data: { ...values, initData: JSON.stringify(newInitData), columns: tempColumnsStr }, // initData用最新的
     });
   };
+
   //#endregion
 
   // 组件事件

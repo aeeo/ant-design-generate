@@ -77,6 +77,7 @@ const ProFormDynamic = (props: any) => {
 
   // 处理数据
   const dealFormFields = (formFields: any) => {
+    debugger;
     formFields.forEach((formField: any) => {
       // 默认赋formFieldType类型为ProFormText
       formField.formFieldType = 'ProFormText';
