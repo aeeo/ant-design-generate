@@ -20,7 +20,7 @@ import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { valueTypeArray, formFieldArray } from '../../entity/types';
-import ProFormItemDynamic from '../../components/ProTableDynamic/subComps/ProFormDynamic';
+import ProFormDynamic from '../../components/ProTable/subComps/ProForm';
 import { configSettingUI } from '../../components/Settings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -69,7 +69,7 @@ const myColumns = [
     valueType: 'option',
   },
 ];
-const ProFormDynamic = (props: any) => {
+const AddFormDynamic = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
@@ -115,7 +115,7 @@ const ProFormDynamic = (props: any) => {
   return (
     <ProCard split="vertical">
       <ProCard>
-        <ProFormItemDynamic formFields={formFields} />
+        <ProFormDynamic formFields={formFields} />
       </ProCard>
       <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
         <ProCard
@@ -264,7 +264,7 @@ const ProFormDynamic = (props: any) => {
   );
 };
 
-ProFormDynamic.propTypes = {
+AddFormDynamic.propTypes = {
   columns: PropTypes.array,
 };
-export default ProFormDynamic;
+export default AddFormDynamic;

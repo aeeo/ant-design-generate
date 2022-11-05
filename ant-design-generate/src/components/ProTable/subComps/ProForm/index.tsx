@@ -1,6 +1,6 @@
 import { ProForm } from '@ant-design/pro-components';
 import { Switch } from 'antd';
-import MyFormItem from '../ProFormItemDynamic';
+import MyFormItem from '../ProFormItem';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -12,7 +12,7 @@ export const waitTime = (time: number = 100) => {
   });
 };
 
-const ProFormItemDynamic = (props: any) => {
+const ProFormDynamic = (props: any) => {
   const [readonly, setReadonly] = useState(false);
   const [formData, setFormData] = useState<any>({});
   const formFields = props.formFields;
@@ -44,7 +44,7 @@ const ProFormItemDynamic = (props: any) => {
     </>
   );
 };
-ProFormItemDynamic.propTypes = {
+ProFormDynamic.propTypes = {
   formFields: PropTypes.array,
 };
-export default ProFormItemDynamic;
+export default ProFormDynamic;
