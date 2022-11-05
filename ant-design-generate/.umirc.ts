@@ -8,7 +8,7 @@ export default defineConfig({
     { path: '/', component: '@/pages/index' },
     { path: '/dynamicForm', component: '@/pages/ProTableDynamic/addForm.tsx' },
     { path: '/dynamicFormPreview', component: '@/components/ProTable/subComps/ProForm/index.tsx' },
-    // { path: '/template', component: '@/pages/ProTableDynamic/table.tsx' },
+    { path: '/generate', component: '@/components/ProTable/table.tsx' },
     // { path: '/temporary', component: '@/generate/Temporary/table.tsx' },
   ],
   fastRefresh: {},
