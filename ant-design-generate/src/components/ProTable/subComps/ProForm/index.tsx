@@ -1,6 +1,6 @@
 import { ProForm } from '@ant-design/pro-components';
 import { Switch } from 'antd';
-import MyFormItem from '../ProFormItem';
+import ProFormItemDynamic from '../ProFormItem';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -39,7 +39,7 @@ const ProFormDynamic = (props: any) => {
         onFinish={async (value) => console.log(value)}
       >
         {formFields?.map((formFieldInfo: any, index: number) => {
-          return <MyFormItem formFieldInfo={formFieldInfo} key={index} />;
+          return <ProFormItemDynamic formFieldInfo={formFieldInfo} key={index} />;
         })}
       </ProForm>
     </>

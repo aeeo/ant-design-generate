@@ -28,7 +28,7 @@ export const waitTime = (time: number = 100) => {
   });
 };
 
-const MyFormItem = (props: any) => {
+const ProFormItemDynamic = (props: any) => {
   const formFieldInfo = props.formFieldInfo;
   // console.debug('表单项：', formFieldInfo);
   const name = formFieldInfo.dataIndex;
@@ -225,7 +225,7 @@ const MyFormItem = (props: any) => {
   }
   return returnComponent;
 };
-MyFormItem.propTypes = {
+ProFormItemDynamic.propTypes = {
   formFieldInfo: PropTypes.object,
 };
-export default MyFormItem;
+export default ProFormItemDynamic;

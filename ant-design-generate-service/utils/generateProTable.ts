@@ -18,17 +18,17 @@ exports.generateProTable = function (res: any, generateData: any) {
   const generateIndexFilePath = path.join(generatePath, indexFile); // 文件绝对路径
   const configFilePath = path.join(templatePath, configFile); // 文件绝对路径
   const generateConfigFilePath = path.join(generatePath, configFile); // 文件绝对路径
-  if (!existsSync(templatePath)) return utils.ResultFail(res, `模板${templatePath}路径不存在！`);
-  if (!existsSync(indexFilePath)) return utils.ResultFail(res, `模板${indexFile}不存在！`);
-  if (!existsSync(configFilePath)) return utils.ResultFail(res, `模板${configFilePath}不存在！`);
-
-  fs.accessSync(generatePath, fs.constants.R_OK);
-  fs.accessSync(templatePath, fs.constants.R_OK);
+  if (!existsSync(templatePath)) return utils.ResultFail(res, `模板templatePath:${templatePath}路径不存在！`);
+  if (!existsSync(indexFilePath)) return utils.ResultFail(res, `模板indexFilePath:${indexFile}不存在！`);
+  if (!existsSync(configFilePath)) return utils.ResultFail(res, `模板configFilePath:${configFilePath}不存在！`);
 
   // 如果目录不存在则创建目录
   if (!existsSync(generatePath)) {
-    fs.mkdir("/tmp/a/apple");
+    fs.mkdirSync(generatePath);
   }
+
+  fs.accessSync(generatePath, fs.constants.R_OK);
+  fs.accessSync(templatePath, fs.constants.R_OK);
 
   fs.copyFileSync(indexFilePath, generateIndexFilePath);
   fs.copyFileSync(configFilePath, generateConfigFilePath);

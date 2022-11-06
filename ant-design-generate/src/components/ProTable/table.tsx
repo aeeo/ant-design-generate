@@ -5,7 +5,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { genColumns, genData, initConfig } from './config';
-import ProFormDynamic from '../../pages/ProTableDynamic/addForm';
+import AddFormDynamic from './subComps/ProForm';
 import type { ProColumns } from '@ant-design/pro-components';
 
 const DynamicProTable = (props: any) => {
@@ -115,7 +115,7 @@ const DynamicProTable = (props: any) => {
         ]}
       >
         <div style={{ height: '700px', overflow: 'auto' }}>
-          <ProFormDynamic columns={config.columns} />
+          <AddFormDynamic columns={config.columns} />
         </div>
       </Modal>
     </>

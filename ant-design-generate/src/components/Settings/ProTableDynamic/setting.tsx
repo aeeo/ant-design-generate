@@ -231,8 +231,10 @@ const ProTableDynamicSettings = (props: any) => {
     generateFormRef?.current?.setFieldsValue({
       name: 'ComponentName',
       // type: 'CommonTable',
-      templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
-      generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
+      // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
+      // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
+      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
+      generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\generate\\generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
     });
