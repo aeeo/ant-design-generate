@@ -127,7 +127,7 @@ const DynamicProTable = (props: any) => {
               <ProFormDynamicSettings columns={config.columns} />
             ) : (
               ///结束删除
-              <ProFormDynamic formFields={config.columns} />
+              <ProFormDynamic columns={config.columns} />
               ///开始删除
             )
             ///结束删除

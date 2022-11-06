@@ -6,8 +6,8 @@ import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { genColumns, genData, initConfig } from './config';
 // import AddFormDynamic from './subComps/ProFormDynamic';
-import AddFormDynamic from '../ProFormDynamicSettings'; // 带配置的ProForm
-import FormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
+import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
+import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
 
 const DynamicProTable = (props: any) => {
@@ -90,7 +90,7 @@ const DynamicProTable = (props: any) => {
           </Button>,
         ]}
       >
-        <div style={{ height: '700px', overflow: 'auto' }}>{<AddFormDynamic columns={config.columns} />}</div>
+        <div style={{ height: '700px', overflow: 'auto' }}>{<ProFormDynamic columns={config.columns} />}</div>
       </Modal>
     </>
   );
