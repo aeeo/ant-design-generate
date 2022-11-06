@@ -5,7 +5,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import { genData, initConfig } from '../../components/ProTableDynamic/config';
 import ProTableDynamicSettings from '../../components/Settings/ProTableDynamic/setting';
-import DynamicProTable from '../../components/ProTableDynamic/table';
+import DynamicProTable from '../../components/ProTableDynamic';
 
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
