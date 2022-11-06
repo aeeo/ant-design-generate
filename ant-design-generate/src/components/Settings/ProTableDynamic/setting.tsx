@@ -233,7 +233,7 @@ const ProTableDynamicSettings = (props: any) => {
       // type: 'CommonTable',
       // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
       // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
-      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamicSettings',
+      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
       generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
@@ -371,8 +371,8 @@ const ProTableDynamicSettings = (props: any) => {
                           size: configSettingUI.switchSize,
                         }}
                         label="页脚"
-                        tooltip="footer"
-                        name="footer"
+                        tooltip="showFooter"
+                        name="showFooter"
                       />
                       <ProFormSwitch
                         fieldProps={{
@@ -412,7 +412,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        label="表格标题"
+                        label="表格头部标题"
                         name="headerTitle"
                         tooltip="headerTitle={false}"
                       />
@@ -420,9 +420,25 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        label="表格的tooltip"
-                        name="tooltip"
-                        tooltip="tooltip={false}"
+                        label="表格头部标题tooltip"
+                        name="headerTooltip"
+                        tooltip="headerTooltip={false}"
+                      />
+                      <ProFormText
+                        fieldProps={{
+                          size: configSettingUI.textSize,
+                        }}
+                        label="表格Footer"
+                        name="footerTitle"
+                        tooltip="footerTitle={false}"
+                      />
+                      <ProFormText
+                        fieldProps={{
+                          size: configSettingUI.textSize,
+                        }}
+                        label="表格Footer tooltip"
+                        name="footerTooltip"
+                        tooltip="footerTooltip={false}"
                       />
 
                       <ProFormSwitch

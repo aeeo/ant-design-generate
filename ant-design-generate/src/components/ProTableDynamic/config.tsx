@@ -110,9 +110,12 @@ export const initConfig =
       total: 10, // 总条数
     },
     size: 'small', // 尺寸 default | middle | small
-    expandable: false, // 显示扩展列表
-    headerTitle: '高级表格', // 头部标题
-    tooltip: '高级表格 tooltip', // 提示框
+    expandable: true, // 显示表格展开扩展列表
+    headerTitle: '表格头部标题', // 表格头部标题
+    headerTooltip: '表格头部标题 tooltip', // 表格头部标题 tooltip
+    showFooter: true, // 显示footer
+    footerTitle: '表格Footer', // 表格Footer
+    footerTooltip: '表格Footer tooltip', // 表格Footer tooltip
     showHeader: true, // 显示表头
     footer: true, // 显示底脚
     rowSelection: true, // 多选框
@@ -120,8 +123,7 @@ export const initConfig =
     hasData: true, //
     tableLayout: undefined, // 表格布局 - | auto | fixed	无 固定表头/列或使用了 column.ellipsis 时，默认值为 fixed
     toolBarRender: true, // 显示工具栏
-    // 筛选表单 {} OR false:隐藏
-    showSearch: true,
+    showSearch: true, // 筛选表单 true:显示 false:隐藏
     search: {
       span: 8, // 栅格
       collapseRender: true, // 显示展开表单
@@ -131,6 +133,7 @@ export const initConfig =
     },
     // 工具栏
     options: {
+      search: true,
       show: true, // 显示
       density: true, // 显示紧凑按钮
       fullScreen: true, // 显示全屏按钮

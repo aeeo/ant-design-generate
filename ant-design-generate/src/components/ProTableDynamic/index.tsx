@@ -88,7 +88,7 @@ const DynamicProTable = (props: any) => {
         search={config.showSearch ? config.search : config.showSearch}
         expandable={
           config.expandable && {
-            expandedRowRender: (record: any) => <p>{record.description}</p>,
+            expandedRowRender: (record: any) => <>{record.description}</>,
           }
         }
         options={config.options?.show ? config.options : false}
@@ -101,7 +101,7 @@ const DynamicProTable = (props: any) => {
               ]
             : false
         }
-        footer={config.footer ? () => '这里是页脚。' : false}
+        footer={config.showFooter ? () => config.footerTitle : false}
         headerTitle={config.headerTitle}
         columns={tableColumns}
         dataSource={tableData}
