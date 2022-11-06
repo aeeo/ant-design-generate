@@ -20,8 +20,8 @@ import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { valueTypeArray, formFieldArray } from '../../entity/types';
-import ProFormDynamic from '../../components/ProTableDynamic/subComps/ProFormDynamic';
-import { configSettingUI } from '../../components/Settings/configSettingUI';
+import ProFormDynamic from '../ProTableDynamic/subComps/ProFormDynamic';
+import { configSettingUI } from '../Settings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -69,7 +69,7 @@ const myColumns = [
     valueType: 'option',
   },
 ];
-const AddFormDynamic = (props: any) => {
+const ProFormDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
@@ -264,7 +264,7 @@ const AddFormDynamic = (props: any) => {
   );
 };
 
-AddFormDynamic.propTypes = {
+ProFormDynamicSettings.propTypes = {
   columns: PropTypes.array,
 };
-export default AddFormDynamic;
+export default ProFormDynamicSettings;
