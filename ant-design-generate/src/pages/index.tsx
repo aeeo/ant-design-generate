@@ -1,4 +1,4 @@
-import ProTableDynamic from './ProTableDynamic';
+import ProTableDynamic from '../components/ProTableDynamicSettings';
 import Test from './Test';
 
 export default function IndexPage() {

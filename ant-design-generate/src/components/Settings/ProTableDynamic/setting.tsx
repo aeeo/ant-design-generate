@@ -20,10 +20,10 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import request from 'umi-request';
 import { valueTypeArray } from '../../../entity/types';
-import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamicSettings/config';
+import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
 import dataSource from '../../../../server/dataSource';
-import IconsDynamic from '../../ProTableDynamicSettings/subComps/IconsDynamic';
+import IconsDynamic from '../../IconsDynamic';
 import generateUtil from '../../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */

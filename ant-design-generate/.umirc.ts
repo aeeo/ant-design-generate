@@ -6,8 +6,8 @@ export default defineConfig({
   },
   routes: [
     { path: '/', component: '@/pages/index' },
-    { path: '/dynamicForm', component: '@/pages/ProTableDynamic' },
-    { path: '/dynamicFormPreview', component: '@/components/ProTableDynamicSettings/subComps/ProFormDynamic' },
+    { path: '/dynamicForm', component: '@/pages/ProTableDynamicPage' },
+    { path: '/dynamicFormPreview', component: '@/components/ProFormDynamic' },
     { path: '/generate', component: '@/components/Generate' },
     // { path: '/temporary', component: '@/generate/Temporary/table.tsx' },
   ],
