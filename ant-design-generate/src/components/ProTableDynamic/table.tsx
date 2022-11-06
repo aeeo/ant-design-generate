@@ -5,7 +5,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { genColumns, genData, initConfig } from './config';
-import AddFormDynamic from './subComps/ProForm';
+import AddFormDynamic from './subComps/ProFormDynamic';
 import type { ProColumns } from '@ant-design/pro-components';
 
 const DynamicProTable = (props: any) => {

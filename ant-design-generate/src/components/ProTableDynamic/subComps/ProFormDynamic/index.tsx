@@ -1,6 +1,6 @@
 import { ProForm } from '@ant-design/pro-components';
 import { Switch } from 'antd';
-import ProFormItemDynamic from '../ProFormItem';
+import ProFormItemDynamic from '../ProFormItemDynamic';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
