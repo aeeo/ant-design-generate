@@ -6,48 +6,18 @@ import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { genColumns, genData, initConfig } from './config';
 // import AddFormDynamic from './subComps/ProFormDynamic';
-import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
-import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
+import AddFormDynamic from '../ProFormDynamicSettings'; // 带配置的ProForm
+import FormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
 
 const DynamicProTable = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
-  ///开始删除
-  if (props.dynamic) {
-    [config, setConfig] = useState<any>(props.config);
-    //#region 开发阶段Props相关
-    React.useEffect(() => {
-      console.debug('table的config发生变化:', config);
-      setConfig(props.config);
-    }, [props.config]);
+  [config, setConfig] = useState<any>(initConfig);
+  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+  [tableData, setTableData] = useState<any>(generateData);
 
-    const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-    [tableData, setTableData] = useState<any>(generateData);
-    React.useEffect(() => {
-      console.debug('table的tableData发生变化:', tableData, props.tableData);
-      setTableData(props.tableData);
-    }, [props.tableData]);
-
-    // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
-    const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
-    React.useEffect(() => {
-      console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
-      // setEventInfo(props.eventInfo);
-      if (!props.eventInfo) return;
-      const { reactNode, entity, index, type } = props.eventInfo;
-      onSubEvent(reactNode, entity, index, type);
-    }, [props.eventInfo]);
-    //#endregion
-  } else {
-    ///结束删除
-    [config, setConfig] = useState<any>(initConfig);
-    const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-    [tableData, setTableData] = useState<any>(generateData);
-    ///开始删除
-  }
-  ///结束删除
   const proTableRef = useRef<ProFormInstance>();
 
   // 控制弹框显示隐藏
@@ -120,19 +90,7 @@ const DynamicProTable = (props: any) => {
           </Button>,
         ]}
       >
-        <div style={{ height: '700px', overflow: 'auto' }}>
-          {
-            ///开始删除
-            props.dynamic ? (
-              <ProFormDynamicSettings columns={config.columns} />
-            ) : (
-              ///结束删除
-              <ProFormDynamic formFields={config.columns} />
-              ///开始删除
-            )
-            ///结束删除
-          }
-        </div>
+        <div style={{ height: '700px', overflow: 'auto' }}>{<AddFormDynamic columns={config.columns} />}</div>
       </Modal>
     </>
   );

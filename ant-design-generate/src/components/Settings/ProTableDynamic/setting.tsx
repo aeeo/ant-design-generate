@@ -233,7 +233,7 @@ const ProTableDynamicSettings = (props: any) => {
       // type: 'CommonTable',
       // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
       // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
-      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
+      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamicSettings',
       generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
