@@ -840,7 +840,6 @@ const ProTableDynamicSettings = (props: any) => {
                       onFinish={async (values) => {
                         // console.log(values);
                         exetDataSource();
-                        message.success('提交成功');
                         return true;
                       }}
                     >
