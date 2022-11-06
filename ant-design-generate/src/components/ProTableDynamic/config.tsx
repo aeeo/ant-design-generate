@@ -3,7 +3,7 @@ import type { ProColumnType } from '@ant-design/pro-components';
 import { TablePaginationPosition, ColumnParams } from '../../entity/types';
 import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
-import IconsDynamic from '../common/IconsDynamic';
+import IconsDynamic from './subComps/IconsDynamic';
 
 const staticColumns = [
   {

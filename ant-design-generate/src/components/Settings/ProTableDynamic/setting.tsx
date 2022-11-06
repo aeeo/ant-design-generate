@@ -23,7 +23,7 @@ import { valueTypeArray } from '../../../entity/types';
 import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
 import dataSource from '../../../../server/dataSource';
-import IconsDynamic from '../../common/IconsDynamic';
+import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
   /** 去抖配置 */
@@ -234,7 +234,7 @@ const ProTableDynamicSettings = (props: any) => {
       // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
       // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
       templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
-      generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\generate\\generate',
+      generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
     });
