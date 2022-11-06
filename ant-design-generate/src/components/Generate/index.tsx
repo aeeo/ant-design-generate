@@ -13,36 +13,10 @@ const DynamicProTable = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
-  if (props.dynamic) {
-    [config, setConfig] = useState<any>(props.config);
-    //#region 开发阶段Props相关
-    React.useEffect(() => {
-      console.debug('table的config发生变化:', config);
-      setConfig(props.config);
-    }, [props.config]);
+  [config, setConfig] = useState<any>(initConfig);
+  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+  [tableData, setTableData] = useState<any>(generateData);
 
-    const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-    [tableData, setTableData] = useState<any>(generateData);
-    React.useEffect(() => {
-      console.debug('table的tableData发生变化:', tableData, props.tableData);
-      setTableData(props.tableData);
-    }, [props.tableData]);
-
-    // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
-    const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
-    React.useEffect(() => {
-      console.debug('table的eventInfo发生变化:', eventInfo, props.eventInfo);
-      // setEventInfo(props.eventInfo);
-      if (!props.eventInfo) return;
-      const { reactNode, entity, index, type } = props.eventInfo;
-      onSubEvent(reactNode, entity, index, type);
-    }, [props.eventInfo]);
-    //#endregion
-  } else {
-    [config, setConfig] = useState<any>(initConfig);
-    const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-    [tableData, setTableData] = useState<any>(generateData);
-  }
   const proTableRef = useRef<ProFormInstance>();
 
   // 控制弹框显示隐藏

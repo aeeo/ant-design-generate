@@ -6,7 +6,7 @@ var utils = require("./utils");
 const opn = require("opn");
 const prettier = require("prettier");
 
-const indexFile = "table.tsx";
+const indexFile = "index.tsx";
 const configFile = "config.tsx";
 const tags = ["///开始", "///结束"];
 const tagsQuo = ["'///去除引号", "\\'///去除引号", "///去除引号\\'", '\\"///去除引号', '///去除引号\\"', "///去除引号"];
@@ -42,7 +42,7 @@ exports.generateProTable = function (res: any, generateData: any) {
   const tableDataListPattern = `${tags[0]}3[\\d\\D]*${tags[1]}3`;
   const tableDataListRegExp = new RegExp(tableDataListPattern, "g");
 
-  const deletePattern = `${tags[0]}删除[\\d\\D]*${tags[1]}删除`;
+  const deletePattern = `${tags[0]}删除[\\d\\D]*?${tags[1]}删除`; // 非贪婪匹配
   const deleteRegExp = new RegExp(deletePattern, "g");
 
   generateConfigFilePathStr = generateConfigFilePathStr.replace(columnsRegExp, "const tableColumns = " + columns + "?? staticColumns;");

@@ -13,6 +13,7 @@ const DynamicProTable = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
+  ///开始删除
   if (props.dynamic) {
     [config, setConfig] = useState<any>(props.config);
     //#region 开发阶段Props相关
@@ -39,10 +40,13 @@ const DynamicProTable = (props: any) => {
     }, [props.eventInfo]);
     //#endregion
   } else {
+    ///结束删除
     [config, setConfig] = useState<any>(initConfig);
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
     [tableData, setTableData] = useState<any>(generateData);
+    ///开始删除
   }
+  ///结束删除
   const proTableRef = useRef<ProFormInstance>();
 
   // 控制弹框显示隐藏
