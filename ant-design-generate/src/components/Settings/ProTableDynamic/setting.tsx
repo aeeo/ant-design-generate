@@ -233,7 +233,7 @@ const ProTableDynamicSettings = (props: any) => {
       // type: 'CommonTable',
       // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
       // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
-      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
+      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
       generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\generate\\generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
@@ -247,7 +247,17 @@ const ProTableDynamicSettings = (props: any) => {
     await request(url, {
       method: 'post',
       data: { ...values, initData: JSON.stringify(newInitData), columns: tempColumnsStr }, // initData用最新的
-    });
+    })
+      .then(function (response) {
+        if (response && response.successed) {
+          message.success('请求成功');
+        } else {
+          message.error('出错了');
+        }
+      })
+      .catch(function (error) {
+        message.error('出错了');
+      });
   };
 
   //#endregion
@@ -916,7 +926,7 @@ const ProTableDynamicSettings = (props: any) => {
                       onFinish={async (values) => {
                         // console.log(values);
                         generate(values);
-                        message.success('提交成功');
+                        // message.success('提交成功');
                         return true;
                       }}
                     >
