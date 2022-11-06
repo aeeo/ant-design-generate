@@ -461,7 +461,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.switchSize,
                         }}
-                        label="keyWords"
+                        label="简易搜索"
                         name={['options', 'search']}
                         tooltip="options={{ search:'keyWords' }}"
                       />
