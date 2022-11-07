@@ -21,7 +21,7 @@ import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 import { valueTypeArray, formFieldArray } from '../../entity/types';
 import ProFormDynamic from '../ProFormDynamic';
-import { configSettingUI } from '../Settings/configSettingUI';
+import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
