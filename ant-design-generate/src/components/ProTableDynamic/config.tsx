@@ -133,7 +133,7 @@ export const initConfig =
     },
     // 工具栏
     options: {
-      search: true,
+      search: true, // 简易搜索
       show: true, // 显示
       density: true, // 显示紧凑按钮
       fullScreen: true, // 显示全屏按钮
