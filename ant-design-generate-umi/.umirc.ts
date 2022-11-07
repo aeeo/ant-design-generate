@@ -12,25 +12,21 @@ export default defineConfig({
   routes: [
     {
       path: '/',
-      redirect: '/home',
+      // redirect: './index.tsx',
+      component: '@/pages/index',
     },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
-    },
-    { path: '/pro-form-dynamic', component: './ProFormDynamic' },
+    { path: '/dynamicForm', component: '@/pages/ProTableDynamicPage' },
+    { path: '/dynamicFormPreview', component: '@/components/ProFormDynamic' },
+    { path: '/generate', component: '@/components/Generate' },
   ],
+  fastRefresh: true,
   npmClient: 'yarn',
-  dva: {},
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8081/',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
+  dva: {}, // redux
 });

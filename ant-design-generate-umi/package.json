@@ -1,14 +1,17 @@
 {
   "private": true,
-  "author":"zhaoqizhi <hearhear@foxmail.com>",
+  "author": "zhaoqizhi <hearhear@foxmail.com>",
   "scripts": {
-    "dev": "max dev",
     "build": "max build",
+    "dev": "max dev",
     "format": "prettier --cache --write .",
-    "prepare": "husky install",
     "postinstall": "max setup",
+    "prepare": "husky install",
     "setup": "max setup",
     "start": "npm run dev"
+  },
+  "eslintConfig": {
+    "no-unused-vars": "off"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

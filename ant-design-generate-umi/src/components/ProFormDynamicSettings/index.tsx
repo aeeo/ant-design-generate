@@ -19,9 +19,9 @@ import {
 import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
-import { valueTypeArray, formFieldArray } from '../../components/types';
-import ProFormItemDynamic from '../../components/ProFormItemDynamic';
-import { configSettingUI } from '../../components/configSettingUI';
+import { valueTypeArray, formFieldArray } from '../../entity/types';
+import ProFormDynamic from '../ProFormDynamic';
+import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -69,35 +69,21 @@ const myColumns = [
     valueType: 'option',
   },
 ];
-const ProFormDynamic = (props: any) => {
+const ProFormDynamicSettings = (props: any) => {
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
   }, 20);
 
-  // 处理数据
-  const dealFormFields = (formFields: any) => {
-    formFields.forEach((formField: any) => {
-      // 默认赋formFieldType类型为ProFormText
-      formField.formFieldType = 'ProFormText';
-      formField.placeholder = '请输入';
-      formField.tooltip = '';
-    });
-    return formFields;
-  };
-
-  const newformFields = dealFormFields(props.columns ? props.columns : myColumns);
-  const [formFields, setFormFields] = useState<any>(newformFields);
+  const [config, setConfig] = useState<any>({ columns: props.columns });
+  const [columns, setColumns] = useState<any>(props.columns);
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
-  const [config, setConfig] = useState<any>({ columns: newformFields });
   React.useEffect(() => {
     // 更新表单项
     // console.log('更新动态表单字段：props');
-    const dealFormFields1 = dealFormFields(props.columns ? props.columns : myColumns);
-    setFormFields(dealFormFields1);
-    setConfig({ columns: dealFormFields1 });
+    setConfig({ columns: props.columns ? props.columns : myColumns });
   }, [props]);
   React.useEffect(() => {
     // 更新表单项
@@ -107,15 +93,14 @@ const ProFormDynamic = (props: any) => {
         newFormFields.push({ ...columnsItem });
       }
     });
-    console.log('更新动态表单字段：', config, newformFields, newFormFields);
-    setFormFields(newFormFields);
+    console.log('更新动态表单字段：', config, newFormFields);
+    setColumns(newFormFields);
   }, [config]);
-  console.log('ProFormDynamic', props.columns, formFields, config);
-
+  console.log('ProFormDynamic', props.columns, config);
   return (
     <ProCard split="vertical">
       <ProCard>
-        <ProFormItemDynamic formFields={formFields} />
+        <ProFormDynamic columns={config.columns} />
       </ProCard>
       <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
         <ProCard
@@ -264,7 +249,7 @@ const ProFormDynamic = (props: any) => {
   );
 };
 
-ProFormDynamic.propTypes = {
+ProFormDynamicSettings.propTypes = {
   columns: PropTypes.array,
 };
-export default ProFormDynamic;
+export default ProFormDynamicSettings;
