@@ -1,9 +1,6 @@
 {
   "folders": [
     {
-      "path": "ant-design-generate"
-    },
-    {
       "path": "ant-design-generate-service"
     },
     {

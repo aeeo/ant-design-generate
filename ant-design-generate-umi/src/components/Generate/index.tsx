@@ -5,7 +5,6 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { genColumns, genData, initConfig } from './config';
-// import AddFormDynamic from './subComps/ProFormDynamic';
 import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
@@ -58,7 +57,7 @@ const DynamicProTable = (props: any) => {
         search={config.showSearch ? config.search : config.showSearch}
         expandable={
           config.expandable && {
-            expandedRowRender: (record: any) => <p>{record.description}</p>,
+            expandedRowRender: (record: any) => <>{record.description}</>,
           }
         }
         options={config.options?.show ? config.options : false}

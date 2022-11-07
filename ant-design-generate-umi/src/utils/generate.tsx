@@ -6,17 +6,13 @@ const generate = (initData: any, columnsStr: string) => {
   columns = initData.columns?.map((item: any) => {
     // columns中无法被序列化的数据
     if (item.dataIndex === 'table-operation') {
-      item.dataIndex = operationTag;
+      return operationTag;
     }
     return item;
   });
 
   let tempColumnsStr = JSON.stringify(columns);
-  tempColumnsStr = replaceStringByRegExp(
-    operationTag,
-    tempColumnsStr,
-    columnsStr,
-  );
+  tempColumnsStr = replaceStringByRegExp(operationTag, tempColumnsStr, columnsStr);
   initData.columns = '///去除引号genColumns({ onEvent: () => {} })///去除引号';
   return [initData, tempColumnsStr];
 };

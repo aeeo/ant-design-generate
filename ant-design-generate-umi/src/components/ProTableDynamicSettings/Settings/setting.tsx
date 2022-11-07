@@ -43,7 +43,7 @@ const ProTableDynamicSettings = (props: any) => {
   }, 20);
   React.useEffect(() => {
     console.log('配置的config发生变化', config);
-    props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue());
+    props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue(true));
   }, [config]);
   // 组件事件
   const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
@@ -60,9 +60,10 @@ const ProTableDynamicSettings = (props: any) => {
   //#region 数据源表单配置
   // 获取数据
   const exetDataSource = async () => {
-    const { url, method, afterScript } = dataSourceFormRef.current?.getFieldsValue();
-    const a = await dataSource('tableList', url, method, afterScript);
-    console.log(a);
+    const data = dataSourceFormRef.current?.getFieldsValue(true);
+    const { selectDetail, selectList, add, apiDelete, update } = data.api;
+    const { url, method, afterScript } = selectList;
+    await dataSource('tableList', url, method, afterScript);
     // 模拟响应的数据
     const tableDataList = [
       {
@@ -194,6 +195,7 @@ const ProTableDynamicSettings = (props: any) => {
       '  render: (_: React.ReactNode, entity: any, index: number) => {' +
       '    return [' +
       '      <IconsDynamic onEvent={columnParams.onEvent} ' +
+      '        key={"table-operation_" + index} ' +
       '        columnRender={{' +
       '          reactNode: _,' +
       '          entity,' +
@@ -231,9 +233,33 @@ const ProTableDynamicSettings = (props: any) => {
   // 一键填写
   const fillDataSource = () => {
     dataSourceFormRef?.current?.setFieldsValue({
-      url: '/api/Success',
-      method: 'GET',
-      afterScript: 'data=response', // 后执行脚本
+      api: {
+        selectList: {
+          url: '/api/Success',
+          method: 'GET',
+          afterScript: 'data=response', // 后执行脚本
+        },
+        selectDetail: {
+          url: '/api/Success',
+          method: 'GET',
+          afterScript: 'data=response', // 后执行脚本
+        },
+        add: {
+          url: '/api/Success',
+          method: 'GET',
+          afterScript: 'data=response', // 后执行脚本
+        },
+        apiDelete: {
+          url: '/api/Success',
+          method: 'GET',
+          afterScript: 'data=response', // 后执行脚本
+        },
+        update: {
+          url: '/api/Success',
+          method: 'GET',
+          afterScript: 'data=response', // 后执行脚本
+        },
+      },
     });
   };
   //#endregion
@@ -244,10 +270,10 @@ const ProTableDynamicSettings = (props: any) => {
     generateFormRef?.current?.setFieldsValue({
       name: 'ComponentName',
       // type: 'CommonTable',
-      // templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\components\\ProTable',
-      // generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate\\src\\generate',
-      templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
-      generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
+      templatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate-umi\\src\\components\\ProTableDynamic',
+      generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate-umi\\src\\components\\Generate',
+      // templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
+      // generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
       previewUrl: 'http://localhost:8000/generate',
       initData: JSON.stringify({ ...config }),
     });
@@ -314,7 +340,7 @@ const ProTableDynamicSettings = (props: any) => {
                       colon={false}
                       onValuesChange={(_, values) => updateConfig.run(values)}
                     >
-                      <ProForm.Group title="事件配置" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                      <ProForm.Group title="事件配置" collapsible direction="horizontal" labelLayout="twoLine">
                         <ProFormSwitch
                           fieldProps={{
                             size: configSettingUI.switchSize,
@@ -332,7 +358,7 @@ const ProTableDynamicSettings = (props: any) => {
                           name={['event', 'showDetailModal']}
                         />
                       </ProForm.Group>
-                      <ProForm.Group title="表格配置" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                      <ProForm.Group title="表格配置" collapsible direction="horizontal" labelLayout="twoLine">
                         <ProFormSwitch
                           fieldProps={{
                             size: configSettingUI.switchSize,
@@ -703,7 +729,7 @@ const ProTableDynamicSettings = (props: any) => {
                     colon={false}
                     onValuesChange={(_, values) => updateConfig.run(values)}
                   >
-                    <Button
+                    {/* <Button
                       type="dashed"
                       onClick={() => {
                         const row = actionRef.current?.getList();
@@ -719,7 +745,7 @@ const ProTableDynamicSettings = (props: any) => {
                       }}
                     >
                       删除一行
-                    </Button>
+                    </Button> */}
                     <ProFormList
                       actionRef={actionRef}
                       name="columns"
@@ -900,12 +926,12 @@ const ProTableDynamicSettings = (props: any) => {
                       return true;
                     }}
                   >
-                    <ProForm.Group title="查-列表" size={0} collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="查-列表" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="url"
+                        name={['api', 'selectList', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -920,7 +946,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="method"
+                        name={['api', 'selectList', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -941,18 +967,18 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textAreaSize,
                         }}
-                        name="afterScript"
+                        name={['api', 'selectList', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="查-详情" size={0} collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="查-详情" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="url"
+                        name={['api', 'selectDetail', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -967,7 +993,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="method"
+                        name={['api', 'selectDetail', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -988,18 +1014,18 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textAreaSize,
                         }}
-                        name="afterScript"
+                        name={['api', 'selectDetail', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="增" size={0} collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="增" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="url"
+                        name={['api', 'add', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -1014,7 +1040,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="method"
+                        name={['api', 'add', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -1035,18 +1061,18 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textAreaSize,
                         }}
-                        name="afterScript"
+                        name={['api', 'add', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="改" size={0} collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="改" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="url"
+                        name={['api', 'update', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -1061,7 +1087,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="method"
+                        name={['api', 'update', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -1082,18 +1108,18 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textAreaSize,
                         }}
-                        name="afterScript"
+                        name={['api', 'update', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="删" size={0} collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="删" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="url"
+                        name={['api', 'apiDelete', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -1108,7 +1134,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textSize,
                         }}
-                        name="method"
+                        name={['api', 'apiDelete', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -1129,7 +1155,7 @@ const ProTableDynamicSettings = (props: any) => {
                         fieldProps={{
                           size: configSettingUI.textAreaSize,
                         }}
-                        name="afterScript"
+                        name={['api', 'apiDelete', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
