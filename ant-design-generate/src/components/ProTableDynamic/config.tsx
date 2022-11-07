@@ -74,12 +74,12 @@ export const genData = (total: number) => {
       age: i + 10,
       time: 1661136793649 + i * 1000,
       address: i % 2 === 0 ? '广东' : '陕西',
-      description: `我的名字是佩奇, 我今年 ${i} 岁了, 我生活在${i % 2 === 0 ? '广东' : '陕西'}.`,
+      description: `我的名字是佩奇，我今年 ${i} 岁了，我生活在${i % 2 === 0 ? '广东' : '陕西'}。`,
     });
   }
   ///结束3
   if (tableDataList.length < total) {
-    message.error('数据量不足，请减小分页大小');
+    message.error('数据量不足，请减小分页大小。');
     return;
   }
   const data: any[] = [];
