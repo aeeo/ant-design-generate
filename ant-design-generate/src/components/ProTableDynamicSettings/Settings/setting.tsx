@@ -276,7 +276,18 @@ const ProTableDynamicSettings = (props: any) => {
   };
   return (
     <>
-      <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
+      <ProForm
+        layout="horizontal"
+        size={configSettingUI.size}
+        labelCol={{ span: 10 }}
+        labelAlign="left"
+        wrapperCol={{ span: 14 }}
+        formRef={settingFormRef}
+        initialValues={config}
+        submitter={false}
+        colon={false}
+        onValuesChange={(_, values) => updateConfig.run(values)}
+      >
         <ProCard
           colSpan="420px"
           style={{
@@ -308,6 +319,30 @@ const ProTableDynamicSettings = (props: any) => {
                         label="显示编辑弹框"
                         tooltip="showEditModal"
                         name={['event', 'showEditModal']}
+                      />
+                      <ProFormSwitch
+                        fieldProps={{
+                          size: configSettingUI.switchSize,
+                        }}
+                        label="显示详情弹框"
+                        tooltip="showDetailModal"
+                        name={['event', 'showDetailModal']}
+                      />
+                      <ProFormSwitch
+                        fieldProps={{
+                          size: configSettingUI.switchSize,
+                        }}
+                        label="显示详情弹框"
+                        tooltip="showDetailModal"
+                        name={['event', 'showDetailModal']}
+                      />
+                      <ProFormSwitch
+                        fieldProps={{
+                          size: configSettingUI.switchSize,
+                        }}
+                        label="显示详情弹框"
+                        tooltip="showDetailModal"
+                        name={['event', 'showDetailModal']}
                       />
                       <ProFormSwitch
                         fieldProps={{
@@ -871,51 +906,241 @@ const ProTableDynamicSettings = (props: any) => {
                         return true;
                       }}
                     >
-                      <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
-                        name="url"
-                        label="URL地址"
-                        tooltip="URL地址"
-                        placeholder="请输入URL"
-                        rules={[
-                          {
-                            required: true,
-                            message: '请输入URL',
-                          },
-                        ]}
-                      />
-                      <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
-                        name="method"
-                        tooltip="请求方式"
-                        label="请求方式"
-                        valueEnum={{
-                          GET: 'GET',
-                          POST: 'POST',
-                          PUT: 'PUT',
-                          DELETE: 'DELETE',
-                        }}
-                        placeholder="请选择请求方式"
-                        rules={[
-                          {
-                            required: true,
-                            message: '请选择请求方式！',
-                          },
-                        ]}
-                      />
-                      <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
-                        name="afterScript"
-                        label="后执行脚本"
-                        tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
-                        placeholder="请输入后执行脚本"
-                      />
+                      <ProForm.Group title="查-列表" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="url"
+                          label="URL地址"
+                          tooltip="URL地址"
+                          placeholder="请输入URL"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请输入URL',
+                            },
+                          ]}
+                        />
+                        <ProFormSelect
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="method"
+                          tooltip="请求方式"
+                          label="请求方式"
+                          valueEnum={{
+                            GET: 'GET',
+                            POST: 'POST',
+                            PUT: 'PUT',
+                            DELETE: 'DELETE',
+                          }}
+                          placeholder="请选择请求方式"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请选择请求方式！',
+                            },
+                          ]}
+                        />
+                        <ProFormTextArea
+                          fieldProps={{
+                            size: configSettingUI.textAreaSize,
+                          }}
+                          name="afterScript"
+                          label="后执行脚本"
+                          tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                          placeholder="请输入后执行脚本"
+                        />
+                      </ProForm.Group>
+                      <ProForm.Group title="查-详情" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="url"
+                          label="URL地址"
+                          tooltip="URL地址"
+                          placeholder="请输入URL"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请输入URL',
+                            },
+                          ]}
+                        />
+                        <ProFormSelect
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="method"
+                          tooltip="请求方式"
+                          label="请求方式"
+                          valueEnum={{
+                            GET: 'GET',
+                            POST: 'POST',
+                            PUT: 'PUT',
+                            DELETE: 'DELETE',
+                          }}
+                          placeholder="请选择请求方式"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请选择请求方式！',
+                            },
+                          ]}
+                        />
+                        <ProFormTextArea
+                          fieldProps={{
+                            size: configSettingUI.textAreaSize,
+                          }}
+                          name="afterScript"
+                          label="后执行脚本"
+                          tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                          placeholder="请输入后执行脚本"
+                        />
+                      </ProForm.Group>
+                      <ProForm.Group title="增" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="url"
+                          label="URL地址"
+                          tooltip="URL地址"
+                          placeholder="请输入URL"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请输入URL',
+                            },
+                          ]}
+                        />
+                        <ProFormSelect
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="method"
+                          tooltip="请求方式"
+                          label="请求方式"
+                          valueEnum={{
+                            GET: 'GET',
+                            POST: 'POST',
+                            PUT: 'PUT',
+                            DELETE: 'DELETE',
+                          }}
+                          placeholder="请选择请求方式"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请选择请求方式！',
+                            },
+                          ]}
+                        />
+                        <ProFormTextArea
+                          fieldProps={{
+                            size: configSettingUI.textAreaSize,
+                          }}
+                          name="afterScript"
+                          label="后执行脚本"
+                          tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                          placeholder="请输入后执行脚本"
+                        />
+                      </ProForm.Group>
+                      <ProForm.Group title="改" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="url"
+                          label="URL地址"
+                          tooltip="URL地址"
+                          placeholder="请输入URL"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请输入URL',
+                            },
+                          ]}
+                        />
+                        <ProFormSelect
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="method"
+                          tooltip="请求方式"
+                          label="请求方式"
+                          valueEnum={{
+                            GET: 'GET',
+                            POST: 'POST',
+                            PUT: 'PUT',
+                            DELETE: 'DELETE',
+                          }}
+                          placeholder="请选择请求方式"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请选择请求方式！',
+                            },
+                          ]}
+                        />
+                        <ProFormTextArea
+                          fieldProps={{
+                            size: configSettingUI.textAreaSize,
+                          }}
+                          name="afterScript"
+                          label="后执行脚本"
+                          tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                          placeholder="请输入后执行脚本"
+                        />
+                      </ProForm.Group>
+                      <ProForm.Group title="删" size={0} collapsible direction="horizontal" labelLayout="twoLine">
+                        <ProFormText
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="url"
+                          label="URL地址"
+                          tooltip="URL地址"
+                          placeholder="请输入URL"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请输入URL',
+                            },
+                          ]}
+                        />
+                        <ProFormSelect
+                          fieldProps={{
+                            size: configSettingUI.textSize,
+                          }}
+                          name="method"
+                          tooltip="请求方式"
+                          label="请求方式"
+                          valueEnum={{
+                            GET: 'GET',
+                            POST: 'POST',
+                            PUT: 'PUT',
+                            DELETE: 'DELETE',
+                          }}
+                          placeholder="请选择请求方式"
+                          rules={[
+                            {
+                              required: true,
+                              message: '请选择请求方式！',
+                            },
+                          ]}
+                        />
+                        <ProFormTextArea
+                          fieldProps={{
+                            size: configSettingUI.textAreaSize,
+                          }}
+                          name="afterScript"
+                          label="后执行脚本"
+                          tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                          placeholder="请输入后执行脚本"
+                        />
+                      </ProForm.Group>
                     </ProForm>
                   </>
                 ),
