@@ -5,6 +5,7 @@ export declare type SizeType = 'small' | 'middle' | 'large' | undefined;
 
 class ConfigSettingUI {
   size: SizeType = 'small';
+  sizeCard: string = 'small';
   switchSize: SwitchSize = 'small';
   radioGroupSize: SizeType = 'small';
   digitSize: SizeType = 'small';

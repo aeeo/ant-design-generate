@@ -228,403 +228,185 @@ const ProTableDynamicSettings = (props: any) => {
           height: '100vh',
           overflow: 'auto',
           boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)',
-          top: 0,
-          right: 0,
         }}
         size="small"
         bodyStyle={{ height: '100%', overflow: 'hidden' }}
         tabs={{
-          // tabPosition: 'right',
           size: 'small',
-          style: { height: '100%', overflow: 'hidden' },
           items: [
             {
               label: '基本配置',
               key: 'tab1',
               children: (
                 <>
-                  <div style={{ height: '100%', overflow: 'hidden' }}>
-                    <ProForm
-                      layout="horizontal"
-                      size={configSettingUI.size}
-                      labelCol={{ span: 10 }}
-                      labelAlign="left"
-                      wrapperCol={{ span: 14 }}
-                      formRef={baseFormRef}
-                      initialValues={config}
-                      submitter={false}
-                      colon={false}
-                      onValuesChange={(_, values) => updateConfig.run(values)}
+                  <ProForm
+                    layout="horizontal"
+                    size={configSettingUI.size}
+                    labelAlign="left"
+                    formRef={baseFormRef}
+                    initialValues={config}
+                    submitter={false}
+                    colon={false}
+                    onValuesChange={(_, values) => updateConfig.run(values)}
+                  >
+                    <ProForm.Group title="事件配置" collapsible direction="horizontal" labelLayout="twoLine">
+                      <ProFormSwitch label="显示编辑弹框" tooltip="showEditModal" name={['event', 'showEditModal']} />
+                      <ProFormSwitch label="显示详情弹框" tooltip="showDetailModal" name={['event', 'showDetailModal']} />
+                    </ProForm.Group>
+                    <ProForm.Group title="表格配置" collapsible direction="horizontal" labelLayout="twoLine">
+                      <ProFormSwitch label="边框" tooltip="bordered" name="bordered" />
+                      <ProFormRadio.Group
+                        tooltip={`size="middle"`}
+                        radioType="button"
+                        label="尺寸"
+                        options={[
+                          {
+                            label: '大',
+                            value: 'default',
+                          },
+                          {
+                            label: '中',
+                            value: 'middle',
+                          },
+                          {
+                            label: '小',
+                            value: 'small',
+                          },
+                        ]}
+                        name="size"
+                      />
+                      <ProFormSwitch label="加载中" tooltip="loading" name="loading" />
+                      <ProFormSwitch label="显示标题" tooltip="showHeader" name="showHeader" />
+                      <ProFormSwitch label="页脚" tooltip="showFooter" name="showFooter" />
+                      <ProFormSwitch label="支持展开" tooltip="expandable" name="expandable" />
+                      <ProFormSwitch label="行选择" tooltip="rowSelection" name="rowSelection" />
+                    </ProForm.Group>
+                    <ProForm.Group
+                      size={0}
+                      collapsible
+                      direction="horizontal"
+                      labelLayout="twoLine"
+                      tooltip="toolBarRender={false}"
+                      title="工具栏"
+                      extra={<ProFormSwitch noStyle name="toolBarRender" />}
                     >
-                      <ProForm.Group title="事件配置" collapsible direction="horizontal" labelLayout="twoLine">
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="显示编辑弹框"
-                          tooltip="showEditModal"
-                          name={['event', 'showEditModal']}
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="显示详情弹框"
-                          tooltip="showDetailModal"
-                          name={['event', 'showDetailModal']}
-                        />
-                      </ProForm.Group>
-                      <ProForm.Group title="表格配置" collapsible direction="horizontal" labelLayout="twoLine">
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="边框"
-                          tooltip="bordered"
-                          name="bordered"
-                        />
-                        <ProFormRadio.Group
-                          tooltip={`size="middle"`}
-                          radioType="button"
-                          fieldProps={{
-                            size: configSettingUI.radioGroupSize,
-                          }}
-                          label="尺寸"
-                          options={[
-                            {
-                              label: '大',
-                              value: 'default',
-                            },
-                            {
-                              label: '中',
-                              value: 'middle',
-                            },
-                            {
-                              label: '小',
-                              value: 'small',
-                            },
-                          ]}
-                          name="size"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="加载中"
-                          tooltip="loading"
-                          name="loading"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="显示标题"
-                          tooltip="showHeader"
-                          name="showHeader"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="页脚"
-                          tooltip="showFooter"
-                          name="showFooter"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="支持展开"
-                          tooltip="expandable"
-                          name="expandable"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="行选择"
-                          tooltip="rowSelection"
-                          name="rowSelection"
-                        />
-                      </ProForm.Group>
-                      <ProForm.Group
-                        size={0}
-                        collapsible
-                        direction="horizontal"
-                        labelLayout="twoLine"
-                        tooltip="toolBarRender={false}"
-                        title="工具栏"
-                        extra={
-                          <ProFormSwitch
-                            fieldProps={{
-                              size: configSettingUI.switchSize,
-                            }}
-                            noStyle
-                            name="toolBarRender"
-                          />
-                        }
-                      >
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          label="表格头部标题"
-                          name="headerTitle"
-                          tooltip="headerTitle={false}"
-                        />
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          label="表格头部标题tooltip"
-                          name="headerTooltip"
-                          tooltip="headerTooltip={false}"
-                        />
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          label="表格Footer"
-                          name="footerTitle"
-                          tooltip="footerTitle={false}"
-                        />
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          label="表格Footer tooltip"
-                          name="footerTooltip"
-                          tooltip="footerTooltip={false}"
-                        />
+                      <ProFormText label="表格头部标题" name="headerTitle" tooltip="headerTitle={false}" />
+                      <ProFormText label="表格头部标题tooltip" name="headerTooltip" tooltip="headerTooltip={false}" />
+                      <ProFormText label="表格Footer" name="footerTitle" tooltip="footerTitle={false}" />
+                      <ProFormText label="表格Footer tooltip" name="footerTooltip" tooltip="footerTooltip={false}" />
 
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="Icon 显示"
-                          name={['options', 'show']}
-                          tooltip="options={false}"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="密度 Icon"
-                          name={['options', 'density']}
-                          tooltip="options={{ density:false }}"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="keyWords"
-                          name={['options', 'search']}
-                          tooltip="options={{ search:'keyWords' }}"
-                        />
-                        <ProFormSwitch
-                          label="全屏 Icon"
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          name={['options', 'fullScreen']}
-                          tooltip="options={{ fullScreen:false }}"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="列设置 Icon"
-                          tooltip="options={{ setting:false }}"
-                          name={['options', 'setting']}
-                        />
-                      </ProForm.Group>
-                      <ProForm.Group
-                        title="查询表单"
-                        size={0}
-                        collapsible
-                        tooltip="search={false}"
-                        direction="horizontal"
-                        labelLayout="twoLine"
-                        extra={
-                          <ProFormSwitch
-                            fieldProps={{
-                              size: configSettingUI.switchSize,
-                            }}
-                            noStyle
-                            name={['showSearch']}
-                          />
-                        }
-                      >
-                        <ProFormText
-                          label="查询按钮文案"
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          tooltip={`search={{searchText:"查询"}}`}
-                          name={['search', 'searchText']}
-                        />
-                        <ProFormText
-                          label="重置按钮文案"
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          tooltip={`search={{resetText:"重置"}}`}
-                          name={['search', 'resetText']}
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="收起按钮"
-                          tooltip={`search={{collapseRender:false}}`}
-                          name={['search', 'collapseRender']}
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="表单收起"
-                          name={['search', 'collapsed']}
-                          tooltip={`search={{collapsed:false}}`}
-                        />
-                        <ProFormSelect
-                          fieldProps={{
-                            size: configSettingUI.selectSize,
-                          }}
-                          tooltip={`search={{span:8}}`}
-                          options={[
-                            {
-                              label: '24',
-                              value: 24,
-                            },
-                            {
-                              label: '12',
-                              value: 12,
-                            },
-                            {
-                              label: '8',
-                              value: 8,
-                            },
-                            {
-                              label: '6',
-                              value: 6,
-                            },
-                          ]}
-                          label="表单栅格"
-                          name={['search', 'span']}
-                        />
-                        <ProFormRadio.Group
-                          radioType="button"
-                          fieldProps={{
-                            size: configSettingUI.radioGroupSize,
-                          }}
-                          name={['search', 'layout']}
-                          tooltip={`search={{layout:"${config.search?.layout}"}}`}
-                          options={[
-                            {
-                              label: '垂直',
-                              value: 'vertical',
-                            },
-                            {
-                              label: '水平',
-                              value: 'horizontal',
-                            },
-                          ]}
-                          label="表单布局"
-                        />
-                        <ProFormRadio.Group
-                          radioType="button"
-                          fieldProps={{
-                            size: configSettingUI.radioGroupSize,
-                          }}
-                          name={['search', 'filterType']}
-                          tooltip={`search={{filterType:"light"}}`}
-                          options={[
-                            {
-                              label: '默认',
-                              value: 'query',
-                            },
-                            {
-                              label: '轻量',
-                              value: 'light',
-                            },
-                          ]}
-                          label="表单类型"
-                        />
-                      </ProForm.Group>
-                      <ProForm.Group
-                        title="分页器"
-                        size={0}
-                        collapsible
-                        tooltip="pagination={}"
-                        direction="horizontal"
-                        labelLayout="twoLine"
-                        extra={
-                          <ProFormSwitch
-                            fieldProps={{
-                              size: configSettingUI.switchSize,
-                            }}
-                            noStyle
-                            name={['showPagination']}
-                          />
-                        }
-                      >
-                        <ProFormRadio.Group
-                          tooltip={`pagination={size:"middle"}`}
-                          radioType="button"
-                          fieldProps={{
-                            size: configSettingUI.radioGroupSize,
-                          }}
-                          label="尺寸"
-                          options={[
-                            {
-                              label: '默认',
-                              value: 'default',
-                            },
-                            {
-                              label: '小',
-                              value: 'small',
-                            },
-                          ]}
-                          name={['pagination', 'size']}
-                        />
-                        {/* <ProFormRadio.Group
+                      <ProFormSwitch label="Icon 显示" name={['options', 'show']} tooltip="options={false}" />
+                      <ProFormSwitch label="密度 Icon" name={['options', 'density']} tooltip="options={{ density:false }}" />
+                      <ProFormSwitch label="keyWords" name={['options', 'search']} tooltip="options={{ search:'keyWords' }}" />
+                      <ProFormSwitch label="全屏 Icon" name={['options', 'fullScreen']} tooltip="options={{ fullScreen:false }}" />
+                      <ProFormSwitch label="列设置 Icon" tooltip="options={{ setting:false }}" name={['options', 'setting']} />
+                    </ProForm.Group>
+                    <ProForm.Group
+                      title="查询表单"
+                      size={0}
+                      collapsible
+                      tooltip="search={false}"
+                      direction="horizontal"
+                      labelLayout="twoLine"
+                      extra={<ProFormSwitch noStyle name={['showSearch']} />}
+                    >
+                      <ProFormText label="查询按钮文案" tooltip={`search={{searchText:"查询"}}`} name={['search', 'searchText']} />
+                      <ProFormText label="重置按钮文案" tooltip={`search={{resetText:"重置"}}`} name={['search', 'resetText']} />
+                      <ProFormSwitch label="收起按钮" tooltip={`search={{collapseRender:false}}`} name={['search', 'collapseRender']} />
+                      <ProFormSwitch label="表单收起" name={['search', 'collapsed']} tooltip={`search={{collapsed:false}}`} />
+                      <ProFormSelect
+                        tooltip={`search={{span:8}}`}
+                        options={[
+                          {
+                            label: '24',
+                            value: 24,
+                          },
+                          {
+                            label: '12',
+                            value: 12,
+                          },
+                          {
+                            label: '8',
+                            value: 8,
+                          },
+                          {
+                            label: '6',
+                            value: 6,
+                          },
+                        ]}
+                        label="表单栅格"
+                        name={['search', 'span']}
+                      />
+                      <ProFormRadio.Group
+                        radioType="button"
+                        name={['search', 'layout']}
+                        tooltip={`search={{layout:"${config.search?.layout}"}}`}
+                        options={[
+                          {
+                            label: '垂直',
+                            value: 'vertical',
+                          },
+                          {
+                            label: '水平',
+                            value: 'horizontal',
+                          },
+                        ]}
+                        label="表单布局"
+                      />
+                      <ProFormRadio.Group
+                        radioType="button"
+                        name={['search', 'filterType']}
+                        tooltip={`search={{filterType:"light"}}`}
+                        options={[
+                          {
+                            label: '默认',
+                            value: 'query',
+                          },
+                          {
+                            label: '轻量',
+                            value: 'light',
+                          },
+                        ]}
+                        label="表单类型"
+                      />
+                    </ProForm.Group>
+                    <ProForm.Group
+                      title="分页器"
+                      size={0}
+                      collapsible
+                      tooltip="pagination={}"
+                      direction="horizontal"
+                      labelLayout="twoLine"
+                      extra={<ProFormSwitch noStyle name={['showPagination']} />}
+                    >
+                      <ProFormRadio.Group
                         tooltip={`pagination={size:"middle"}`}
                         radioType="button"
-                        fieldProps={{
-                          size: configSettingUI.radioGroupSize,
-                        }}
+                        label="尺寸"
+                        options={[
+                          {
+                            label: '默认',
+                            value: 'default',
+                          },
+                          {
+                            label: '小',
+                            value: 'small',
+                          },
+                        ]}
+                        name={['pagination', 'size']}
+                      />
+                      {/* <ProFormRadio.Group
+                        tooltip={`pagination={size:"middle"}`}
+                        radioType="button"
                         label="位置"
                         options={[]}
                         name={['pagination', 'position']}
                       /> */}
-                        <ProFormDigit
-                          fieldProps={{
-                            size: configSettingUI.digitSize,
-                          }}
-                          label="页码"
-                          tooltip={`pagination={{ current:10 }}`}
-                          name={['pagination', 'current']}
-                        />
-                        <ProFormDigit
-                          fieldProps={{
-                            size: configSettingUI.digitSize,
-                          }}
-                          label="每页数量"
-                          tooltip={`pagination={{ pageSize:10 }}`}
-                          name={['pagination', 'pageSize']}
-                        />
-                        <ProFormDigit
-                          fieldProps={{
-                            size: configSettingUI.digitSize,
-                          }}
-                          label="数据总数"
-                          tooltip={`pagination={{ total:100 }}`}
-                          name={['pagination', 'total']}
-                        />
-                      </ProForm.Group>
-                    </ProForm>
-                  </div>
+                      <ProFormDigit label="页码" tooltip={`pagination={{ current:10 }}`} name={['pagination', 'current']} />
+                      <ProFormDigit label="每页数量" tooltip={`pagination={{ pageSize:10 }}`} name={['pagination', 'pageSize']} />
+                      <ProFormDigit label="数据总数" tooltip={`pagination={{ total:100 }}`} name={['pagination', 'total']} />
+                    </ProForm.Group>
+                  </ProForm>
                 </>
               ),
             },
@@ -636,9 +418,7 @@ const ProTableDynamicSettings = (props: any) => {
                   <ProForm
                     layout="inline"
                     size={configSettingUI.size}
-                    labelCol={{ span: 10 }}
                     labelAlign="left"
-                    wrapperCol={{ span: 14 }}
                     formRef={columnFormRef}
                     initialValues={config.columns}
                     submitter={false}
@@ -666,6 +446,7 @@ const ProTableDynamicSettings = (props: any) => {
                       actionRef={actionRef}
                       name="columns"
                       initialValue={config.columns}
+                      style={{ width: '100%' }}
                       itemRender={({ listDom, action }) => {
                         return (
                           <ProCard
@@ -677,7 +458,6 @@ const ProTableDynamicSettings = (props: any) => {
                             }}
                             bodyStyle={{
                               width: '100%',
-
                               padding: 8,
                               paddingInlineEnd: 32,
                               paddingBlockStart: 16,
@@ -698,9 +478,6 @@ const ProTableDynamicSettings = (props: any) => {
                       }}
                     >
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         rules={[
                           {
                             required: true,
@@ -709,50 +486,13 @@ const ProTableDynamicSettings = (props: any) => {
                         name="title"
                         label="标题"
                       />
-                      <ProFormGroup style={{}}>
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="过长省略"
-                          name="ellipsis"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="复制按钮"
-                          name="copyable"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="表格中隐藏"
-                          name="hideInTable"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="筛选中隐藏"
-                          name="hideInSearch"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="是否Key"
-                          name="key"
-                        />
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age,"
-                          label="开启排序"
-                          name="sorter"
-                        />
+                      <ProFormGroup>
+                        <ProFormSwitch label="过长省略" name="ellipsis" />
+                        <ProFormSwitch label="复制按钮" name="copyable" />
+                        <ProFormSwitch label="表格中隐藏" name="hideInTable" />
+                        <ProFormSwitch label="筛选中隐藏" name="hideInSearch" />
+                        <ProFormSwitch label="是否Key" name="key" />
+                        <ProFormSwitch tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age," label="开启排序" name="sorter" />
                       </ProFormGroup>
                       <ProFormGroup size={8}>
                         {/* <ProFormSelect
@@ -774,9 +514,6 @@ const ProTableDynamicSettings = (props: any) => {
                           width="sm"
                           label="值类型"
                           name="valueType"
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
                           options={valueTypeArray.map((valueType) => ({
                             label: valueType.label,
                             value: valueType.value,
@@ -784,14 +521,7 @@ const ProTableDynamicSettings = (props: any) => {
                         />
                       </ProFormGroup>
                       <ProFormGroup size={8}>
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          width="xs"
-                          label="列提示"
-                          name="tooltip"
-                        />
+                        <ProFormText width="xs" label="列提示" name="tooltip" />
                       </ProFormGroup>
                       <ProFormDependency name={['valueType', 'valueEnum']}>
                         {({ valueType, valueEnum }) => {
@@ -802,7 +532,6 @@ const ProTableDynamicSettings = (props: any) => {
                             <ProFormTextArea
                               formItemProps={{}}
                               fieldProps={{
-                                size: configSettingUI.textAreaSize,
                                 value: JSON.stringify(valueEnum),
                               }}
                               normalize={(value) => {
@@ -826,6 +555,7 @@ const ProTableDynamicSettings = (props: any) => {
                 <>
                   <ProForm
                     layout="horizontal"
+                    size={configSettingUI.size}
                     formRef={dataSourceFormRef}
                     submitter={{
                       render: (props, doms) => {
@@ -843,11 +573,8 @@ const ProTableDynamicSettings = (props: any) => {
                       return true;
                     }}
                   >
-                    <ProForm.Group title="查-列表" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="查-列表" collapsible defaultCollapsed={true} direction="vertical">
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'selectList', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
@@ -860,9 +587,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'selectList', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
@@ -881,9 +605,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
                         name={['api', 'selectList', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
@@ -892,9 +613,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="查-详情" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'selectDetail', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
@@ -907,9 +625,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'selectDetail', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
@@ -928,9 +643,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
                         name={['api', 'selectDetail', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
@@ -939,9 +651,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="增" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'add', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
@@ -954,9 +663,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'add', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
@@ -975,9 +681,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
                         name={['api', 'add', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
@@ -986,9 +689,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="改" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'update', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
@@ -1001,9 +701,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'update', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
@@ -1022,9 +719,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
                         name={['api', 'update', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
@@ -1033,9 +727,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="删" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
                       <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'apiDelete', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
@@ -1048,9 +739,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
                         name={['api', 'apiDelete', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
@@ -1069,9 +757,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        fieldProps={{
-                          size: configSettingUI.textAreaSize,
-                        }}
                         name={['api', 'apiDelete', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
@@ -1091,6 +776,7 @@ const ProTableDynamicSettings = (props: any) => {
                     layout="horizontal"
                     formRef={generateFormRef}
                     initialValues={generateFormData}
+                    size={configSettingUI.size}
                     submitter={{
                       render: (props, doms) => {
                         return [
@@ -1109,9 +795,6 @@ const ProTableDynamicSettings = (props: any) => {
                     }}
                   >
                     <ProFormText
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="previewUrl"
                       label="预览地址"
                       tooltip="预览地址"
@@ -1124,9 +807,6 @@ const ProTableDynamicSettings = (props: any) => {
                       ]}
                     />
                     <ProFormText
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="name"
                       label="组件名"
                       tooltip="组件名"
@@ -1157,9 +837,6 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       /> */}
                     <ProFormText
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="templatePath"
                       label="模板路径"
                       tooltip="模板路径"
@@ -1172,9 +849,6 @@ const ProTableDynamicSettings = (props: any) => {
                       ]}
                     />
                     <ProFormText
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="generatePath"
                       label="生成路径"
                       tooltip="生成路径"
@@ -1187,9 +861,6 @@ const ProTableDynamicSettings = (props: any) => {
                       ]}
                     />
                     <ProFormTextArea
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="initData"
                       label="初始配置"
                       tooltip="初始配置"
@@ -1202,9 +873,6 @@ const ProTableDynamicSettings = (props: any) => {
                       ]}
                     />
                     <ProFormTextArea
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="columns"
                       label="列配置"
                       tooltip="初始列配置"
@@ -1217,9 +885,6 @@ const ProTableDynamicSettings = (props: any) => {
                       ]}
                     />
                     <ProFormTextArea
-                      fieldProps={{
-                        size: configSettingUI.textSize,
-                      }}
                       name="tableDataList"
                       label="表格数据"
                       tooltip="表格数据"

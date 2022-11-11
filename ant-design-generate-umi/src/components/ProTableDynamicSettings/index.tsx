@@ -25,7 +25,7 @@ const ProTableDynamic = () => {
   //#region props方法
   // 更新配置
   const dynamicSetConfig = (newConfig: any) => {
-    console.debug('setting更新config', newConfig);
+    console.log('setting更新config', newConfig);
     setConfig(() => ({ ...newConfig }));
   };
   // 更新数据源
@@ -41,28 +41,11 @@ const ProTableDynamic = () => {
   //#region props方法
   return (
     <>
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '70%' }}>
-          <ProCard
-            split="vertical"
-            bordered
-            headerBordered
-            style={{
-              height: '100vh',
-              overflow: 'hidden',
-            }}
-          >
-            <ProCard
-              style={{
-                height: '100vh',
-                overflow: 'auto',
-              }}
-            >
-              <DynamicProTable dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
-            </ProCard>
-          </ProCard>
+      <div style={{ display: 'flex', height: '100vh', overflow: 'auto' }}>
+        <div style={{ width: '70%', height: '100%', overflow: 'auto' }}>
+          <DynamicProTable dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
         </div>
-        <div style={{ width: '30%', height: '100vh' }}>
+        <div style={{ width: '30%', height: '100vh', overflow: 'auto' }}>
           <ProTableDynamicSettings onSettingEvent={onSettingEvent} dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
         </div>
       </div>
