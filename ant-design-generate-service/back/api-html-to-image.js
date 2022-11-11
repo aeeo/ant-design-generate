@@ -1,7 +1,7 @@
 var phantom = require("phantom");
 
 generateComponentImage(() => {
-  console.log(123);
+  console.debug(123);
 });
 
 // 生成组件图片预览

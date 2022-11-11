@@ -22,7 +22,7 @@ app.get("/Success", async (req, res) => {
 });
 
 app.post("/generate", async (req, res) => {
-  console.log(req.body);
+  console.debug(req.body);
   try {
     return generate.generateProTable(res, req.body);
   } catch (e) {
@@ -33,5 +33,5 @@ app.post("/generate", async (req, res) => {
 // 监听
 const port = 8081;
 app.listen(port, function () {
-  console.log("success listen..." + port);
+  console.debug("success listen..." + port);
 });

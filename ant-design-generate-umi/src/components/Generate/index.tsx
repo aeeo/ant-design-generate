@@ -22,7 +22,7 @@ const DynamicProTable = (props: any) => {
   // 控制弹框显示隐藏
   const toggleModalStatus = () => {
     config.event.showDetailModal = !config.event.showDetailModal;
-    console.log('更新Modal', config.event.showDetailModal);
+    console.debug('更新Modal', config.event.showDetailModal);
     setConfig({ ...config });
   };
 

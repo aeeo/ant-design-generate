@@ -11,46 +11,30 @@ const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
 
   const [config, setConfig] = useState<any>(initConfig);
-  const generateData = genData(
-    config.showPagination ? config.pagination?.total : 10,
-  );
+  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
   const [tableData, setTableData] = useState<any>(generateData);
 
   //#region 数据源
   // 获取数据
-  const exetDataSource = (
-    newConfig: any,
-    tableColumn: any,
-    tableDataList: any,
-  ) => {
-    if (!tableColumn || !tableDataList) return;
+  const exetDataSource = (tableDataList: any) => {
+    if (!tableDataList) return;
     setTableData(() => [...tableDataList]);
-    // newConfig.columns = tableColumn;
-    // setConfig(() => ({ ...newConfig }));
   };
   //#endregion
 
   //#region props方法
   // 更新配置
   const dynamicSetConfig = (newConfig: any) => {
+    console.debug('setting更新config', newConfig);
     setConfig(() => ({ ...newConfig }));
   };
   // 更新数据源
-  const dynamicSetDataSource = (
-    newConfig: any,
-    tableColumn: any,
-    tableDataList: any,
-  ) => {
-    exetDataSource(newConfig, tableColumn, tableDataList);
+  const dynamicSetDataSource = (tableDataList: any) => {
+    exetDataSource(tableDataList);
   };
   // 配置的事件
   const [eventInfo, setEventInfo] = useState<any>({});
-  const onSettingEvent = (
-    _: React.ReactNode,
-    entity: any,
-    index: number,
-    type: string,
-  ) => {
+  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
     console.debug('操作事件监听', entity, index, type);
     setEventInfo({ reactNode: _, entity, index, type });
   };
@@ -74,21 +58,12 @@ const ProTableDynamic = () => {
                 overflow: 'auto',
               }}
             >
-              <DynamicProTable
-                dynamic={true}
-                config={config}
-                tableData={tableData}
-                eventInfo={eventInfo}
-              />
+              <DynamicProTable dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
             </ProCard>
           </ProCard>
         </div>
         <div style={{ width: '30%', height: '100vh' }}>
-          <ProTableDynamicSettings
-            onSettingEvent={onSettingEvent}
-            dynamicSetConfig={dynamicSetConfig}
-            dynamicSetDataSource={dynamicSetDataSource}
-          />
+          <ProTableDynamicSettings onSettingEvent={onSettingEvent} dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />
         </div>
       </div>
     </>

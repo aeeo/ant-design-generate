@@ -83,9 +83,9 @@ const ProFormDynamic = (props: any) => {
         name="validate_other"
         initialValues={formData}
         onValuesChange={(_, values) => {
-          console.log(values);
+          console.debug(values);
         }}
-        onFinish={async (value) => console.log(value)}
+        onFinish={async (value) => console.debug(value)}
       >
         {formFields?.map((formFieldInfo: any, index: number) => {
           return <ProFormItemDynamic formFieldInfo={formFieldInfo} key={index} />;

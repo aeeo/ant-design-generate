@@ -82,7 +82,7 @@ const ProFormDynamicSettings = (props: any) => {
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
   React.useEffect(() => {
     // 更新表单项
-    // console.log('更新动态表单字段：props');
+    // console.debug('更新动态表单字段：props');
     setConfig({ columns: props.columns ? props.columns : myColumns });
   }, [props]);
   React.useEffect(() => {
@@ -93,10 +93,10 @@ const ProFormDynamicSettings = (props: any) => {
         newFormFields.push({ ...columnsItem });
       }
     });
-    console.log('更新动态表单字段：', config, newFormFields);
+    console.debug('更新动态表单字段：', config, newFormFields);
     setColumns(newFormFields);
   }, [config]);
-  console.log('ProFormDynamic', props.columns, config);
+  console.debug('ProFormDynamic', props.columns, config);
   return (
     <ProCard split="vertical">
       <ProCard>

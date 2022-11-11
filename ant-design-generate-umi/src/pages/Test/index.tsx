@@ -7,7 +7,7 @@ export default class test extends Component<any, any> {
     this.state = {
       count: 0,
     };
-    console.log('123');
+    console.debug('123');
   }
   changeCount() {
     this.setState({
@@ -15,7 +15,7 @@ export default class test extends Component<any, any> {
     });
   }
   static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    console.log(prevState);
+    console.debug(prevState);
     return {
       a: prevState.count,
     };

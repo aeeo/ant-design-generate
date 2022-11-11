@@ -26,8 +26,6 @@ import dataSource from '../../../../server/dataSource';
 import IconsDynamic from '../../IconsDynamic';
 import generateUtil from '../../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
-  /** 去抖配置 */
-
   const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单
   const columnFormRef = useRef<ProFormInstance>(); // 列配置表单
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
@@ -38,21 +36,23 @@ const ProTableDynamicSettings = (props: any) => {
   const [columns, setColumns] = useState<any>(columnsConfig);
   const [columnsStr, setColumnsStr] = useState<any>(JSON.stringify(columnsConfig)); // 存储无法被序列化的columns数据
   const [generateFormData, setGenerateFormData] = useState<any>({});
+  /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
-    setConfig(state);
+    console.debug('setting更新表单', { ...config, ...state });
+    setConfig({ ...config, ...state });
   }, 20);
   React.useEffect(() => {
-    console.log('配置的config发生变化', config);
+    console.debug('配置的config发生变化', config);
     props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue(true));
   }, [config]);
   // 组件事件
   const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    console.log(type, entity, index);
+    console.debug(type, entity, index);
     switch (type) {
       case 'detail':
         props.onSettingEvent(_, entity, index, type);
         // config.event.showDetailModal = !config.event.showDetailModal;
-        // console.log('更新Modal', config, config.event.showDetailModal);
+        // console.debug('更新Modal', config, config.event.showDetailModal);
         // setConfig({ ...config });
         break;
     }
@@ -215,12 +215,13 @@ const ProTableDynamicSettings = (props: any) => {
     // setColumns(() => [...tableColumn]);
     setColumnsStr(() => columnsStr);
     config.columns = tableColumn;
+    console.debug('setting的config更新', config);
     setConfig(() => ({ ...config }));
     baseFormRef.current?.resetFields(); // 更新所有表单表单
     columnFormRef.current?.resetFields(); // 更新所有表单表单
 
     // index
-    props.dynamicSetDataSource(config, tableColumn, tableDataList);
+    props.dynamicSetDataSource(tableDataList);
 
     // 反填代码生成表单值
     const generateFormData = {
@@ -724,7 +725,7 @@ const ProTableDynamicSettings = (props: any) => {
                     labelAlign="left"
                     wrapperCol={{ span: 14 }}
                     formRef={columnFormRef}
-                    initialValues={config}
+                    initialValues={config.columns}
                     submitter={false}
                     colon={false}
                     onValuesChange={(_, values) => updateConfig.run(values)}
@@ -733,7 +734,7 @@ const ProTableDynamicSettings = (props: any) => {
                       type="dashed"
                       onClick={() => {
                         const row = actionRef.current?.getList();
-                        console.log(row);
+                        console.debug(row);
                       }}
                     >
                       打印所有数据
@@ -749,6 +750,7 @@ const ProTableDynamicSettings = (props: any) => {
                     <ProFormList
                       actionRef={actionRef}
                       name="columns"
+                      initialValue={config.columns}
                       itemRender={({ listDom, action }) => {
                         return (
                           <ProCard
@@ -921,7 +923,7 @@ const ProTableDynamicSettings = (props: any) => {
                       },
                     }}
                     onFinish={async (values) => {
-                      // console.log(values);
+                      // console.debug(values);
                       exetDataSource();
                       return true;
                     }}
@@ -1185,7 +1187,7 @@ const ProTableDynamicSettings = (props: any) => {
                       },
                     }}
                     onFinish={async (values) => {
-                      // console.log(values);
+                      // console.debug(values);
                       generate(values);
                       // message.success('提交成功');
                       return true;

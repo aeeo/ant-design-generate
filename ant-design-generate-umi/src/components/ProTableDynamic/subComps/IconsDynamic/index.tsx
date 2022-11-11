@@ -5,7 +5,7 @@ const IconsDynamic = (props: any) => {
   const onMyEvent = () => {
     const { reactNode, entity, index, type } = props.columnRender;
     props.onEvent(reactNode, entity, index, type);
-    console.log('IconsDynamic OnEvent');
+    console.debug('IconsDynamic OnEvent');
   };
   return (
     <>

@@ -8,14 +8,14 @@ const opn = require("opn");
 //在原有的基础上加上下面代码即可
 app.use(
   bodyParser.json({
-    limit: "50mb",
-  }),
+    limit: "50mb"
+  })
 );
 app.use(
   bodyParser.urlencoded({
     limit: "50mb",
-    extended: true,
-  }),
+    extended: true
+  })
 );
 // http://nodejs.cn/api/fs.html
 var fs = require("fs");
@@ -31,10 +31,10 @@ app.get("/hello", (req, res) => {
 });
 
 app.post("/getFilesContent", (req, res) => {
-  console.log(req.body);
+  console.debug(req.body);
   let filesInfo = {
     html: "",
-    css: "",
+    css: ""
   };
   filesInfo.html = fs.readFileSync(path.join(absolutePath, req.body.htmlPath), "utf-8", function (error, dataStr) {
     if (error) {
@@ -51,8 +51,8 @@ app.post("/getFilesContent", (req, res) => {
   return ResultSuccess(res, "生成成功", filesInfo);
 });
 app.post("/generate", async (req, res) => {
-  // console.log(req.params, req.query, req.body);
-  // console.log(req.body, absolutePath);
+  // console.debug(req.params, req.query, req.body);
+  // console.debug(req.body, absolutePath);
   let body = req.body;
   // 项目预览地址
   let previewUrl = body.previewUrl;
@@ -82,7 +82,7 @@ app.post("/generate", async (req, res) => {
     image: "",
     image1: "",
     image2: "",
-    apiList: [],
+    apiList: []
   });
 
   // 根目录删除
@@ -99,7 +99,7 @@ app.post("/generate", async (req, res) => {
     htmlPath,
     unCss,
     cssPath,
-    dataJson,
+    dataJson
   );
   // 创建
   createFs(filesInfo);
@@ -113,8 +113,8 @@ app.post("/generate", async (req, res) => {
       componentId: "previewComponent",
       componentName: generateComponentNameHump,
       params: {},
-      blockList: [],
-    },
+      blockList: []
+    }
   ];
   // JSON.stringify(blockList)
   // let openPreviewUrl = previewUrl + "?blockList=" + JSON.stringify(blockList);
@@ -126,7 +126,7 @@ app.post("/generate", async (req, res) => {
 
 // 监听
 app.listen(port, function () {
-  console.log("success listen..." + port);
+  console.debug("success listen..." + port);
 });
 
 // 转驼峰 border-bottom-color => borderBottomColor
@@ -211,7 +211,7 @@ function generateFiles(
   htmlPath,
   unCss,
   cssPath,
-  dataJson,
+  dataJson
 ) {
   const insertTemplateIndex = 1;
   const imagesPath = path.join(generateComponentAssetsPath, "images");
@@ -235,7 +235,7 @@ function generateFiles(
           targetUrl: images[i].targetUrl,
           targetRelativeUrl: images[i].targetRelativeUrl,
           sourceUrl: images[i].sourceUrl,
-          imagePrivateFieldName: images[i].imagePrivateFieldName,
+          imagePrivateFieldName: images[i].imagePrivateFieldName
         });
         let imageUrl = images[i].targetRelativeUrl.split("\\").join("/");
         privateHtmlImageListField += `  ${images[i].imagePrivateFieldName}: '${imageUrl}',\n`;
@@ -260,7 +260,7 @@ function generateFiles(
           targetUrl: images[i].targetUrl,
           targetRelativeUrl: images[i].targetRelativeUrl,
           sourceUrl: images[i].sourceUrl,
-          imagePrivateFieldName: images[i].imagePrivateFieldName,
+          imagePrivateFieldName: images[i].imagePrivateFieldName
         });
         let imageUrl = images[i].targetRelativeUrl.split("\\").join("/");
         privateCssImageListField += `{\n      type: 'image',\n      key: '${images[i].imagePrivateFieldName}',\n      url: '${imageUrl}'\n    },`;
@@ -278,7 +278,7 @@ function generateFiles(
   // 资源images
   filesInfo.push({
     type: "mkdir",
-    path: imagesPath,
+    path: imagesPath
   });
   // #endregion 组件资源文件
 
@@ -287,30 +287,30 @@ function generateFiles(
   filesInfo.push({ type: "mkdir", path: generateComponentPath });
   filesInfo.push({
     type: "mkdir",
-    path: path.join(generateComponentPath, "static"),
+    path: path.join(generateComponentPath, "static")
   });
   // static/css
   filesInfo.push({
     type: "mkdir",
-    path: path.join(generateComponentPath, "static", "css"),
+    path: path.join(generateComponentPath, "static", "css")
   });
   // common.css
   filesInfo.push({
     type: "file",
     path: path.join(generateComponentPath, "static", "css", "common.css"),
-    writeStr: unCss ? unCss.replace(/<!-- Tag:换行 -->/g, "\r\n") : "",
+    writeStr: unCss ? unCss.replace(/<!-- Tag:换行 -->/g, "\r\n") : ""
   });
 
   // static/js
   filesInfo.push({
     type: "mkdir",
-    path: path.join(generateComponentPath, "static", "js"),
+    path: path.join(generateComponentPath, "static", "js")
   });
   // common.js
   filesInfo.push({
     type: "file",
     path: path.join(generateComponentPath, "static", "js", "common.js"),
-    writeStr: templateJsStr,
+    writeStr: templateJsStr
   });
   // Vue文件
   const vuePath = path.join(generateComponentPath, generateComponentNameHump + ".vue");
@@ -319,7 +319,7 @@ function generateFiles(
   filesInfo.push({
     type: "file",
     path: vuePath,
-    writeStr: templateStr.replace(/<!-- Tag:换行 -->/g, "\r\n"),
+    writeStr: templateStr.replace(/<!-- Tag:换行 -->/g, "\r\n")
   });
 
   // data.json
@@ -327,14 +327,14 @@ function generateFiles(
   filesInfo.push({
     type: "file",
     path: dataJsonPath,
-    writeStr: templateJsonStr,
+    writeStr: templateJsonStr
   });
   // schema.json
   const schemaJsonPath = path.join(generateComponentPath, "schema.json");
   filesInfo.push({
     type: "file",
     path: schemaJsonPath,
-    writeStr: "{}",
+    writeStr: "{}"
   });
   //#endregion 组件文件
   return filesInfo;
@@ -472,8 +472,8 @@ async function generateComponentImage(htmlFileAbsolutePath, componentPreviewImag
   const browser = await puppeteer.launch({
     defaultViewport: {
       width: 1920,
-      height: 1080,
-    },
+      height: 1080
+    }
   });
   const page = await browser.newPage();
   await page.goto(htmlFileAbsolutePath);
@@ -497,7 +497,7 @@ function ResultSuccess(res, message, data) {
     successed: true,
     code: 200,
     data: data,
-    message: message,
+    message: message
   });
 }
 function ResultFail(res, message, data, code) {
@@ -505,7 +505,7 @@ function ResultFail(res, message, data, code) {
     successed: false,
     code: code ? code : 1001,
     data: data,
-    message: message,
+    message: message
   });
 }
 
