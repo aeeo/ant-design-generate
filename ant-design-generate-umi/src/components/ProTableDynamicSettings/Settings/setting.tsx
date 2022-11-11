@@ -33,16 +33,15 @@ const ProTableDynamicSettings = (props: any) => {
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
 
   const [config, setConfig] = useState<any>(initConfig);
-  const [columns, setColumns] = useState<any>(columnsConfig);
   const [columnsStr, setColumnsStr] = useState<any>(JSON.stringify(columnsConfig)); // 存储无法被序列化的columns数据
   const [generateFormData, setGenerateFormData] = useState<any>({});
-  /** 去抖配置 */
+  // 去抖配置
   const updateConfig = useDebounceFn(async (state) => {
-    console.debug('setting更新表单', { ...config, ...state });
+    // console.debug('setting更新表单', { ...config, ...state });
     setConfig({ ...config, ...state });
   }, 20);
   React.useEffect(() => {
-    console.debug('配置的config发生变化', config);
+    // console.debug('配置的config发生变化', config);
     props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue(true));
   }, [config]);
   // 组件事件
@@ -58,95 +57,11 @@ const ProTableDynamicSettings = (props: any) => {
     }
   };
   //#region 数据源表单配置
-  // 获取数据
   const exetDataSource = async () => {
     const data = dataSourceFormRef.current?.getFieldsValue(true);
     const { selectDetail, selectList, add, apiDelete, update } = data.api;
     const { url, method, afterScript } = selectList;
-    await dataSource('tableList', url, method, afterScript);
-    // 模拟响应的数据
-    const tableDataList = [
-      {
-        key: 1,
-        id: 1,
-        name: '赵通1',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 2,
-        id: 2,
-        name: '赵通2',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 3,
-        id: 3,
-        name: '赵通3',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 4,
-        id: 4,
-        name: '赵通4',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 5,
-        id: 5,
-        name: '赵通5',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 6,
-        id: 6,
-        name: '赵通6',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 7,
-        id: 7,
-        name: '赵通7',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 8,
-        id: 8,
-        name: '赵通8',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 9,
-        id: 9,
-        name: '赵通9',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-      {
-        key: 10,
-        id: 10,
-        name: '赵通10',
-        age: 19,
-        createTime: Date.now(),
-        phone: 18700871300,
-      },
-    ];
+    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('tableList', url, method, afterScript);
     // 获取响应数据的第一条
     const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
 
@@ -215,7 +130,7 @@ const ProTableDynamicSettings = (props: any) => {
     // setColumns(() => [...tableColumn]);
     setColumnsStr(() => columnsStr);
     config.columns = tableColumn;
-    console.debug('setting的config更新', config);
+    // console.debug('setting的config更新', config);
     setConfig(() => ({ ...config }));
     baseFormRef.current?.resetFields(); // 更新所有表单表单
     columnFormRef.current?.resetFields(); // 更新所有表单表单
@@ -238,27 +153,27 @@ const ProTableDynamicSettings = (props: any) => {
         selectList: {
           url: '/api/Success',
           method: 'GET',
-          afterScript: 'data=response', // 后执行脚本
+          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
         selectDetail: {
           url: '/api/Success',
           method: 'GET',
-          afterScript: 'data=response', // 后执行脚本
+          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
         add: {
           url: '/api/Success',
           method: 'GET',
-          afterScript: 'data=response', // 后执行脚本
+          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
         apiDelete: {
           url: '/api/Success',
           method: 'GET',
-          afterScript: 'data=response', // 后执行脚本
+          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
         update: {
           url: '/api/Success',
           method: 'GET',
-          afterScript: 'data=response', // 后执行脚本
+          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
       },
     });
@@ -266,8 +181,8 @@ const ProTableDynamicSettings = (props: any) => {
   //#endregion
 
   //#region 代码生成表单配置
-  // 一键填写
   const fillGenerate = () => {
+    // 一键填写
     generateFormRef?.current?.setFieldsValue({
       name: 'ComponentName',
       // type: 'CommonTable',

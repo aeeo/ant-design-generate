@@ -18,7 +18,90 @@ app.use(
 );
 
 app.get("/Success", async (req, res) => {
-  return ResultSuccess(res, "成功");
+  // 模拟响应的数据
+  const tableDataList = [
+    {
+      key: 1,
+      id: 1,
+      name: "赵通1",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 2,
+      id: 2,
+      name: "赵通2",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 3,
+      id: 3,
+      name: "赵通3",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 4,
+      id: 4,
+      name: "赵通4",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 5,
+      id: 5,
+      name: "赵通5",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 6,
+      id: 6,
+      name: "赵通6",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 7,
+      id: 7,
+      name: "赵通7",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 8,
+      id: 8,
+      name: "赵通8",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 9,
+      id: 9,
+      name: "赵通9",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    },
+    {
+      key: 10,
+      id: 10,
+      name: "赵通10",
+      age: 19,
+      createTime: Date.now(),
+      phone: 18700871300
+    }
+  ];
+  return ResultSuccess(res, "成功", tableDataList);
 });
 
 app.post("/generate", async (req, res) => {
