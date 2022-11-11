@@ -16,7 +16,7 @@ const ProTableDynamic = () => {
 
   //#region 数据源
   // 获取数据
-  const exetDataSource = (tableDataList: any) => {
+  const exetTableListDataSource = (tableDataList: any) => {
     if (!tableDataList) return;
     setTableData(() => [...tableDataList]);
   };
@@ -30,7 +30,7 @@ const ProTableDynamic = () => {
   };
   // 更新数据源
   const dynamicSetDataSource = (tableDataList: any) => {
-    exetDataSource(tableDataList);
+    exetTableListDataSource(tableDataList);
   };
   // 配置的事件
   const [eventInfo, setEventInfo] = useState<any>({});

@@ -15,7 +15,7 @@ import {
   useDebounceFn,
   FormListActionType,
 } from '@ant-design/pro-components';
-import { Button, message } from 'antd';
+import { Button, message, Collapse } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import { request } from 'umi';
@@ -57,11 +57,11 @@ const ProTableDynamicSettings = (props: any) => {
     }
   };
   //#region 数据源表单配置
-  const exetDataSource = async () => {
-    const data = dataSourceFormRef.current?.getFieldsValue(true);
-    const { selectDetail, selectList, add, apiDelete, update } = data.api;
+
+  const exetTableListDataSource = async (selectList: any) => {
+    const aa = selectList.url;
     const { url, method, afterScript } = selectList;
-    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('tableList', url, method, afterScript);
+    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('selectList', url, method, afterScript);
     // 获取响应数据的第一条
     const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
 
@@ -146,17 +146,44 @@ const ProTableDynamicSettings = (props: any) => {
     setGenerateFormData(generateFormData);
     generateFormRef?.current?.resetFields();
   };
+  const exetTableDetailDataSource = async (selectDetail: any) => {
+    const { url, method, afterScript } = selectDetail;
+    const tableDataDetail: any = await dataSource('selectDetail', url, method, afterScript);
+  };
+
+  const exetDataSource = async (type: any) => {
+    const data = dataSourceFormRef.current?.getFieldsValue(true);
+    if (!data || Object.keys(data).length === 0) return;
+    const { selectDetail, selectList, add, apiDelete, update } = data.api;
+    switch (type) {
+      case 'selectList':
+        exetTableListDataSource(selectList);
+        break;
+      case 'selectDetail':
+        exetTableDetailDataSource(selectDetail);
+        break;
+      case 'add':
+        break;
+      case 'apiDelete':
+        break;
+      case 'update':
+        break;
+      default:
+        message.error('数据源类型错误' + type);
+        return;
+    }
+  };
   // 一键填写
   const fillDataSource = () => {
     dataSourceFormRef?.current?.setFieldsValue({
       api: {
         selectList: {
-          url: '/api/Success',
+          url: '/api/selectList',
           method: 'GET',
           afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
         selectDetail: {
-          url: '/api/Success',
+          url: '/api/selectDetail',
           method: 'GET',
           afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
         },
@@ -227,9 +254,9 @@ const ProTableDynamicSettings = (props: any) => {
         style={{
           height: '100vh',
           overflow: 'auto',
-          boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)',
         }}
         size="small"
+        bordered
         bodyStyle={{ height: '100%', overflow: 'hidden' }}
         tabs={{
           size: 'small',
@@ -248,6 +275,8 @@ const ProTableDynamicSettings = (props: any) => {
                     submitter={false}
                     colon={false}
                     onValuesChange={(_, values) => updateConfig.run(values)}
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 14 }}
                   >
                     <ProForm.Group title="事件配置" collapsible direction="horizontal" labelLayout="twoLine">
                       <ProFormSwitch label="显示编辑弹框" tooltip="showEditModal" name={['event', 'showEditModal']} />
@@ -282,7 +311,6 @@ const ProTableDynamicSettings = (props: any) => {
                       <ProFormSwitch label="行选择" tooltip="rowSelection" name="rowSelection" />
                     </ProForm.Group>
                     <ProForm.Group
-                      size={0}
                       collapsible
                       direction="horizontal"
                       labelLayout="twoLine"
@@ -303,7 +331,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group
                       title="查询表单"
-                      size={0}
                       collapsible
                       tooltip="search={false}"
                       direction="horizontal"
@@ -372,7 +399,6 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group
                       title="分页器"
-                      size={0}
                       collapsible
                       tooltip="pagination={}"
                       direction="horizontal"
@@ -459,7 +485,6 @@ const ProTableDynamicSettings = (props: any) => {
                             bodyStyle={{
                               width: '100%',
                               padding: 8,
-                              paddingInlineEnd: 32,
                               paddingBlockStart: 16,
                             }}
                           >
@@ -486,6 +511,15 @@ const ProTableDynamicSettings = (props: any) => {
                         name="title"
                         label="标题"
                       />
+                      <ProFormSelect
+                        label="值类型"
+                        name="valueType"
+                        options={valueTypeArray.map((valueType) => ({
+                          label: valueType.label,
+                          value: valueType.value,
+                        }))}
+                      />
+                      <ProFormText label="列提示" name="tooltip" />
                       <ProFormGroup>
                         <ProFormSwitch label="过长省略" name="ellipsis" />
                         <ProFormSwitch label="复制按钮" name="copyable" />
@@ -494,35 +528,7 @@ const ProTableDynamicSettings = (props: any) => {
                         <ProFormSwitch label="是否Key" name="key" />
                         <ProFormSwitch tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age," label="开启排序" name="sorter" />
                       </ProFormGroup>
-                      <ProFormGroup size={8}>
-                        {/* <ProFormSelect
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          label="dataIndex"
-                          width="xs"
-                          name="dataIndex"
-                          valueEnum={{
-                            age: 'age',
-                            address: 'address',
-                            name: 'name',
-                            time: 'time',
-                            description: 'string',
-                          }}
-                        /> */}
-                        <ProFormSelect
-                          width="sm"
-                          label="值类型"
-                          name="valueType"
-                          options={valueTypeArray.map((valueType) => ({
-                            label: valueType.label,
-                            value: valueType.value,
-                          }))}
-                        />
-                      </ProFormGroup>
-                      <ProFormGroup size={8}>
-                        <ProFormText width="xs" label="列提示" name="tooltip" />
-                      </ProFormGroup>
+
                       <ProFormDependency name={['valueType', 'valueEnum']}>
                         {({ valueType, valueEnum }) => {
                           if (valueType !== 'select') {
@@ -557,23 +563,16 @@ const ProTableDynamicSettings = (props: any) => {
                     layout="horizontal"
                     size={configSettingUI.size}
                     formRef={dataSourceFormRef}
-                    submitter={{
-                      render: (props, doms) => {
-                        return [
-                          ...doms,
-                          <Button htmlType="button" onClick={fillDataSource} key="edit">
-                            一键填写
-                          </Button>,
-                        ];
-                      },
-                    }}
+                    submitter={false}
                     onFinish={async (values) => {
                       // console.debug(values);
-                      exetDataSource();
                       return true;
                     }}
                   >
-                    <ProForm.Group title="查-列表" collapsible defaultCollapsed={true} direction="vertical">
+                    <Button htmlType="button" onClick={fillDataSource} key="edit">
+                      一键填写
+                    </Button>
+                    <ProFormGroup title="查-列表" collapsible defaultCollapsed={true}>
                       <ProFormText
                         name={['api', 'selectList', 'url']}
                         label="URL地址"
@@ -610,8 +609,11 @@ const ProTableDynamicSettings = (props: any) => {
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
-                    </ProForm.Group>
-                    <ProForm.Group title="查-详情" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                      <Button type="primary" onClick={() => exetDataSource('selectList')}>
+                        执行
+                      </Button>
+                    </ProFormGroup>
+                    <ProFormGroup title="查-详情" collapsible defaultCollapsed={true}>
                       <ProFormText
                         name={['api', 'selectDetail', 'url']}
                         label="URL地址"
@@ -648,8 +650,11 @@ const ProTableDynamicSettings = (props: any) => {
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
-                    </ProForm.Group>
-                    <ProForm.Group title="增" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                      <Button type="primary" onClick={() => exetDataSource('selectDetail')}>
+                        执行
+                      </Button>
+                    </ProFormGroup>
+                    <ProForm.Group title="增" collapsible defaultCollapsed={true}>
                       <ProFormText
                         name={['api', 'add', 'url']}
                         label="URL地址"
@@ -687,7 +692,7 @@ const ProTableDynamicSettings = (props: any) => {
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="改" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="改" collapsible defaultCollapsed={true}>
                       <ProFormText
                         name={['api', 'update', 'url']}
                         label="URL地址"
@@ -725,7 +730,7 @@ const ProTableDynamicSettings = (props: any) => {
                         placeholder="请输入后执行脚本"
                       />
                     </ProForm.Group>
-                    <ProForm.Group title="删" collapsible defaultCollapsed={true} direction="horizontal" labelLayout="twoLine">
+                    <ProForm.Group title="删" collapsible defaultCollapsed={true}>
                       <ProFormText
                         name={['api', 'apiDelete', 'url']}
                         label="URL地址"

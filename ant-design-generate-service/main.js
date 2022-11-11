@@ -17,7 +17,7 @@ app.use(
   })
 );
 
-app.get("/Success", async (req, res) => {
+app.get("/selectList", async (req, res) => {
   // 模拟响应的数据
   const tableDataList = [
     {
@@ -102,6 +102,18 @@ app.get("/Success", async (req, res) => {
     }
   ];
   return ResultSuccess(res, "成功", tableDataList);
+});
+app.get("/selectDetail", async (req, res) => {
+  // 模拟响应的数据
+  const tableDataDetail = {
+    key: 1,
+    id: 1,
+    name: "赵通1",
+    age: 19,
+    createTime: Date.now(),
+    phone: 18700871300
+  };
+  return ResultSuccess(res, "成功", tableDataDetail);
 });
 
 app.post("/generate", async (req, res) => {
