@@ -74,7 +74,7 @@ const DynamicProTable = (props: any) => {
         headerTitle={config.headerTitle}
         columns={tableColumns}
         dataSource={tableData}
-        scroll={config.openYScroll ? config.scroll : null}
+        scroll={config.openScroll ? config.scroll : null}
       />
       <Modal
         title="详情"

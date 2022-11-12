@@ -107,7 +107,6 @@ export const initConfig =
     headerTooltip: '表格头部标题 tooltip', // 表格头部标题 tooltip
     showFooter: true, // 显示footer
     footerTitle: '表格Footer', // 表格Footer
-    footerTooltip: '表格Footer tooltip', // 表格Footer tooltip
     showHeader: true, // 显示表头
     footer: true, // 显示底脚
     rowSelection: true, // 多选框

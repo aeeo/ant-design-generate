@@ -380,7 +380,6 @@ const ProTableDynamicSettings = (props: any) => {
                       <ProFormText label="表格头部标题" name="headerTitle" tooltip="headerTitle={false}" />
                       <ProFormText label="表格头部标题tooltip" name="headerTooltip" tooltip="headerTooltip={false}" />
                       <ProFormText label="表格Footer" name="footerTitle" tooltip="footerTitle={false}" />
-                      <ProFormText label="表格Footer tooltip" name="footerTooltip" tooltip="footerTooltip={false}" />
 
                       <ProFormSwitch label="Icon 显示" name={['options', 'show']} tooltip="options={false}" />
                       <ProFormSwitch label="密度 Icon" name={['options', 'density']} tooltip="options={{ density:false }}" />

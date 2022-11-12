@@ -93,18 +93,19 @@ const DynamicProTable = (props: any) => {
         options={config.options?.show ? config.options : false}
         toolBarRender={
           config?.toolBarRender
-            ? () => [
+            ? (action) => [
                 <Button key="refresh" type="primary">
                   刷新
                 </Button>,
               ]
             : false
         }
-        footer={config.showFooter ? () => config.footerTitle : false}
         headerTitle={config.headerTitle}
+        tooltip={config.headerTooltip}
         columns={tableColumns}
         dataSource={tableData}
         scroll={config.openScroll ? config.scroll : null}
+        footer={config.showFooter ? () => config.footerTitle : false}
       />
       <Modal
         title="详情"
