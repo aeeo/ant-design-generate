@@ -1,4 +1,4 @@
-import { ColumnParams } from '../../entity/types';
+import type { ColumnParams } from '../../entity/types';
 import IconsDynamic from './subComps/IconsDynamic';
 
 import { message } from 'antd';
@@ -119,9 +119,17 @@ export const genData = (total: number) => {
 };
 // 初始数据列配置
 export const genColumns = (columnParams: ColumnParams): any[] => {
-  if (!columnParams) return staticColumns(columnParams);
+  // if (!columnParams) return staticColumns(columnParams);
   ///开始1
-  const tableColumns = columnParams.columns ?? staticColumns(columnParams);
+  const tableColumns =
+    columnParams.columns ??
+    staticColumns({
+      onEvent: (_, entity: any, index: number, type: string) => {
+        message.warn('哈哈哈');
+        columnParams.onEvent(_, entity, index, type);
+      },
+      columns: [],
+    });
   ///结束1
   return tableColumns;
 };

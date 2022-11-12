@@ -1,6 +1,6 @@
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, ProTable } from '@ant-design/pro-components';
-import { Button, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -31,10 +31,10 @@ const DynamicProTable = (props: any) => {
   if (props.dynamic) {
     [config, setConfig] = useState<any>(props.config);
     //#region 开发阶段Props相关
-    React.useEffect(() => {
-      console.debug('table的config发生变化:', config);
-      setConfig(props.config);
-    }, [props.config]);
+    // React.useEffect(() => {
+    //   console.debug('table的config发生变化:', config);
+    //   setConfig(props.config);
+    // }, [props.config]);
 
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
     [tableData, setTableData] = useState<any>(generateData);
@@ -64,6 +64,7 @@ const DynamicProTable = (props: any) => {
   const proTableRef = useRef<ProFormInstance>();
   const myColumns: any[] = genColumns({
     onEvent: (_, entity: any, index: number, type: string) => {
+      message.warn('哈哈哈');
       onSubEvent(_, entity, index, type);
     },
     columns: config.columns,
