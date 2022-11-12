@@ -146,7 +146,7 @@ export const initConfig =
     // 数据源配置
     dataSource: {
       apiList: {
-        selectList: {
+        apiSelectList: {
           url: '',
           method: '',
           afterScript: '',

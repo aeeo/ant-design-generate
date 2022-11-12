@@ -58,10 +58,10 @@ const ProTableDynamicSettings = (props: any) => {
   };
   //#region 数据源表单配置
 
-  const exetTableListDataSource = async (selectList: any) => {
-    const aa = selectList.url;
-    const { url, method, afterScript } = selectList;
-    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('selectList', url, method, afterScript);
+  const exetTableListDataSource = async (apiSelectList: any) => {
+    const aa = apiSelectList.url;
+    const { url, method, afterScript } = apiSelectList;
+    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('apiSelectList', url, method, afterScript);
     // 获取响应数据的第一条
     const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
 
@@ -157,7 +157,7 @@ const ProTableDynamicSettings = (props: any) => {
       return;
     }
     switch (type) {
-      case 'selectList':
+      case 'apiSelectList':
         exetTableListDataSource(data.apiList[type]);
         break;
       case 'selectDetail':
@@ -178,7 +178,7 @@ const ProTableDynamicSettings = (props: any) => {
   const fillDataSource = () => {
     dataSourceFormRef?.current?.setFieldsValue({
       apiList: {
-        selectList: {
+        apiSelectList: {
           url: '/api/selectList',
           method: 'GET',
           afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
@@ -633,7 +633,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </Button>
                     <ProFormGroup title="查-列表" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['apiList', 'selectList', 'url']}
+                        name={['apiList', 'apiSelectList', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -645,7 +645,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['apiList', 'selectList', 'method']}
+                        name={['apiList', 'apiSelectList', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -663,12 +663,12 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['apiList', 'selectList', 'afterScript']}
+                        name={['apiList', 'apiSelectList', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
                       />
-                      <Button type="primary" onClick={() => exetDataSource('selectList')}>
+                      <Button type="primary" onClick={() => exetDataSource('apiSelectList')}>
                         执行
                       </Button>
                     </ProFormGroup>

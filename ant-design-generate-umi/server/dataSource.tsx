@@ -3,7 +3,7 @@ import { Button, message } from 'antd';
 
 export default async (type: string, url: string, method: string, afterScript: string): Promise<any> => {
   switch (type) {
-    case 'selectList': {
+    case 'apiSelectList': {
       let data: any[] = [];
       await request(url, { method })
         .then(function (response) {
