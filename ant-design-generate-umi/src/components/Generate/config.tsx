@@ -1,59 +1,124 @@
-import { DownOutlined } from '@ant-design/icons';
-import type { ProColumnType } from '@ant-design/pro-components';
-import { TablePaginationPosition, ColumnParams } from '../../entity/types';
-import { message } from 'antd';
-import type { ProColumns } from '@ant-design/pro-components';
+import { ColumnParams } from '../../entity/types';
 import IconsDynamic from './subComps/IconsDynamic';
 
-const staticColumns = [
-  {
-    title: '姓名',
-    dataIndex: 'name',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-  },
-  {
-    title: '时间',
-    dataIndex: 'time',
-    valueType: 'date',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-  },
-  {
-    title: '住址',
-    dataIndex: 'address',
-    valueType: 'select',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-    filters: true,
-    onFilter: true,
-    valueEnum: {
-      陕西: {
-        text: '陕西',
-      },
-      广东: {
-        text: '广东',
+import { message } from 'antd';
+
+const staticColumns = (columnParams: ColumnParams): any[] => {
+  return [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '时间',
+      dataIndex: 'time',
+      valueType: 'date',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '住址',
+      dataIndex: 'address',
+      valueType: 'select',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+      filters: true,
+      onFilter: true,
+      valueEnum: {
+        陕西: {
+          text: '陕西',
+        },
+        广东: {
+          text: '广东',
+        },
       },
     },
-  },
-  {
-    title: '操作',
-    key: 'table-operation',
-    valueType: 'option',
-    render: (_: React.ReactNode, entity: any, index: number) => [
-      <a key="delete">删除</a>,
-      <a key="link" className="ant-dropdown-link">
-        更多 <DownOutlined />
-      </a>,
-    ],
-  },
-];
+    {
+      title: '操作',
+      dataIndex: 'table-operation', // 防止后端字段重名
+      valueType: 'option',
+      render: (_: React.ReactNode, entity: any, index: number) => {
+        return [
+          <IconsDynamic
+            key="FileSearchOutlined"
+            iconName="FileSearchOutlined"
+            tooltip="详情"
+            onEvent={
+              columnParams.onEvent
+              // message.warn('123')
+            }
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'detail',
+            }}
+          />,
+          <IconsDynamic
+            key="EditOutlined"
+            iconName="EditOutlined"
+            tooltip="编辑"
+            onEvent={columnParams.onEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'edit',
+            }}
+          />,
+          <IconsDynamic
+            key="DeleteOutlined"
+            iconName="DeleteOutlined"
+            tooltip="删除"
+            onEvent={columnParams.onEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'delete',
+            }}
+          />,
+        ];
+      },
+    },
+  ];
+};
+
+// 生成初始数据
+export const genData = (total: number) => {
+  if (total < 1) {
+    return [];
+  }
+  const tableDataList = [
+    { key: 1, id: 1, name: '赵通1', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 2, id: 2, name: '赵通2', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 3, id: 3, name: '赵通3', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 4, id: 4, name: '赵通4', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 5, id: 5, name: '赵通5', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 6, id: 6, name: '赵通6', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 7, id: 7, name: '赵通7', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 8, id: 8, name: '赵通8', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 9, id: 9, name: '赵通9', age: 19, createTime: 1668258753888, phone: 18700871300 },
+    { key: 10, id: 10, name: '赵通10', age: 19, createTime: 1668258753888, phone: 18700871300 },
+  ];
+  if (tableDataList.length < total) {
+    message.error('数据量不足，请减小分页大小。');
+    return;
+  }
+  const data: any[] = [];
+  for (let i = 0; i < total; i += 1) {
+    data.push(tableDataList[i]);
+  }
+  return data;
+};
 // 初始数据列配置
-export const genColumns = (columnParams: ColumnParams) => {
-  if (!columnParams) return staticColumns;
+export const genColumns = (columnParams: ColumnParams): any[] => {
+  if (!columnParams) return staticColumns(columnParams);
   const tableColumns =
     [
       { title: 'key', dataIndex: 'key', valueType: 'digit' },
@@ -72,34 +137,6 @@ export const genColumns = (columnParams: ColumnParams) => {
       },
     ] ?? staticColumns;
   return tableColumns;
-};
-
-// 生成初始数据
-export const genData = (total: number) => {
-  if (total < 1) {
-    return [];
-  }
-  const tableDataList = [
-    { key: 1, id: 1, name: '赵通1', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 2, id: 2, name: '赵通2', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 3, id: 3, name: '赵通3', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 4, id: 4, name: '赵通4', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 5, id: 5, name: '赵通5', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 6, id: 6, name: '赵通6', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 7, id: 7, name: '赵通7', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 8, id: 8, name: '赵通8', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 9, id: 9, name: '赵通9', age: 19, createTime: 1668245741225, phone: 18700871300 },
-    { key: 10, id: 10, name: '赵通10', age: 19, createTime: 1668245741225, phone: 18700871300 },
-  ];
-  if (tableDataList.length < total) {
-    message.error('数据量不足，请减小分页大小。');
-    return;
-  }
-  const data: any[] = [];
-  for (let i = 0; i < total; i += 1) {
-    data.push(tableDataList[i]);
-  }
-  return data;
 };
 
 // 初始化配置
@@ -132,8 +169,9 @@ export const initConfig = {
       apiSelectList: { url: '', method: '', afterScript: '' },
       apiSelectDetail: { url: '', method: '', afterScript: '' },
       apiAdd: { url: '', method: '', afterScript: '' },
-      update: { url: '', method: '', afterScript: '' },
+      apiUpdate: { url: '', method: '', afterScript: '' },
       apiDelete: { url: '', method: '', afterScript: '' },
+      apiDeleteBatch: { url: '', method: '', afterScript: '' },
     },
   },
 };

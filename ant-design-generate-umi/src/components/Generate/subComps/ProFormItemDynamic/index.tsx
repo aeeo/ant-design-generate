@@ -34,20 +34,20 @@ const ProFormItemDynamic = (props: any) => {
   const name = formFieldInfo.dataIndex;
   let returnComponent = <></>;
   if (!name) {
-    console.error('dataIndex不能为空。');
+    console.error('dataIndex不能为空。', formFieldInfo);
     return returnComponent;
   }
   const formFieldProp = { name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder, tooltip: formFieldInfo.tooltip };
   if (!formFieldInfo?.formFieldType) return returnComponent;
   switch (formFieldInfo.formFieldType) {
     case 'ProFormText':
-      returnComponent = <ProFormText width="md" {...formFieldProp} />;
+      returnComponent = <ProFormText {...formFieldProp} />;
       break;
     case 'ProFormTextArea':
-      returnComponent = <ProFormTextArea width="md" {...formFieldProp} />;
+      returnComponent = <ProFormTextArea {...formFieldProp} />;
       break;
     case 'ProFormTextPassword':
-      returnComponent = <ProFormText.Password width="md" {...formFieldProp} />;
+      returnComponent = <ProFormText.Password {...formFieldProp} />;
       break;
     case 'ProFormSelect':
       returnComponent = (
@@ -65,7 +65,6 @@ const ProFormItemDynamic = (props: any) => {
     case 'ProFormSelectAsync':
       returnComponent = (
         <ProFormSelect
-          width="md"
           fieldProps={{
             labelInValue: true,
           }}

@@ -13,21 +13,27 @@ const DynamicProTable = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
-  [config, setConfig] = useState<any>(initConfig);
-  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
-  [tableData, setTableData] = useState<any>(generateData);
-
-  const proTableRef = useRef<ProFormInstance>();
-
   // 控制弹框显示隐藏
   const toggleModalStatus = () => {
     config.event.showDetailModal = !config.event.showDetailModal;
     console.debug('更新Modal', config.event.showDetailModal);
     setConfig({ ...config });
   };
+  // 子组件事件
+  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+    switch (type) {
+      case 'detail':
+        toggleModalStatus();
+        break;
+    }
+  };
 
-  // (config.columns || columns) 配置缓存
-  const myColumns = genColumns({
+  [config, setConfig] = useState<any>(initConfig);
+  const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+  [tableData, setTableData] = useState<any>(generateData);
+
+  const proTableRef = useRef<ProFormInstance>();
+  const myColumns: any[] = genColumns({
     onEvent: (_, entity: any, index: number, type: string) => {
       onSubEvent(_, entity, index, type);
     },
@@ -37,15 +43,6 @@ const DynamicProTable = (props: any) => {
     ...item,
     ellipsis: config.ellipsis,
   }));
-
-  // 子组件事件
-  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    switch (type) {
-      case 'detail':
-        toggleModalStatus();
-        break;
-    }
-  };
 
   return (
     <>
@@ -63,18 +60,19 @@ const DynamicProTable = (props: any) => {
         options={config.options?.show ? config.options : false}
         toolBarRender={
           config?.toolBarRender
-            ? () => [
+            ? (action) => [
                 <Button key="refresh" type="primary">
                   刷新
                 </Button>,
               ]
             : false
         }
-        footer={config.showFooter ? () => config.footerTitle : false}
         headerTitle={config.headerTitle}
+        tooltip={config.headerTooltip}
         columns={tableColumns}
         dataSource={tableData}
         scroll={config.openScroll ? config.scroll : null}
+        footer={config.showFooter ? () => config.footerTitle : false}
       />
       <Modal
         title="详情"

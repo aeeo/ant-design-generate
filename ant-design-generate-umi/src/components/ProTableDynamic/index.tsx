@@ -13,6 +13,20 @@ const DynamicProTable = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
+  // 控制弹框显示隐藏
+  const toggleModalStatus = () => {
+    config.event.showDetailModal = !config.event.showDetailModal;
+    console.debug('更新Modal', config.event.showDetailModal);
+    setConfig({ ...config });
+  };
+  // 子组件事件
+  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+    switch (type) {
+      case 'detail':
+        toggleModalStatus();
+        break;
+    }
+  };
   ///开始删除
   if (props.dynamic) {
     [config, setConfig] = useState<any>(props.config);
@@ -48,16 +62,7 @@ const DynamicProTable = (props: any) => {
   }
   ///结束删除
   const proTableRef = useRef<ProFormInstance>();
-
-  // 控制弹框显示隐藏
-  const toggleModalStatus = () => {
-    config.event.showDetailModal = !config.event.showDetailModal;
-    console.debug('更新Modal', config.event.showDetailModal);
-    setConfig({ ...config });
-  };
-
-  // (config.columns || columns) 配置缓存
-  const myColumns = genColumns({
+  const myColumns: any[] = genColumns({
     onEvent: (_, entity: any, index: number, type: string) => {
       onSubEvent(_, entity, index, type);
     },
@@ -67,15 +72,6 @@ const DynamicProTable = (props: any) => {
     ...item,
     ellipsis: config.ellipsis,
   }));
-
-  // 子组件事件
-  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    switch (type) {
-      case 'detail':
-        toggleModalStatus();
-        break;
-    }
-  };
 
   return (
     <>

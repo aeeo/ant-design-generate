@@ -1,60 +1,92 @@
-import { DownOutlined } from '@ant-design/icons';
 import { ColumnParams } from '../../entity/types';
+import IconsDynamic from './subComps/IconsDynamic';
+
 import { message } from 'antd';
 
-const staticColumns = [
-  {
-    title: '姓名',
-    dataIndex: 'name',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-  },
-  {
-    title: '时间',
-    dataIndex: 'time',
-    valueType: 'date',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-  },
-  {
-    title: '住址',
-    dataIndex: 'address',
-    valueType: 'select',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-    filters: true,
-    onFilter: true,
-    valueEnum: {
-      陕西: {
-        text: '陕西',
-      },
-      广东: {
-        text: '广东',
+const staticColumns = (columnParams: ColumnParams): any[] => {
+  return [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '时间',
+      dataIndex: 'time',
+      valueType: 'date',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+    },
+    {
+      title: '住址',
+      dataIndex: 'address',
+      valueType: 'select',
+      hideInTable: false,
+      hideInSearch: false,
+      sorter: true,
+      filters: true,
+      onFilter: true,
+      valueEnum: {
+        陕西: {
+          text: '陕西',
+        },
+        广东: {
+          text: '广东',
+        },
       },
     },
-  },
-  {
-    title: '操作',
-    key: 'table-operation',
-    valueType: 'option',
-    render: (_: React.ReactNode, entity: any, index: number) => [
-      <a key="delete">删除</a>,
-      <a key="link" className="ant-dropdown-link">
-        更多 <DownOutlined />
-      </a>,
-    ],
-  },
-];
-// 初始数据列配置
-export const genColumns = (columnParams: ColumnParams) => {
-  if (!columnParams) return staticColumns;
-  ///开始1
-  const tableColumns = columnParams.columns ?? staticColumns;
-  ///结束1
-  return tableColumns;
+    {
+      title: '操作',
+      dataIndex: 'table-operation', // 防止后端字段重名
+      valueType: 'option',
+      render: (_: React.ReactNode, entity: any, index: number) => {
+        return [
+          <IconsDynamic
+            key="FileSearchOutlined"
+            iconName="FileSearchOutlined"
+            tooltip="详情"
+            onEvent={
+              columnParams.onEvent
+              // message.warn('123')
+            }
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'detail',
+            }}
+          />,
+          <IconsDynamic
+            key="EditOutlined"
+            iconName="EditOutlined"
+            tooltip="编辑"
+            onEvent={columnParams.onEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'edit',
+            }}
+          />,
+          <IconsDynamic
+            key="DeleteOutlined"
+            iconName="DeleteOutlined"
+            tooltip="删除"
+            onEvent={columnParams.onEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'delete',
+            }}
+          />,
+        ];
+      },
+    },
+  ];
 };
 
 // 生成初始数据
@@ -84,6 +116,14 @@ export const genData = (total: number) => {
     data.push(tableDataList[i]);
   }
   return data;
+};
+// 初始数据列配置
+export const genColumns = (columnParams: ColumnParams): any[] => {
+  if (!columnParams) return staticColumns(columnParams);
+  ///开始1
+  const tableColumns = columnParams.columns ?? staticColumns(columnParams);
+  ///结束1
+  return tableColumns;
 };
 
 // 初始化配置

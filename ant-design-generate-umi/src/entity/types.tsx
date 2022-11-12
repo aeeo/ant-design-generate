@@ -39,6 +39,7 @@ export const valueTypeArray = [
 export const formFieldArray = [
   { value: `ProFormText`, label: `文本框` },
   { value: `ProFormTextArea`, label: `文本域` },
+  { value: `ProFormSelect`, label: `下拉列表` },
 ];
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
@@ -48,37 +49,3 @@ export type ColumnParams = {
   onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void;
   columns?: ProColumns<any, 'text'>[];
 };
-// // 初始化配置
-// export interface config {
-//   bordered: boolean; // 显示表格边框
-//   loading: boolean; // 加载中
-//   columns: ProColumns; // 表格的列
-//   pagination: TablePaginationConfig;
-//   size: 'small'; // 尺寸 default | middle | small
-//   expandable: false; // 显示扩展列表
-//   headerTitle: '高级表格'; // 头部标题
-//   tooltip: '高级表格 tooltip'; // 提示框
-//   showHeader: true; // 显示表头
-//   footer: true; // 显示底脚
-//   rowSelection: true; // 多选框
-//   scroll: false; // 滚动
-//   hasData: true; //
-//   tableLayout: undefined; // 表格布局 - | auto | fixed	无 固定表头/列或使用了 column.ellipsis 时，默认值为 fixed
-//   toolBarRender: true; // 显示工具栏
-//   // 筛选表单 {} OR false:隐藏
-//   showSearch: true;
-//   search: {
-//     span: 8; // 栅格
-//     collapseRender: true; // 显示展开表单
-//     labelWidth: 80; // label宽度
-//     filterType: 'query'; // 表单类型 query:默认 light:轻量
-//     layout: 'horizontal'; // 布局 horizontal:水品 vertical:垂直
-//   };
-//   // 工具栏
-//   options: {
-//     show: true; // 显示
-//     density: true; // 显示紧凑按钮
-//     fullScreen: true; // 显示全屏按钮
-//     setting: true; // 显示设置按钮
-//   };
-// }

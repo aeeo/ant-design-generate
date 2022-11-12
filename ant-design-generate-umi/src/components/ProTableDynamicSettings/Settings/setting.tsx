@@ -23,7 +23,7 @@ import { valueTypeArray } from '../../../entity/types';
 import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
 import dataSource from '../../../../server/dataSource';
-import IconsDynamic from '../../IconsDynamic';
+import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
 const ProTableDynamicSettings = (props: any) => {
   const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单

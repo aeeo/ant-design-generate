@@ -40,12 +40,12 @@ const myColumns = [
   },
   {
     title: '操作',
-    key: 'table-operation',
+    dataIndex: 'table-operation',
     valueType: 'option',
   },
 ];
 const proFormDynamicSettingsPage = (props: any) => {
-  return <ProFormDynamicSettings />;
+  return <ProFormDynamicSettings columns={myColumns} />;
 };
 
 export default proFormDynamicSettingsPage;

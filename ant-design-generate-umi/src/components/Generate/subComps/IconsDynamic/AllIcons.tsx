@@ -11,7 +11,7 @@ const AllIcons = (props: any) => {
     console.error('iconName不能为空。');
     return returnComponent;
   }
-  console.debug('IconsDynamic', props);
+  // console.debug('AllIcons', props);
   switch (iconName) {
     case 'FileSearchOutlined':
       returnComponent = (

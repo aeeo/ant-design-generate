@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import { CopyOutlined, DeleteOutlined, HeartOutlined, HomeOutlined, PlusOutlined, SettingFilled, SmileOutlined, SyncOutlined } from '@ant-design/icons';
 import {
   ProCard,
   ProForm,
@@ -25,52 +24,8 @@ import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-// 初始数据列
-const staticColumns = [
-  {
-    title: '姓名',
-    dataIndex: 'name',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-    hideInDetailForm: false,
-  },
-  {
-    title: '时间',
-    dataIndex: 'time',
-    valueType: 'date',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-    hideInDetailForm: false,
-  },
-  {
-    title: '住址',
-    dataIndex: 'address',
-    valueType: 'select',
-    hideInTable: false,
-    hideInSearch: false,
-    sorter: true,
-    filters: true,
-    onFilter: true,
-    hideInDetailForm: false,
-    valueEnum: {
-      陕西: {
-        text: '陕西',
-      },
-      广东: {
-        text: '广东',
-      },
-    },
-  },
-  {
-    title: '操作',
-    key: 'table-operation',
-    valueType: 'option',
-  },
-];
 const ProFormDynamicSettings = (props: any) => {
-  const myColumns = props.columns ? props.columns : staticColumns;
+  const myColumns: any[] = props.columns;
 
   const [config, setConfig] = useState<any>({ columns: myColumns });
   const [columns, setColumns] = useState<any>(props.columns);
@@ -85,11 +40,13 @@ const ProFormDynamicSettings = (props: any) => {
   React.useEffect(() => {
     // 更新表单项
     // console.debug('更新动态表单字段：props');
-    setConfig({});
+    settingFormRef.current?.resetFields();
+    setConfig({ columns: myColumns });
   }, [props]);
   React.useEffect(() => {
     // 更新表单项
     const newFormFields: any = [];
+    if (!config?.columns) return;
     config?.columns?.forEach((columnsItem: any) => {
       if (columnsItem.formFieldType && !columnsItem.hide) {
         newFormFields.push({ ...columnsItem });
@@ -98,30 +55,30 @@ const ProFormDynamicSettings = (props: any) => {
     console.debug('更新动态表单字段：', config, newFormFields);
     setColumns(newFormFields);
   }, [config]);
-  console.debug('ProFormDynamic', props.columns, config);
+  console.debug('ProFormDynamicSettings', props.columns, config);
   return (
     <ProCard split="vertical">
       <ProCard>
-        <ProFormDynamic columns={config.columns} />
+        <ProFormDynamic columns={columns} />
       </ProCard>
-      <ProForm layout="inline" formRef={settingFormRef} initialValues={config} submitter={false} colon={false} onValuesChange={(_, values) => updateConfig.run(values)}>
-        <ProCard
-          colSpan="420px"
-          // title="配置菜单"
-          style={{
-            height: '700px',
-            overflow: 'auto',
-            top: 0,
-            right: 0,
-            width: 420,
-          }}
-          tabs={{
-            items: [
-              {
-                label: '表单项',
-                key: 'tab2',
-                children: (
-                  <>
+      <ProCard
+        colSpan="420px"
+        // title="配置菜单"
+        style={{
+          height: '700px',
+          overflow: 'auto',
+          top: 0,
+          right: 0,
+          width: 420,
+        }}
+        tabs={{
+          items: [
+            {
+              label: '表单项',
+              key: 'tab2',
+              children: (
+                <>
+                  <ProForm layout="inline" size={configSettingUI.size} formRef={settingFormRef} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
                     <ProFormList
                       actionRef={actionRef}
                       name="columns"
@@ -154,65 +111,18 @@ const ProFormDynamicSettings = (props: any) => {
                         );
                       }}
                     >
-                      <ProFormText
-                        fieldProps={{
-                          size: configSettingUI.textSize,
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                        name="title"
-                        label="标题"
+                      <ProFormText name="title" label="标题" />
+                      <ProFormSwitch label="隐藏" name="hide" />
+                      <ProFormSelect
+                        label="控件类型"
+                        name="formFieldType"
+                        options={formFieldArray.map((formField) => ({
+                          label: formField.label,
+                          value: formField.value,
+                        }))}
                       />
-                      <ProFormGroup>
-                        <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="隐藏"
-                          name="hide"
-                        />
-                        {/* <ProFormSwitch
-                          fieldProps={{
-                            size: configSettingUI.switchSize,
-                          }}
-                          label="是否Key"
-                          name="key"
-                        /> */}
-                      </ProFormGroup>
-                      <ProFormGroup size={8}>
-                        <ProFormSelect
-                          label="控件类型"
-                          name="formFieldType"
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          options={formFieldArray.map((formField) => ({
-                            label: formField.label,
-                            value: formField.value,
-                          }))}
-                        />
-                      </ProFormGroup>
-                      <ProFormGroup size={8}>
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          width="xs"
-                          label="输入提示"
-                          name="placeholder"
-                        />
-                        <ProFormText
-                          fieldProps={{
-                            size: configSettingUI.textSize,
-                          }}
-                          width="xs"
-                          label="列提示"
-                          name="tooltip"
-                        />
-                      </ProFormGroup>
+                      <ProFormText label="输入提示" name="placeholder" />
+                      <ProFormText label="列提示" name="tooltip" />
                       <ProFormDependency name={['valueType', 'valueEnum']}>
                         {({ valueType, valueEnum }) => {
                           if (valueType !== 'select') {
@@ -222,7 +132,6 @@ const ProFormDynamicSettings = (props: any) => {
                             <ProFormTextArea
                               formItemProps={{}}
                               fieldProps={{
-                                size: configSettingUI.textAreaSize,
                                 value: JSON.stringify(valueEnum),
                               }}
                               normalize={(value) => {
@@ -235,18 +144,18 @@ const ProFormDynamicSettings = (props: any) => {
                         }}
                       </ProFormDependency>
                     </ProFormList>
-                  </>
-                ),
-              },
-              {
-                label: '基本配置',
-                key: 'tab1',
-                children: <></>,
-              },
-            ],
-          }}
-        ></ProCard>
-      </ProForm>
+                  </ProForm>
+                </>
+              ),
+            },
+            {
+              label: '基本配置',
+              key: 'tab1',
+              children: <></>,
+            },
+          ],
+        }}
+      ></ProCard>
     </ProCard>
   );
 };
