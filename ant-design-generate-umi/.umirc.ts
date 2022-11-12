@@ -15,7 +15,7 @@ export default defineConfig({
       // redirect: './index.tsx',
       component: '@/pages/index',
     },
-    { path: '/dynamicForm', component: '@/pages/ProTableDynamicPage' },
+    { path: '/dynamicForm', component: '@/pages/ProFormDynamicPage' },
     { path: '/dynamicFormPreview', component: '@/components/ProFormDynamic' },
     { path: '/generate', component: '@/components/Generate' },
   ],

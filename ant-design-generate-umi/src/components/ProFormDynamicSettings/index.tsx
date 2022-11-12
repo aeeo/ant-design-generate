@@ -26,7 +26,7 @@ import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // 初始数据列
-const myColumns = [
+const staticColumns = [
   {
     title: '姓名',
     dataIndex: 'name',
@@ -70,20 +70,22 @@ const myColumns = [
   },
 ];
 const ProFormDynamicSettings = (props: any) => {
+  const myColumns = props.columns ? props.columns : staticColumns;
+
+  const [config, setConfig] = useState<any>({ columns: myColumns });
+  const [columns, setColumns] = useState<any>(props.columns);
+
   /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
     setConfig(state);
   }, 20);
-
-  const [config, setConfig] = useState<any>({ columns: props.columns });
-  const [columns, setColumns] = useState<any>(props.columns);
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
   React.useEffect(() => {
     // 更新表单项
     // console.debug('更新动态表单字段：props');
-    setConfig({ columns: props.columns ? props.columns : myColumns });
+    setConfig({});
   }, [props]);
   React.useEffect(() => {
     // 更新表单项

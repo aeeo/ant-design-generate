@@ -90,7 +90,33 @@ const ProTableDynamicSettings = (props: any) => {
       render: (_: React.ReactNode, entity: any, index: number) => {
         return [
           <IconsDynamic
-            key="detail"
+            key="FileSearchOutlined"
+            iconName="FileSearchOutlined"
+            tooltip="详情"
+            onEvent={onSettingEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'detail',
+            }}
+          />,
+          <IconsDynamic
+            key="EditOutlined"
+            iconName="EditOutlined"
+            tooltip="编辑"
+            onEvent={onSettingEvent}
+            columnRender={{
+              reactNode: _,
+              entity,
+              index,
+              type: 'detail',
+            }}
+          />,
+          <IconsDynamic
+            key="DeleteOutlined"
+            iconName="DeleteOutlined"
+            tooltip="删除"
             onEvent={onSettingEvent}
             columnRender={{
               reactNode: _,

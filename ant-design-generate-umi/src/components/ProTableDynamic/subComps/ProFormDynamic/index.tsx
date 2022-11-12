@@ -65,7 +65,7 @@ const ProFormDynamic = (props: any) => {
 
   const [readonly, setReadonly] = useState(false);
   const [formData, setFormData] = useState<any>({});
-  console.debug('ProFormItemDynamic', formFields);
+  // console.debug('ProFormItemDynamic', formFields);
 
   return (
     <>
