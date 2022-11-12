@@ -26,7 +26,7 @@ export default async (type: string, url: string, method: string, afterScript: st
       }
       return [data, data.length];
     }
-    case 'selectDetail': {
+    case 'apiSelectDetail': {
       let data: any = {};
       await request(url, { method })
         .then(function (response) {
