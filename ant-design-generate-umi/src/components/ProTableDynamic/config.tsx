@@ -1,5 +1,6 @@
 import type { ColumnParams } from '../../entity/types';
 import IconsDynamic from './subComps/IconsDynamic';
+import { OperationDynamic } from './utils/OperationDynamic';
 
 import { message } from 'antd';
 

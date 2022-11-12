@@ -1,11 +1,12 @@
 import * as Icons from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import IconsDynamic from '../IconsDynamic';
+import IconsDynamic from '../../subComps/IconsDynamic';
 import type { ColumnParams } from '../../../../entity/types';
 
 const AllOperation = (props: any) => {
   const operation = props.operation;
-  const columnParams = props.columnParams;
+  const onEvent = props.onEvent;
+  const columnRender = props.columnRender;
 
   let returnComponent = <></>;
   if (!operation) {
@@ -15,15 +16,14 @@ const AllOperation = (props: any) => {
   // console.debug('AllOperation', props);
   switch (operation) {
     case 'detail':
-      returnComponent = (
-        <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={columnParams.onEvent} columnRender={columnParams.columnRender} />
-      );
+      returnComponent = <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={onEvent} columnRender={columnRender} />;
       break;
   }
   return returnComponent;
 };
 AllOperation.propTypes = {
   operation: PropTypes.object,
-  columnParams: PropTypes.object,
+  onEvent: PropTypes.func,
+  columnRender: PropTypes.object,
 };
 export default AllOperation;
