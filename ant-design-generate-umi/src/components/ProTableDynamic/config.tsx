@@ -151,22 +151,27 @@ export const initConfig =
           method: '',
           afterScript: '',
         },
-        selectDetail: {
+        apiSelectDetail: {
           url: '',
           method: '',
           afterScript: '',
         },
-        add: {
+        apiAdd: {
           url: '',
           method: '',
           afterScript: '',
         },
-        update: {
+        apiUpdate: {
           url: '',
           method: '',
           afterScript: '',
         },
         apiDelete: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+        apiDeleteBatch: {
           url: '',
           method: '',
           afterScript: '',
