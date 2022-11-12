@@ -34,7 +34,7 @@ const ProFormItemDynamic = (props: any) => {
   const name = formFieldInfo.dataIndex;
   let returnComponent = <></>;
   if (!name) {
-    console.error('name不能为空。');
+    console.error('dataIndex不能为空。');
     return returnComponent;
   }
   const formFieldProp = { name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder, tooltip: formFieldInfo.tooltip };

@@ -16,7 +16,7 @@ export default defineConfig({
       component: '@/pages/index',
     },
     { path: '/dynamicForm', component: '@/pages/ProFormDynamicPage' },
-    { path: '/dynamicFormPreview', component: '@/components/ProFormDynamic' },
+    // { path: '/dynamicFormPreview', component: '@/components/ProFormDynamic' },
     { path: '/generate', component: '@/components/Generate' },
   ],
   fastRefresh: true,
