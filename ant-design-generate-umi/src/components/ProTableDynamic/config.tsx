@@ -22,7 +22,7 @@ const staticColumns = [
     sorter: true,
   },
   {
-    title: '地址',
+    title: '住址',
     dataIndex: 'address',
     valueType: 'select',
     hideInTable: false,
@@ -100,15 +100,7 @@ export const initConfig =
     bordered: true, // 显示表格边框
     loading: false, // 加载中
     columns: genColumns({ onEvent: () => {} }), // 表格的列
-    // 分页
-    showPagination: true, // 显示
-    pagination: {
-      position: 'bottomLeft', // 位置 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
-      size: 'small', // 显示 default small
-      pageSize: 5, // 分页大小
-      current: 1, // 当前页
-      total: 10, // 总条数
-    },
+
     size: 'small', // 尺寸 default | middle | small
     expandable: true, // 显示表格展开扩展列表
     headerTitle: '表格头部标题', // 表格头部标题
@@ -119,9 +111,12 @@ export const initConfig =
     showHeader: true, // 显示表头
     footer: true, // 显示底脚
     rowSelection: true, // 多选框
-    scroll: false, // 滚动
+
+    openScroll: false, // 开启滚动
+    scroll: { x: 1200, y: 200 }, // 横向滚动 纵向滚动高度
+
     hasData: true, //
-    tableLayout: undefined, // 表格布局 - | auto | fixed	无 固定表头/列或使用了 column.ellipsis 时，默认值为 fixed
+    tableLayout: 'auto', // 表格布局 - | auto | fixed	无 固定表头/列或使用了 column.ellipsis 时，默认值为 fixed
     toolBarRender: true, // 显示工具栏
     showSearch: true, // 筛选表单 true:显示 false:隐藏
     search: {
@@ -138,6 +133,45 @@ export const initConfig =
       density: true, // 显示紧凑按钮
       fullScreen: true, // 显示全屏按钮
       setting: true, // 显示设置按钮
+    },
+    showPagination: true, // 显示分页
+    pagination: {
+      position: 'bottomLeft', // 位置 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+      size: 'small', // 显示 default small
+      pageSize: 8, // 分页大小
+      current: 1, // 当前页
+      total: 10, // 总条数
+    },
+
+    // 数据源配置
+    dataSource: {
+      apiList: {
+        selectList: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+        selectDetail: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+        add: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+        update: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+        apiDelete: {
+          url: '',
+          method: '',
+          afterScript: '',
+        },
+      },
     },
   };
 ///结束2

@@ -20,7 +20,7 @@ const myColumns = [
     hideInDetailForm: false,
   },
   {
-    title: '地址',
+    title: '住址',
     dataIndex: 'address',
     valueType: 'select',
     hideInTable: false,

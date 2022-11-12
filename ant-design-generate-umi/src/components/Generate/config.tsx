@@ -22,7 +22,7 @@ const staticColumns = [
     sorter: true,
   },
   {
-    title: '地址',
+    title: '住址',
     dataIndex: 'address',
     valueType: 'select',
     hideInTable: false,
@@ -56,12 +56,12 @@ export const genColumns = (columnParams: ColumnParams) => {
   if (!columnParams) return staticColumns;
   const tableColumns =
     [
-      { title: 'key', dataIndex: 'key', valueType: 'digit' },
-      { title: 'id', dataIndex: 'id', valueType: 'digit' },
-      { title: 'name', dataIndex: 'name', valueType: 'text' },
-      { title: 'age', dataIndex: 'age', valueType: 'digit' },
-      { title: 'createTime', dataIndex: 'createTime', valueType: 'digit' },
-      { title: 'phone', dataIndex: 'phone', valueType: 'digit' },
+      { title: 'key123', dataIndex: 'key', valueType: 'digit', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
+      { title: 'id123123', dataIndex: 'id', valueType: 'digit', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
+      { title: 'name', dataIndex: 'name', valueType: 'text', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
+      { title: 'age', dataIndex: 'age', valueType: 'digit', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
+      { title: 'createTime', dataIndex: 'createTime', valueType: 'digit', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
+      { title: 'phone', dataIndex: 'phone', valueType: 'digit', formFieldType: 'ProFormText', placeholder: '请输入', tooltip: '' },
       {
         title: '操作',
         dataIndex: 'table-operation',
@@ -80,16 +80,16 @@ export const genData = (total: number) => {
     return [];
   }
   const tableDataList = [
-    { key: 1, id: 1, name: '赵通1', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 2, id: 2, name: '赵通2', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 3, id: 3, name: '赵通3', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 4, id: 4, name: '赵通4', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 5, id: 5, name: '赵通5', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 6, id: 6, name: '赵通6', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 7, id: 7, name: '赵通7', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 8, id: 8, name: '赵通8', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 9, id: 9, name: '赵通9', age: 19, createTime: 1667833777792, phone: 18700871300 },
-    { key: 10, id: 10, name: '赵通10', age: 19, createTime: 1667833777792, phone: 18700871300 },
+    { key: 1, id: 1, name: '赵通1', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 2, id: 2, name: '赵通2', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 3, id: 3, name: '赵通3', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 4, id: 4, name: '赵通4', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 5, id: 5, name: '赵通5', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 6, id: 6, name: '赵通6', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 7, id: 7, name: '赵通7', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 8, id: 8, name: '赵通8', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 9, id: 9, name: '赵通9', age: 19, createTime: 1668243158065, phone: 18700871300 },
+    { key: 10, id: 10, name: '赵通10', age: 19, createTime: 1668243158065, phone: 18700871300 },
   ];
   if (tableDataList.length < total) {
     message.error('数据量不足，请减小分页大小。');
@@ -108,8 +108,6 @@ export const initConfig = {
   bordered: true,
   loading: false,
   columns: genColumns({ onEvent: () => {} }),
-  showPagination: true,
-  pagination: { position: 'bottomLeft', size: 'small', pageSize: 5, current: 1, total: 10 },
   size: 'small',
   expandable: true,
   headerTitle: '表格头部标题',
@@ -120,10 +118,15 @@ export const initConfig = {
   showHeader: true,
   footer: true,
   rowSelection: true,
-  scroll: false,
+  openXScroll: true,
+  openYScroll: true,
+  scroll: { x: 500, y: 200 },
   hasData: true,
+  tableLayout: 'auto',
   toolBarRender: true,
   showSearch: true,
   search: { span: 8, collapseRender: true, labelWidth: 80, filterType: 'query', layout: 'horizontal' },
   options: { search: true, show: true, density: true, fullScreen: true, setting: true },
+  showPagination: true,
+  pagination: { position: 'bottomLeft', size: 'small', pageSize: 8, current: 1, total: 10 },
 };

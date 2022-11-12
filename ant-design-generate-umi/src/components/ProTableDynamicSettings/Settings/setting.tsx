@@ -151,16 +151,17 @@ const ProTableDynamicSettings = (props: any) => {
     const tableDataDetail: any = await dataSource('selectDetail', url, method, afterScript);
   };
 
-  const exetDataSource = async (type: any) => {
+  const exetDataSource = (type: any) => {
     const data = dataSourceFormRef.current?.getFieldsValue(true);
-    if (!data || Object.keys(data).length === 0) return;
-    const { selectDetail, selectList, add, apiDelete, update } = data.api;
+    if (!data || Object.keys(data).length === 0 || !data.apiList || data.apiList.length === 0) {
+      return;
+    }
     switch (type) {
       case 'selectList':
-        exetTableListDataSource(selectList);
+        exetTableListDataSource(data.apiList[type]);
         break;
       case 'selectDetail':
-        exetTableDetailDataSource(selectDetail);
+        exetTableDetailDataSource(data.apiList[type]);
         break;
       case 'add':
         break;
@@ -176,7 +177,7 @@ const ProTableDynamicSettings = (props: any) => {
   // 一键填写
   const fillDataSource = () => {
     dataSourceFormRef?.current?.setFieldsValue({
-      api: {
+      apiList: {
         selectList: {
           url: '/api/selectList',
           method: 'GET',
@@ -309,6 +310,64 @@ const ProTableDynamicSettings = (props: any) => {
                       <ProFormSwitch label="页脚" tooltip="showFooter" name="showFooter" />
                       <ProFormSwitch label="支持展开" tooltip="expandable" name="expandable" />
                       <ProFormSwitch label="行选择" tooltip="rowSelection" name="rowSelection" />
+                      {/* <ProFormSwitch label="横向滚动" tooltip="openXScroll" name="openXScroll" />
+                      <ProFormDependency name={['openXScroll']}>
+                        {({ openXScroll }) => {
+                          if (!openXScroll) {
+                            return null;
+                          }
+                          return (
+                            <>
+                              <ProFormDigit label="表格宽度" tooltip={`scroll="${config.scroll.x}"`} name={['scroll', 'x']} />
+                            </>
+                          );
+                        }}
+                      </ProFormDependency>
+                      <ProFormSwitch label="纵向滚动" tooltip="openYScroll" name="openYScroll" />
+                      <ProFormDependency name={['openYScroll']}>
+                        {({ openYScroll }) => {
+                          if (!openYScroll) {
+                            return null;
+                          }
+                          return (
+                            <>
+                              <ProFormDigit label="表格高度" tooltip={`scroll="${config.scroll.y}"`} name={['scroll', 'y']} />
+                            </>
+                          );
+                        }}
+                      
+                      </ProFormDependency> */}
+                      <ProFormSwitch label="开启滚动" tooltip="openScroll" name="openScroll" />
+                      <ProFormDependency name={['openScroll']}>
+                        {({ openScroll }) => {
+                          if (!openScroll) {
+                            return null;
+                          }
+                          return (
+                            <>
+                              <ProFormDigit label="表格宽度" tooltip={`scroll.x:"${config.scroll.x}"`} name={['scroll', 'x']} />
+                              <ProFormDigit label="表格高度" tooltip={`scroll.y:"${config.scroll.y}"`} name={['scroll', 'y']} />
+                            </>
+                          );
+                        }}
+                      </ProFormDependency>
+
+                      <ProFormRadio.Group
+                        radioType="button"
+                        name="tableLayout"
+                        tooltip={`tableLayout:"${config.tableLayout}"`}
+                        options={[
+                          {
+                            label: 'auto',
+                            value: 'auto',
+                          },
+                          {
+                            label: 'fixed',
+                            value: 'fixed',
+                          },
+                        ]}
+                        label="表格布局"
+                      />
                     </ProForm.Group>
                     <ProForm.Group
                       collapsible
@@ -528,7 +587,6 @@ const ProTableDynamicSettings = (props: any) => {
                         <ProFormSwitch label="是否Key" name="key" />
                         <ProFormSwitch tooltip="排序实现需要手写sorter: (a, b) => a.age - b.age," label="开启排序" name="sorter" />
                       </ProFormGroup>
-
                       <ProFormDependency name={['valueType', 'valueEnum']}>
                         {({ valueType, valueEnum }) => {
                           if (valueType !== 'select') {
@@ -564,6 +622,7 @@ const ProTableDynamicSettings = (props: any) => {
                     size={configSettingUI.size}
                     formRef={dataSourceFormRef}
                     submitter={false}
+                    initialValues={initConfig.dataSource}
                     onFinish={async (values) => {
                       // console.debug(values);
                       return true;
@@ -574,7 +633,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </Button>
                     <ProFormGroup title="查-列表" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['api', 'selectList', 'url']}
+                        name={['apiList', 'selectList', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -586,7 +645,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['api', 'selectList', 'method']}
+                        name={['apiList', 'selectList', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -604,7 +663,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['api', 'selectList', 'afterScript']}
+                        name={['apiList', 'selectList', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
@@ -615,7 +674,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProFormGroup>
                     <ProFormGroup title="查-详情" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['api', 'selectDetail', 'url']}
+                        name={['apiList', 'selectDetail', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -627,7 +686,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['api', 'selectDetail', 'method']}
+                        name={['apiList', 'selectDetail', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -645,7 +704,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['api', 'selectDetail', 'afterScript']}
+                        name={['apiList', 'selectDetail', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
@@ -656,7 +715,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProFormGroup>
                     <ProForm.Group title="增" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['api', 'add', 'url']}
+                        name={['apiList', 'add', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -668,7 +727,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['api', 'add', 'method']}
+                        name={['apiList', 'add', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -686,7 +745,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['api', 'add', 'afterScript']}
+                        name={['apiList', 'add', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
@@ -694,7 +753,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="改" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['api', 'update', 'url']}
+                        name={['apiList', 'update', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -706,7 +765,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['api', 'update', 'method']}
+                        name={['apiList', 'update', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -724,7 +783,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['api', 'update', 'afterScript']}
+                        name={['apiList', 'update', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
@@ -732,7 +791,7 @@ const ProTableDynamicSettings = (props: any) => {
                     </ProForm.Group>
                     <ProForm.Group title="删" collapsible defaultCollapsed={true}>
                       <ProFormText
-                        name={['api', 'apiDelete', 'url']}
+                        name={['apiList', 'apiDelete', 'url']}
                         label="URL地址"
                         tooltip="URL地址"
                         placeholder="请输入URL"
@@ -744,7 +803,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormSelect
-                        name={['api', 'apiDelete', 'method']}
+                        name={['apiList', 'apiDelete', 'method']}
                         tooltip="请求方式"
                         label="请求方式"
                         valueEnum={{
@@ -762,7 +821,7 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                       />
                       <ProFormTextArea
-                        name={['api', 'apiDelete', 'afterScript']}
+                        name={['apiList', 'apiDelete', 'afterScript']}
                         label="后执行脚本"
                         tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
                         placeholder="请输入后执行脚本"
