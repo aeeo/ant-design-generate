@@ -5,7 +5,7 @@ import React from 'react';
 import { useRef, useState } from 'react';
 import { genData, initConfig } from '../ProTableDynamic/config';
 import ProTableDynamicSettings from './Settings/setting';
-import DynamicProTable from '../ProTableDynamic';
+import ProTableDynamic from '../ProTableDynamic';
 
 const ProTableDynamic = () => {
   const ref = useRef<ProFormInstance>();
@@ -43,7 +43,7 @@ const ProTableDynamic = () => {
     <>
       <div style={{ display: 'flex', height: '100vh', overflow: 'auto' }}>
         <div style={{ width: '70%', height: '100%', overflow: 'auto' }}>
-          <DynamicProTable dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
+          <ProTableDynamic dynamic={true} config={config} tableData={tableData} eventInfo={eventInfo} />
         </div>
         <div style={{ width: '30%', height: '100vh', overflow: 'auto' }}>
           <ProTableDynamicSettings onSettingEvent={onSettingEvent} dynamicSetConfig={dynamicSetConfig} dynamicSetDataSource={dynamicSetDataSource} />

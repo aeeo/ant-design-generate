@@ -126,7 +126,7 @@ export const genColumns = (columnParams: ColumnParams): any[] => {
     columnParams.columns ??
     staticColumns({
       onEvent: (_, entity: any, index: number, type: string) => {
-        message.warn('哈哈哈');
+        message.warn('哈哈哈Config');
         columnParams.onEvent(_, entity, index, type);
       },
       columns: [],

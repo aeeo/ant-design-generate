@@ -9,7 +9,7 @@ import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的P
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
 
-const DynamicProTable = (props: any) => {
+const ProTableDynamic = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
@@ -31,10 +31,10 @@ const DynamicProTable = (props: any) => {
   if (props.dynamic) {
     [config, setConfig] = useState<any>(props.config);
     //#region 开发阶段Props相关
-    // React.useEffect(() => {
-    //   console.debug('table的config发生变化:', config);
-    //   setConfig(props.config);
-    // }, [props.config]);
+    React.useEffect(() => {
+      console.debug('table的config发生变化:', config);
+      setConfig(props.config);
+    }, [props.config]);
 
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
     [tableData, setTableData] = useState<any>(generateData);
@@ -64,7 +64,7 @@ const DynamicProTable = (props: any) => {
   const proTableRef = useRef<ProFormInstance>();
   const myColumns: any[] = genColumns({
     onEvent: (_, entity: any, index: number, type: string) => {
-      message.warn('哈哈哈');
+      message.warn('哈哈哈index');
       onSubEvent(_, entity, index, type);
     },
     columns: config.columns,
@@ -73,6 +73,7 @@ const DynamicProTable = (props: any) => {
     ...item,
     ellipsis: config.ellipsis,
   }));
+  console.debug('动态表格');
 
   return (
     <>
@@ -135,11 +136,11 @@ const DynamicProTable = (props: any) => {
   );
 };
 
-DynamicProTable.propTypes = {
+ProTableDynamic.propTypes = {
   config: PropTypes.object,
   tableData: PropTypes.array,
   eventInfo: PropTypes.object,
   dynamic: PropTypes.bool, // 是否动态组件（非生成好的）
 };
 
-export default DynamicProTable;
+export default ProTableDynamic;
