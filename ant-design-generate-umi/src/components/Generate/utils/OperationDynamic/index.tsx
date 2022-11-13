@@ -16,7 +16,7 @@ export const OperationDynamic = (operationArr: Array<string>, onEvent: (_: React
   return (
     <>
       <Space>
-        {operationArr?.map((operationItem: any, index: number) => {
+        {operationArr?.map((operationItem: string, index: number) => {
           return <AllOperation operation={operationItem} onEvent={() => myOnEvent(operationItem)} key={index} />;
         })}
       </Space>

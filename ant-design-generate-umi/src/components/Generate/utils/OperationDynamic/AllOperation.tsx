@@ -26,7 +26,7 @@ const AllOperation = (props: any) => {
   return returnComponent;
 };
 AllOperation.propTypes = {
-  operation: PropTypes.object,
+  operation: PropTypes.string,
   onEvent: PropTypes.func,
 };
 export default AllOperation;

@@ -44,11 +44,6 @@ const staticColumns = (onEvent: (dom: React.ReactNode, entity: any, index: numbe
       dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
       render: (_: React.ReactNode, entity: any, index: number) => {
-        // return [
-        //   <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={() => onEvent(_, entity, index, 'detail')} />,
-        //   <IconsDynamic key="EditOutlined" iconName="EditOutlined" tooltip="编辑" onEvent={() => onEvent(_, entity, index, 'edit')} />,
-        //   <IconsDynamic key="DeleteOutlined" iconName="DeleteOutlined" tooltip="删除" onEvent={() => onEvent(_, entity, index, 'delete')} />,
-        // ];
         return OperationDynamic(['detail', 'edit', 'delete'], onEvent, { reactNode: _, entity, index });
       },
     },

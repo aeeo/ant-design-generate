@@ -1,7 +1,8 @@
 import { request } from 'umi';
 import { Button, message } from 'antd';
+import { EventType, ApiType } from '../../entity/types';
 
-export default async (type: string, url: string, method: string, afterScript: string): Promise<any> => {
+export default async (type: ApiType, url: string, method: string, afterScript: string): Promise<any> => {
   switch (type) {
     case 'apiSelectList': {
       let data: any[] = [];

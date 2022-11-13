@@ -19,13 +19,15 @@ import { Button, message, Collapse } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import { request } from 'umi';
-import { valueTypeArray } from '../../../entity/types';
+import { valueTypeArray } from '../../ProTableDynamic/entity/types';
 import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
 import dataSource from '../../ProTableDynamic/utils/DataSource';
 import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
 import { OperationDynamic } from '../../ProTableDynamic/utils/OperationDynamic/index';
+import { ApiType, EventInfo } from '../../ProTableDynamic/entity/types';
+
 const ProTableDynamicSettings = (props: any) => {
   const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单
   const columnFormRef = useRef<ProFormInstance>(); // 列配置表单
@@ -34,19 +36,19 @@ const ProTableDynamicSettings = (props: any) => {
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
 
   // 组件事件
-  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    console.debug(type, entity, index);
-    switch (type) {
-      case 'detail':
-        props.onSettingEvent(_, entity, index, type);
+  const onSettingEvent = (eventInfo: EventInfo) => {
+    console.debug(eventInfo);
+    switch (eventInfo.type) {
+      case 'eventDetail':
+        props.onSettingEvent(eventInfo);
         // config.event.showDetailModal = !config.event.showDetailModal;
         // console.debug('setting触发onSettingEvent');
         // setConfig({ ...config });
         break;
     }
   };
-  const initConfigTemp = initConfig((_, entity: any, index: number, type: string) => {
-    onSettingEvent(_, entity, index, type);
+  const initConfigTemp = initConfig((eventInfo: EventInfo) => {
+    onSettingEvent(eventInfo);
   });
 
   const [config, setConfig] = useState<any>(initConfigTemp);
@@ -65,7 +67,6 @@ const ProTableDynamicSettings = (props: any) => {
   //#region 数据源表单配置
 
   const exetTableListDataSource = async (apiSelectList: any) => {
-    const aa = apiSelectList.url;
     const { url, method, afterScript } = apiSelectList;
     const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('apiSelectList', url, method, afterScript);
     // 获取响应数据的第一条

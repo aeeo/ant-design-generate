@@ -1,10 +1,9 @@
-import IconsDynamic from './subComps/IconsDynamic';
 import { OperationDynamic } from './utils/OperationDynamic';
 import type { ProColumns } from '@ant-design/pro-components';
-
+import { ApiType, EventInfo } from '../ProTableDynamic/entity/types';
 import { message } from 'antd';
 
-const staticColumns = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void): any[] => {
+const staticColumns = (onEvent: (eventInfo: EventInfo) => void): any[] => {
   return [
     {
       title: '姓名',
@@ -43,13 +42,8 @@ const staticColumns = (onEvent: (dom: React.ReactNode, entity: any, index: numbe
       title: '操作',
       dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
-      render: (_: React.ReactNode, entity: any, index: number) => {
-        // return [
-        //   <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={() => onEvent(_, entity, index, 'detail')} />,
-        //   <IconsDynamic key="EditOutlined" iconName="EditOutlined" tooltip="编辑" onEvent={() => onEvent(_, entity, index, 'edit')} />,
-        //   <IconsDynamic key="DeleteOutlined" iconName="DeleteOutlined" tooltip="删除" onEvent={() => onEvent(_, entity, index, 'delete')} />,
-        // ];
-        return OperationDynamic(['detail', 'edit', 'delete'], onEvent, { reactNode: _, entity, index });
+      render: (_: React.ReactNode, record: any, index: number) => {
+        return OperationDynamic(['detail', 'edit', 'delete'], onEvent, { reactNode: _, record, index });
       },
     },
   ];
@@ -84,8 +78,7 @@ export const genData = (total: number) => {
   return data;
 };
 // 初始数据列配置
-export const genColumns = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void, columns?: ProColumns<any, 'text'>[]): any[] => {
-  // if (!columnParams) return staticColumns(columnParams);
+export const genColumns = (onEvent: (eventInfo: EventInfo) => void, columns?: ProColumns<any, 'text'>[]): any[] => {
   ///开始1
   const tableColumns = columns ?? staticColumns(onEvent);
   ///结束1
@@ -93,7 +86,7 @@ export const genColumns = (onEvent: (dom: React.ReactNode, entity: any, index: n
 };
 
 // 初始化配置
-export const initConfig = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void): object => {
+export const initConfig = (onEvent: (eventInfo: EventInfo) => void): object => {
   ///开始2
   return {
     event: {
@@ -151,31 +144,43 @@ export const initConfig = (onEvent: (dom: React.ReactNode, entity: any, index: n
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
         apiSelectDetail: {
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
         apiAdd: {
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
         apiUpdate: {
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
         apiDelete: {
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
         apiDeleteBatch: {
           url: '',
           method: '',
           afterScript: '',
+          parameter: '',
+          body: '',
         },
       },
     },

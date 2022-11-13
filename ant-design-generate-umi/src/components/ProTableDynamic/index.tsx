@@ -8,6 +8,8 @@ import { genColumns, genData, initConfig } from './config';
 import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
+import dataSource from '../ProTableDynamic/utils/DataSource';
+import { ApiType, EventInfo } from '../ProTableDynamic/entity/types';
 
 const ProTableDynamic = (props: any) => {
   let [config, setConfig] = new Array();
@@ -20,11 +22,15 @@ const ProTableDynamic = (props: any) => {
     setConfig({ ...config });
   };
   // 子组件事件
-  const onSubEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    switch (type) {
-      case 'detail':
+  const onSubEvent = async (eventInfo: EventInfo) => {
+    // console.warn(tableRecord);
+    switch (eventInfo.type) {
+      case 'eventDetail': {
+        const { url, method, afterScript } = config.apiList['apiSelectDetail'];
+        const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
         toggleModalStatus();
         break;
+      }
     }
   };
   ///开始删除
@@ -49,14 +55,13 @@ const ProTableDynamic = (props: any) => {
 
     // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
+    const [eventInfo, setEventInfo] = useState<EventInfo>(props.eventInfo);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       console.debug('ProTableDynamic的eventInfo发生变化:', eventInfo, props.eventInfo);
       // setEventInfo(props.eventInfo);
       if (!props.eventInfo) return;
-      const { reactNode, entity, index, type } = props.eventInfo;
-      onSubEvent(reactNode, entity, index, type);
+      onSubEvent(props.eventInfo);
     }, [props.eventInfo]);
     //#endregion
   } else {

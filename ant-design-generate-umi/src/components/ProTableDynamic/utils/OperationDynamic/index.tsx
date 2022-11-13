@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import { Button, Popconfirm, Space, Upload } from 'antd';
 import AllOperation from './AllOperation';
+import { EventInfo, EventType, TableRecord } from '../../entity/types';
 
-export const OperationDynamic = (operationArr: Array<string>, onEvent: (_: React.ReactNode, entity: any, index: number, type: string) => void, columnRender: any) => {
+export const OperationDynamic = (operationArr: Array<string>, onEvent: (eventInfo: EventInfo) => void, tableRecord: TableRecord) => {
   let returnComponent = <></>;
   if (!operationArr) {
     console.error('operationArr不能为空。');
     return returnComponent;
   }
-  const myOnEvent = (type: any) => {
-    onEvent(columnRender.reactNode, columnRender.entity, columnRender.index, type);
+  const myOnEvent = (type: EventType) => {
+    onEvent({ type, tableRecord });
   };
-
-  console.debug('OperationDynamic', operationArr, onEvent, columnRender);
+  // console.debug('OperationDynamic', operationArr, onEvent, tableRecord);
   return (
     <>
       <Space>

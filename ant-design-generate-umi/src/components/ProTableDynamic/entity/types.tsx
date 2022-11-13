@@ -42,3 +42,31 @@ export const formFieldArray = [
 ];
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
+
+export type ApiType = 'apiSelectList' | 'apiSelectDetail' | 'apiAdd' | 'apiUpdate' | 'apiDelete' | 'apiDeleteBatch';
+
+export type ApiInfo = {
+  url: string;
+  method: 'Get' | 'Post';
+  afterScript: string;
+  parameter: Array<KeyValue>;
+  body: object;
+};
+
+export type KeyValue = {
+  key: string;
+  value: string;
+};
+
+export type EventInfo = {
+  type: EventType;
+  tableRecord: TableRecord;
+};
+
+export type EventType = 'eventDetail' | 'eventAdd' | 'eventUpdate' | 'eventDelete' | 'eventDeleteBatch';
+
+export type TableRecord = {
+  reactNode: React.ReactNode;
+  record: object;
+  index: number;
+};

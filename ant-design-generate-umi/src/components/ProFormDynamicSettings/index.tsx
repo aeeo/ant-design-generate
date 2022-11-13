@@ -18,7 +18,7 @@ import {
 import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
-import { valueTypeArray, formFieldArray } from '../../entity/types';
+import { valueTypeArray, formFieldArray } from '../ProTableDynamic/entity/types';
 import ProFormDynamic from '../ProTableDynamic/subComps/ProFormDynamic';
 import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
