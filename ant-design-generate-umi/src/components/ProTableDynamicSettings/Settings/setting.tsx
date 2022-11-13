@@ -103,7 +103,7 @@ const ProTableDynamicSettings = (props: any) => {
       '  dataIndex: "table-operation",' +
       '  valueType: "option",' +
       '  render: (_: React.ReactNode, entity: any, index: number) => {' +
-      '    return OperationDynamic(["detail", "edit", "delete"], onSettingEvent, { reactNode: _, entity, index });' +
+      '    return OperationDynamic(["detail", "edit", "delete"], onEvent, { reactNode: _, entity, index });' +
       '  },' +
       '}///去除引号';
     // const operationColumnString =

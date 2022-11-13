@@ -62,7 +62,7 @@ const ProTableDynamic = (props: any) => {
   } else {
     ///结束删除
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    [config, setConfig] = useState<any>(initConfig);
+    [config, setConfig] = useState<any>(initConfig(onSubEvent));
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     [tableData, setTableData] = useState<any>(generateData);

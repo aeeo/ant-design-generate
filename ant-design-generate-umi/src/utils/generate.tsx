@@ -13,7 +13,8 @@ const generate = (initData: any, columnsStr: string) => {
 
   let tempColumnsStr = JSON.stringify(columns);
   tempColumnsStr = replaceStringByRegExp(operationTag, tempColumnsStr, columnsStr);
-  initData.columns = '///去除引号genColumns({ onEvent: () => {} })///去除引号';
+  initData.columns = '///去除引号genColumns(onEvent)///去除引号';
+  // debugger
   return [initData, tempColumnsStr];
 };
 export default generate;

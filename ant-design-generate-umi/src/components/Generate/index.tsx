@@ -1,6 +1,6 @@
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { ProCard, ProTable } from '@ant-design/pro-components';
-import { Button, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的P
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
 
-const DynamicProTable = (props: any) => {
+const ProTableDynamic = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
@@ -28,21 +28,27 @@ const DynamicProTable = (props: any) => {
     }
   };
 
-  [config, setConfig] = useState<any>(initConfig);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  [config, setConfig] = useState<any>(initConfig(onSubEvent));
   const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   [tableData, setTableData] = useState<any>(generateData);
 
   const proTableRef = useRef<ProFormInstance>();
-  const myColumns: any[] = genColumns({
-    onEvent: (_, entity: any, index: number, type: string) => {
-      onSubEvent(_, entity, index, type);
-    },
-    columns: config.columns,
-  });
-  const tableColumns = myColumns?.map((item: any) => ({
-    ...item,
-    ellipsis: config.ellipsis,
-  }));
+
+  // const myColumns: any[] = genColumns({
+  //   onEvent: (_, entity: any, index: number, type: string) => {
+  //     message.warn('哈哈哈index');
+  //     onSubEvent(_, entity, index, type);
+  //   },
+  //   columns: config.columns,
+  // });
+  // const tableColumns = myColumns?.map((item: any) => ({
+  //   ...item,
+  //   ellipsis: config.ellipsis,
+  // }));
+  // const tableColumns = config.columns;
+  console.debug('ProTableDynamic 初始化', props);
 
   return (
     <>
@@ -69,7 +75,7 @@ const DynamicProTable = (props: any) => {
         }
         headerTitle={config.headerTitle}
         tooltip={config.headerTooltip}
-        columns={tableColumns}
+        columns={config.columns}
         dataSource={tableData}
         scroll={config.openScroll ? config.scroll : null}
         footer={config.showFooter ? () => config.footerTitle : false}
@@ -93,11 +99,11 @@ const DynamicProTable = (props: any) => {
   );
 };
 
-DynamicProTable.propTypes = {
+ProTableDynamic.propTypes = {
   config: PropTypes.object,
   tableData: PropTypes.array,
   eventInfo: PropTypes.object,
   dynamic: PropTypes.bool, // 是否动态组件（非生成好的）
 };
 
-export default DynamicProTable;
+export default ProTableDynamic;

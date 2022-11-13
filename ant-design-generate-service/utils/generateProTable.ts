@@ -46,7 +46,7 @@ exports.generateProTable = function (res: any, generateData: any) {
   const deleteRegExp = new RegExp(deletePattern, "g");
 
   generateConfigFilePathStr = generateConfigFilePathStr.replace(columnsRegExp, "const tableColumns = " + columns + "?? staticColumns;");
-  generateConfigFilePathStr = generateConfigFilePathStr.replace(initDataRegExp, initData);
+  generateConfigFilePathStr = generateConfigFilePathStr.replace(initDataRegExp, "return " + initData);
   generateConfigFilePathStr = generateConfigFilePathStr.replace(tableDataListRegExp, "const tableDataList = " + tableDataList);
 
   // 删除无用代码片段

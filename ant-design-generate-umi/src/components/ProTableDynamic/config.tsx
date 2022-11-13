@@ -102,7 +102,7 @@ export const initConfig = (onEvent: (dom: React.ReactNode, entity: any, index: n
     },
     bordered: true, // 显示表格边框
     loading: false, // 加载中
-    columns: staticColumns(onEvent), // 表格的列
+    columns: genColumns(onEvent), // 表格的列
     size: 'small', // 尺寸 default | middle | small
     expandable: true, // 显示表格展开扩展列表
     headerTitle: '表格头部标题', // 表格头部标题
