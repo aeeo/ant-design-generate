@@ -13,20 +13,20 @@ const AllOperation = (props: any) => {
   }
   // console.debug('AllOperation', props);
   switch (operation) {
-    case 'detail':
+    case 'eventDetail':
       returnComponent = <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={onEvent} />;
       break;
-    case 'edit':
+    case 'eventEdit':
       returnComponent = <IconsDynamic key="EditOutlined" iconName="EditOutlined" tooltip="编辑" onEvent={onEvent} />;
       break;
-    case 'delete':
+    case 'eventDelete':
       returnComponent = <IconsDynamic key="DeleteOutlined" iconName="DeleteOutlined" tooltip="删除" onEvent={onEvent} />;
       break;
   }
   return returnComponent;
 };
 AllOperation.propTypes = {
-  operation: PropTypes.object,
+  operation: PropTypes.string,
   onEvent: PropTypes.func,
 };
 export default AllOperation;

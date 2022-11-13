@@ -63,7 +63,7 @@ export type EventInfo = {
   tableRecord: TableRecord;
 };
 
-export type EventType = 'eventDetail' | 'eventAdd' | 'eventUpdate' | 'eventDelete' | 'eventDeleteBatch';
+export type EventType = 'eventDetail' | 'eventEdit' | 'eventAdd' | 'eventUpdate' | 'eventDelete' | 'eventDeleteBatch';
 
 export type TableRecord = {
   reactNode: React.ReactNode;

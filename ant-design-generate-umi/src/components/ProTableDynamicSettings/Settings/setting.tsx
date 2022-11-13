@@ -37,7 +37,7 @@ const ProTableDynamicSettings = (props: any) => {
 
   // 组件事件
   const onSettingEvent = (eventInfo: EventInfo) => {
-    console.debug(eventInfo);
+    // console.debug(eventInfo);
     switch (eventInfo.type) {
       case 'eventDetail':
         props.onSettingEvent(eventInfo);
@@ -94,8 +94,8 @@ const ProTableDynamicSettings = (props: any) => {
       title: '操作',
       dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
-      render: (_: React.ReactNode, entity: any, index: number) => {
-        return OperationDynamic(['detail', 'edit', 'delete'], onSettingEvent, { reactNode: _, entity, index });
+      render: (_: React.ReactNode, record: any, index: number) => {
+        return OperationDynamic(['eventDetail', 'eventEdit', 'eventDelete'], onSettingEvent, { reactNode: _, record, index });
       },
     };
     const operationColumnString =

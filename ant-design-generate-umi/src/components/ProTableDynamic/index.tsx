@@ -4,7 +4,7 @@ import { Button, message, Modal } from 'antd';
 import React from 'react';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { genColumns, genData, initConfig } from './config';
+import { genData, initConfig } from './config';
 import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
@@ -26,8 +26,8 @@ const ProTableDynamic = (props: any) => {
     // console.warn(tableRecord);
     switch (eventInfo.type) {
       case 'eventDetail': {
-        const { url, method, afterScript } = config.apiList['apiSelectDetail'];
-        const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
+        // const { url, method, afterScript } = config.apiList['apiSelectDetail'];
+        // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
         toggleModalStatus();
         break;
       }
@@ -40,7 +40,7 @@ const ProTableDynamic = (props: any) => {
     //#region 开发阶段Props相关
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
-      console.debug('ProTableDynamic的config发生变化:', config);
+      // console.debug('ProTableDynamic的config发生变化:', config);
       setConfig(props.config);
     }, [props.config]);
 
@@ -49,16 +49,14 @@ const ProTableDynamic = (props: any) => {
     [tableData, setTableData] = useState<any>(generateData);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
-      console.debug('ProTableDynamic的tableData发生变化:', tableData, props.tableData);
+      // console.debug('ProTableDynamic的tableData发生变化:', tableData, props.tableData);
       setTableData(props.tableData);
     }, [props.tableData]);
 
     // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [eventInfo, setEventInfo] = useState<EventInfo>(props.eventInfo);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
-      console.debug('ProTableDynamic的eventInfo发生变化:', eventInfo, props.eventInfo);
+      // console.debug('ProTableDynamic的eventInfo发生变化:', eventInfo, props.eventInfo);
       // setEventInfo(props.eventInfo);
       if (!props.eventInfo) return;
       onSubEvent(props.eventInfo);
@@ -88,7 +86,7 @@ const ProTableDynamic = (props: any) => {
   //   ellipsis: config.ellipsis,
   // }));
   // const tableColumns = config.columns;
-  console.debug('ProTableDynamic 初始化', props);
+  // console.debug('ProTableDynamic 初始化', props);
 
   return (
     <>
@@ -155,7 +153,7 @@ ProTableDynamic.propTypes = {
   config: PropTypes.object,
   tableData: PropTypes.array,
   eventInfo: PropTypes.object,
-  dynamic: PropTypes.bool, // 是否动态组件（非生成好的）
+  dynamic: PropTypes.bool, // 是否动态组件
 };
 
 export default ProTableDynamic;

@@ -43,7 +43,7 @@ const staticColumns = (onEvent: (eventInfo: EventInfo) => void): any[] => {
       dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
       render: (_: React.ReactNode, record: any, index: number) => {
-        return OperationDynamic(['detail', 'edit', 'delete'], onEvent, { reactNode: _, record, index });
+        return OperationDynamic(['eventDetail', 'eventEdit', 'eventDelete'], onEvent, { reactNode: _, record, index });
       },
     },
   ];
@@ -80,6 +80,7 @@ export const genData = (total: number) => {
 // 初始数据列配置
 export const genColumns = (onEvent: (eventInfo: EventInfo) => void, columns?: ProColumns<any, 'text'>[]): any[] => {
   ///开始1
+  // console.debug('genColumns', onEvent);
   const tableColumns = columns ?? staticColumns(onEvent);
   ///结束1
   return tableColumns;

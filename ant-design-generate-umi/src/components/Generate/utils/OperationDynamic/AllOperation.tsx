@@ -11,7 +11,7 @@ const AllOperation = (props: any) => {
     console.error('operation不能为空。');
     return returnComponent;
   }
-  // console.debug('AllOperation', props);
+  console.debug('AllOperation', props);
   switch (operation) {
     case 'detail':
       returnComponent = <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={onEvent} />;

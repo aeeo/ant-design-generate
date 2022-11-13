@@ -3,7 +3,7 @@ import { Button, Popconfirm, Space, Upload } from 'antd';
 import AllOperation from './AllOperation';
 import { EventInfo, EventType, TableRecord } from '../../entity/types';
 
-export const OperationDynamic = (operationArr: Array<string>, onEvent: (eventInfo: EventInfo) => void, tableRecord: TableRecord) => {
+export const OperationDynamic = (operationArr: Array<EventType>, onEvent: (eventInfo: EventInfo) => void, tableRecord: TableRecord) => {
   let returnComponent = <></>;
   if (!operationArr) {
     console.error('operationArr不能为空。');
@@ -16,7 +16,7 @@ export const OperationDynamic = (operationArr: Array<string>, onEvent: (eventInf
   return (
     <>
       <Space>
-        {operationArr?.map((operationItem: any, index: number) => {
+        {operationArr?.map((operationItem: EventType, index: number) => {
           return <AllOperation operation={operationItem} onEvent={() => myOnEvent(operationItem)} key={index} />;
         })}
       </Space>
