@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import type { ColumnParams } from '../../../../entity/types';
 import AllOperation from './AllOperation';
 
 export const OperationDynamic = (operationArr: Array<string>, onEvent: any, columnRender: object) => {

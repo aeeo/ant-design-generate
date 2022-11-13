@@ -1,5 +1,4 @@
 import type { TablePaginationConfig } from 'antd';
-import type { ProColumns } from '@ant-design/pro-components';
 // 数据类型
 export const valueTypeArray = [
   { value: `option`, label: `操作按钮`, initialValue: '' },
@@ -43,9 +42,3 @@ export const formFieldArray = [
 ];
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
-
-// 表格列参数类型
-export type ColumnParams = {
-  onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void;
-  columns?: ProColumns<any, 'text'>[];
-};

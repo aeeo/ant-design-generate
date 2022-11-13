@@ -1,10 +1,10 @@
-import type { ColumnParams } from '../../entity/types';
 import IconsDynamic from './subComps/IconsDynamic';
 import { OperationDynamic } from './utils/OperationDynamic';
+import type { ProColumns } from '@ant-design/pro-components';
 
 import { message } from 'antd';
 
-const staticColumns = (columnParams: ColumnParams): any[] => {
+const staticColumns = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void): any[] => {
   return [
     {
       title: '姓名',
@@ -49,10 +49,7 @@ const staticColumns = (columnParams: ColumnParams): any[] => {
             key="FileSearchOutlined"
             iconName="FileSearchOutlined"
             tooltip="详情"
-            onEvent={
-              columnParams.onEvent
-              // message.warn('123')
-            }
+            onEvent={onEvent}
             columnRender={{
               reactNode: _,
               entity,
@@ -64,7 +61,7 @@ const staticColumns = (columnParams: ColumnParams): any[] => {
             key="EditOutlined"
             iconName="EditOutlined"
             tooltip="编辑"
-            onEvent={columnParams.onEvent}
+            onEvent={onEvent}
             columnRender={{
               reactNode: _,
               entity,
@@ -76,7 +73,7 @@ const staticColumns = (columnParams: ColumnParams): any[] => {
             key="DeleteOutlined"
             iconName="DeleteOutlined"
             tooltip="删除"
-            onEvent={columnParams.onEvent}
+            onEvent={onEvent}
             columnRender={{
               reactNode: _,
               entity,
@@ -119,34 +116,25 @@ export const genData = (total: number) => {
   return data;
 };
 // 初始数据列配置
-export const genColumns = (columnParams: ColumnParams): any[] => {
+export const genColumns = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void, columns?: ProColumns<any, 'text'>[]): any[] => {
   // if (!columnParams) return staticColumns(columnParams);
   ///开始1
-  const tableColumns =
-    columnParams.columns ??
-    staticColumns({
-      onEvent: (_, entity: any, index: number, type: string) => {
-        message.warn('哈哈哈Config');
-        columnParams.onEvent(_, entity, index, type);
-      },
-      columns: [],
-    });
+  const tableColumns = columns ?? staticColumns(onEvent);
   ///结束1
   return tableColumns;
 };
 
 // 初始化配置
-export const initConfig =
+export const initConfig = (onEvent: (dom: React.ReactNode, entity: any, index: number, type: string) => void): object => {
   ///开始2
-  {
+  return {
     event: {
       showEditModal: false, // 显示编辑Modal
       showDetailModal: false, // 显示详情Modal
     },
     bordered: true, // 显示表格边框
     loading: false, // 加载中
-    columns: genColumns({ onEvent: () => {} }), // 表格的列
-
+    columns: staticColumns(onEvent), // 表格的列
     size: 'small', // 尺寸 default | middle | small
     expandable: true, // 显示表格展开扩展列表
     headerTitle: '表格头部标题', // 表格头部标题
@@ -224,4 +212,5 @@ export const initConfig =
       },
     },
   };
-///结束2
+  ///结束2
+};

@@ -32,7 +32,24 @@ const ProTableDynamicSettings = (props: any) => {
   const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   const generateFormRef = useRef<ProFormInstance>(); // 代码生成表单
 
-  const [config, setConfig] = useState<any>(initConfig);
+  // 组件事件
+  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
+    console.debug(type, entity, index);
+    switch (type) {
+      case 'detail':
+        props.onSettingEvent(_, entity, index, type);
+        // config.event.showDetailModal = !config.event.showDetailModal;
+        console.debug('setting触发onSettingEvent');
+        // setConfig({ ...config });
+        break;
+    }
+  };
+  const initConfigTemp = initConfig((_, entity: any, index: number, type: string) => {
+    message.warn('哈哈哈Setting');
+    onSettingEvent(_, entity, index, type);
+  });
+
+  const [config, setConfig] = useState<any>(initConfigTemp);
   const [columnsStr, setColumnsStr] = useState<any>(JSON.stringify(columnsConfig)); // 存储无法被序列化的columns数据
   const [generateFormData, setGenerateFormData] = useState<any>({});
   // 去抖配置
@@ -44,18 +61,7 @@ const ProTableDynamicSettings = (props: any) => {
     // console.debug('配置的config发生变化', config);
     props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue(true));
   }, [config]);
-  // 组件事件
-  const onSettingEvent = (_: React.ReactNode, entity: any, index: number, type: string) => {
-    console.debug(type, entity, index);
-    switch (type) {
-      case 'detail':
-        props.onSettingEvent(_, entity, index, type);
-        // config.event.showDetailModal = !config.event.showDetailModal;
-        // console.debug('更新Modal', config, config.event.showDetailModal);
-        // setConfig({ ...config });
-        break;
-    }
-  };
+
   //#region 数据源表单配置
 
   const exetTableListDataSource = async (apiSelectList: any) => {
@@ -647,7 +653,7 @@ const ProTableDynamicSettings = (props: any) => {
                     size={configSettingUI.size}
                     formRef={dataSourceFormRef}
                     submitter={false}
-                    initialValues={initConfig.dataSource}
+                    initialValues={config.dataSource}
                     onFinish={async (values) => {
                       // console.debug(values);
                       return true;

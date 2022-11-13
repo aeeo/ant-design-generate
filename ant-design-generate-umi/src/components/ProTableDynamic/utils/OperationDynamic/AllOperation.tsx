@@ -1,7 +1,6 @@
 import * as Icons from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import IconsDynamic from '../../subComps/IconsDynamic';
-import type { ColumnParams } from '../../../../entity/types';
 
 const AllOperation = (props: any) => {
   const operation = props.operation;
