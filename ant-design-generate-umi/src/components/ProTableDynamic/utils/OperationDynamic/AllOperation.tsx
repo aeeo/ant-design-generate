@@ -5,7 +5,6 @@ import IconsDynamic from '../../subComps/IconsDynamic';
 const AllOperation = (props: any) => {
   const operation = props.operation;
   const onEvent = props.onEvent;
-  const columnRender = props.columnRender;
 
   let returnComponent = <></>;
   if (!operation) {
@@ -15,7 +14,13 @@ const AllOperation = (props: any) => {
   // console.debug('AllOperation', props);
   switch (operation) {
     case 'detail':
-      returnComponent = <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={onEvent} columnRender={columnRender} />;
+      returnComponent = <IconsDynamic key="FileSearchOutlined" iconName="FileSearchOutlined" tooltip="详情" onEvent={onEvent} />;
+      break;
+    case 'edit':
+      returnComponent = <IconsDynamic key="EditOutlined" iconName="EditOutlined" tooltip="编辑" onEvent={onEvent} />;
+      break;
+    case 'delete':
+      returnComponent = <IconsDynamic key="DeleteOutlined" iconName="DeleteOutlined" tooltip="删除" onEvent={onEvent} />;
       break;
   }
   return returnComponent;
@@ -23,6 +28,5 @@ const AllOperation = (props: any) => {
 AllOperation.propTypes = {
   operation: PropTypes.object,
   onEvent: PropTypes.func,
-  columnRender: PropTypes.object,
 };
 export default AllOperation;

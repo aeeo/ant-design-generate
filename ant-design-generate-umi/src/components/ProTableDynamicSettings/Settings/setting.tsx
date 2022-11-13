@@ -25,6 +25,7 @@ import { configSettingUI } from '../configSettingUI';
 import dataSource from '../../../../server/dataSource';
 import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
+import { OperationDynamic } from '../../ProTableDynamic/utils/OperationDynamic/index';
 const ProTableDynamicSettings = (props: any) => {
   const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单
   const columnFormRef = useRef<ProFormInstance>(); // 列配置表单
@@ -39,13 +40,12 @@ const ProTableDynamicSettings = (props: any) => {
       case 'detail':
         props.onSettingEvent(_, entity, index, type);
         // config.event.showDetailModal = !config.event.showDetailModal;
-        console.debug('setting触发onSettingEvent');
+        // console.debug('setting触发onSettingEvent');
         // setConfig({ ...config });
         break;
     }
   };
   const initConfigTemp = initConfig((_, entity: any, index: number, type: string) => {
-    message.warn('哈哈哈Setting');
     onSettingEvent(_, entity, index, type);
   });
 
@@ -94,44 +94,7 @@ const ProTableDynamicSettings = (props: any) => {
       dataIndex: 'table-operation', // 防止后端字段重名
       valueType: 'option',
       render: (_: React.ReactNode, entity: any, index: number) => {
-        return [
-          <IconsDynamic
-            key="FileSearchOutlined"
-            iconName="FileSearchOutlined"
-            tooltip="详情"
-            onEvent={onSettingEvent}
-            columnRender={{
-              reactNode: _,
-              entity,
-              index,
-              type: 'detail',
-            }}
-          />,
-          <IconsDynamic
-            key="EditOutlined"
-            iconName="EditOutlined"
-            tooltip="编辑"
-            onEvent={onSettingEvent}
-            columnRender={{
-              reactNode: _,
-              entity,
-              index,
-              type: 'detail',
-            }}
-          />,
-          <IconsDynamic
-            key="DeleteOutlined"
-            iconName="DeleteOutlined"
-            tooltip="删除"
-            onEvent={onSettingEvent}
-            columnRender={{
-              reactNode: _,
-              entity,
-              index,
-              type: 'detail',
-            }}
-          />,
-        ];
+        return OperationDynamic(['detail', 'edit', 'delete'], onSettingEvent, { reactNode: _, entity, index });
       },
     };
     const operationColumnString =
@@ -140,19 +103,28 @@ const ProTableDynamicSettings = (props: any) => {
       '  dataIndex: "table-operation",' +
       '  valueType: "option",' +
       '  render: (_: React.ReactNode, entity: any, index: number) => {' +
-      '    return [' +
-      '      <IconsDynamic onEvent={columnParams.onEvent} ' +
-      '        key={"table-operation_" + index} ' +
-      '        columnRender={{' +
-      '          reactNode: _,' +
-      '          entity,' +
-      '          index,' +
-      '          type: "detail",' +
-      '        }}' +
-      '      />,' +
-      '    ];' +
+      '    return OperationDynamic(["detail", "edit", "delete"], onSettingEvent, { reactNode: _, entity, index });' +
       '  },' +
       '}///去除引号';
+    // const operationColumnString =
+    //   '///去除引号{' +
+    //   '  title: "操作",' +
+    //   '  dataIndex: "table-operation",' +
+    //   '  valueType: "option",' +
+    //   '  render: (_: React.ReactNode, entity: any, index: number) => {' +
+    //   '    return [' +
+    //   '      <IconsDynamic onEvent={columnParams.onEvent} ' +
+    //   '        key={"table-operation_" + index} ' +
+    //   '        columnRender={{' +
+    //   '          reactNode: _,' +
+    //   '          entity,' +
+    //   '          index,' +
+    //   '          type: "detail",' +
+    //   '        }}' +
+    //   '      />,' +
+    //   '    ];' +
+    //   '  },' +
+    //   '}///去除引号';
 
     tableColumn.push(operationColumn);
     columnsStr = operationColumnString;

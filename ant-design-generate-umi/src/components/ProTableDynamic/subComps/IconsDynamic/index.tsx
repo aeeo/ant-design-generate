@@ -4,9 +4,7 @@ import AllIcons from './AllIcons';
 
 const IconsDynamic = (props: any) => {
   const onMyEvent = () => {
-    const { reactNode, entity, index, type } = props.columnRender;
-    console.debug('IconsDynamic 触发OnEvent', props);
-    props.onEvent(reactNode, entity, index, type);
+    props.onEvent();
   };
   // console.debug('IconsDynamic初始化', props);
   return (
@@ -23,6 +21,5 @@ IconsDynamic.propTypes = {
   onEvent: PropTypes.func,
   iconName: PropTypes.string,
   tooltip: PropTypes.string,
-  columnRender: PropTypes.object,
 };
 export default IconsDynamic;

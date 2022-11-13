@@ -29,22 +29,28 @@ const ProTableDynamic = (props: any) => {
   };
   ///开始删除
   if (props.dynamic) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     [config, setConfig] = useState<any>(props.config);
     //#region 开发阶段Props相关
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       console.debug('ProTableDynamic的config发生变化:', config);
       setConfig(props.config);
     }, [props.config]);
 
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     [tableData, setTableData] = useState<any>(generateData);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       console.debug('ProTableDynamic的tableData发生变化:', tableData, props.tableData);
       setTableData(props.tableData);
     }, [props.tableData]);
 
     // 监听上级组件传来的event事件信息，用于更新表格弹框行为等动作
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [eventInfo, setEventInfo] = useState<any>(props.eventInfo);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     React.useEffect(() => {
       console.debug('ProTableDynamic的eventInfo发生变化:', eventInfo, props.eventInfo);
       // setEventInfo(props.eventInfo);
@@ -55,8 +61,10 @@ const ProTableDynamic = (props: any) => {
     //#endregion
   } else {
     ///结束删除
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     [config, setConfig] = useState<any>(initConfig);
     const generateData = genData(config.showPagination ? config.pagination?.total : 10);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     [tableData, setTableData] = useState<any>(generateData);
     ///开始删除
   }
@@ -74,7 +82,7 @@ const ProTableDynamic = (props: any) => {
   //   ...item,
   //   ellipsis: config.ellipsis,
   // }));
-  const tableColumns = config.columns;
+  // const tableColumns = config.columns;
   console.debug('ProTableDynamic 初始化', props);
 
   return (
@@ -102,7 +110,7 @@ const ProTableDynamic = (props: any) => {
         }
         headerTitle={config.headerTitle}
         tooltip={config.headerTooltip}
-        columns={tableColumns}
+        columns={config.columns}
         dataSource={tableData}
         scroll={config.openScroll ? config.scroll : null}
         footer={config.showFooter ? () => config.footerTitle : false}
