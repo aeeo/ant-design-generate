@@ -22,7 +22,7 @@ import { request } from 'umi';
 import { valueTypeArray } from '../../../entity/types';
 import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
-import dataSource from '../../../../server/dataSource';
+import dataSource from '../../ProTableDynamic/utils/DataSource';
 import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
 import { OperationDynamic } from '../../ProTableDynamic/utils/OperationDynamic/index';
