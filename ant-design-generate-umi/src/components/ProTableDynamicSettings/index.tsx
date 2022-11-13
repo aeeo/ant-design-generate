@@ -7,7 +7,7 @@ import { genData, initConfig } from '../ProTableDynamic/config';
 import ProTableDynamicSettings from './Settings/setting';
 import ProTableDynamic from '../ProTableDynamic';
 
-const ProTableDynamic = () => {
+const ProTableDynamicShow = () => {
   const ref = useRef<ProFormInstance>();
 
   const [config, setConfig] = useState<any>(initConfig);
@@ -53,4 +53,4 @@ const ProTableDynamic = () => {
   );
 };
 
-export default ProTableDynamic;
+export default ProTableDynamicShow;
