@@ -111,7 +111,6 @@ const ProTableDynamic = (props: any) => {
               ]
             : false
         }
-        headerTitle={config.headerTitle}
         tooltip={config.headerTooltip}
         columns={config.columns}
         dataSource={tableData}
@@ -124,7 +123,7 @@ const ProTableDynamic = (props: any) => {
         onOk={toggleModalStatus}
         onCancel={toggleModalStatus}
         style={{ top: 20 }}
-        width={1300}
+        width={1000}
         footer={[
           <Button key="back" onClick={toggleModalStatus}>
             取消

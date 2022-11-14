@@ -99,12 +99,10 @@ export const initConfig = (onEvent: (eventInfo: EventInfo) => void): object => {
     columns: genColumns(onEvent), // 表格的列
     size: 'small', // 尺寸 default | middle | small
     expandable: true, // 显示表格展开扩展列表
-    headerTitle: '表格头部标题', // 表格头部标题
-    headerTooltip: '表格头部标题 tooltip', // 表格头部标题 tooltip
+
     showFooter: true, // 显示footer
     footerTitle: '表格Footer', // 表格Footer
     showHeader: true, // 显示表头
-    footer: true, // 显示底脚
     rowSelection: true, // 多选框
 
     openScroll: false, // 开启滚动
@@ -112,7 +110,6 @@ export const initConfig = (onEvent: (eventInfo: EventInfo) => void): object => {
 
     hasData: true, //
     tableLayout: 'auto', // 表格布局 - | auto | fixed	无 固定表头/列或使用了 column.ellipsis 时，默认值为 fixed
-    toolBarRender: true, // 显示工具栏
     showSearch: true, // 筛选表单 true:显示 false:隐藏
     search: {
       span: 8, // 栅格
@@ -122,6 +119,7 @@ export const initConfig = (onEvent: (eventInfo: EventInfo) => void): object => {
       layout: 'horizontal', // 布局 horizontal:水品 vertical:垂直
     },
     // 工具栏
+    toolBarRender: true, // 显示工具栏
     options: {
       search: true,
       show: true, // 显示
@@ -129,6 +127,9 @@ export const initConfig = (onEvent: (eventInfo: EventInfo) => void): object => {
       fullScreen: true, // 显示全屏按钮
       setting: true, // 显示设置按钮
     },
+    headerTitle: '标题', // 表格头部标题
+    headerTooltip: '标题 tooltip', // 表格头部标题 tooltip
+
     showPagination: true, // 显示分页
     pagination: {
       position: 'bottomLeft', // 位置 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';

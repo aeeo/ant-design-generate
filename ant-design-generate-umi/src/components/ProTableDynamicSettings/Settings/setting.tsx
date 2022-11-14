@@ -107,25 +107,6 @@ const ProTableDynamicSettings = (props: any) => {
       '    return OperationDynamic(["detail", "edit", "delete"], onEvent, { reactNode: _, entity, index });' +
       '  },' +
       '}///去除引号';
-    // const operationColumnString =
-    //   '///去除引号{' +
-    //   '  title: "操作",' +
-    //   '  dataIndex: "table-operation",' +
-    //   '  valueType: "option",' +
-    //   '  render: (_: React.ReactNode, entity: any, index: number) => {' +
-    //   '    return [' +
-    //   '      <IconsDynamic onEvent={columnParams.onEvent} ' +
-    //   '        key={"table-operation_" + index} ' +
-    //   '        columnRender={{' +
-    //   '          reactNode: _,' +
-    //   '          entity,' +
-    //   '          index,' +
-    //   '          type: "detail",' +
-    //   '        }}' +
-    //   '      />,' +
-    //   '    ];' +
-    //   '  },' +
-    //   '}///去除引号';
 
     tableColumn.push(operationColumn);
     columnsStr = operationColumnString;
@@ -311,8 +292,7 @@ const ProTableDynamicSettings = (props: any) => {
                         name="size"
                       />
                       <ProFormSwitch label="加载中" tooltip="loading" name="loading" />
-                      <ProFormSwitch label="显示标题" tooltip="showHeader" name="showHeader" />
-                      <ProFormSwitch label="页脚" tooltip="showFooter" name="showFooter" />
+
                       <ProFormSwitch label="支持展开" tooltip="expandable" name="expandable" />
                       <ProFormSwitch label="行选择" tooltip="rowSelection" name="rowSelection" />
                       {/* <ProFormSwitch label="横向滚动" tooltip="openXScroll" name="openXScroll" />
@@ -340,7 +320,6 @@ const ProTableDynamicSettings = (props: any) => {
                             </>
                           );
                         }}
-                      
                       </ProFormDependency> */}
                       <ProFormSwitch label="开启滚动" tooltip="openScroll" name="openScroll" />
                       <ProFormDependency name={['openScroll']}>
@@ -373,6 +352,15 @@ const ProTableDynamicSettings = (props: any) => {
                         ]}
                         label="表格布局"
                       />
+                      <ProFormSwitch label="表格footer" tooltip="showFooter" name="showFooter" />
+                      <ProFormDependency name={['showFooter']}>
+                        {({ showFooter }) => {
+                          if (!showFooter) {
+                            return null;
+                          }
+                          return <ProFormText label="表格Footer" name="footerTitle" tooltip="footerTitle={false}" />;
+                        }}
+                      </ProFormDependency>
                     </ProForm.Group>
                     <ProForm.Group
                       collapsible
@@ -382,10 +370,10 @@ const ProTableDynamicSettings = (props: any) => {
                       title="工具栏"
                       extra={<ProFormSwitch noStyle name="toolBarRender" />}
                     >
-                      <ProFormText label="表格头部标题" name="headerTitle" tooltip="headerTitle={false}" />
-                      <ProFormText label="表格头部标题tooltip" name="headerTooltip" tooltip="headerTooltip={false}" />
-                      <ProFormText label="表格Footer" name="footerTitle" tooltip="footerTitle={false}" />
+                      <ProFormText label="标题" name="headerTitle" tooltip="headerTitle={false}" />
+                      <ProFormText label="标题tooltip" name="headerTooltip" tooltip="headerTooltip={false}" />
 
+                      <ProFormSwitch label="显示表头" tooltip="showHeader" name="showHeader" />
                       <ProFormSwitch label="Icon 显示" name={['options', 'show']} tooltip="options={false}" />
                       <ProFormSwitch label="密度 Icon" name={['options', 'density']} tooltip="options={{ density:false }}" />
                       <ProFormSwitch label="keyWords" name={['options', 'search']} tooltip="options={{ search:'keyWords' }}" />
