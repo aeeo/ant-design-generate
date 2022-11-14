@@ -3,6 +3,7 @@ import { Switch } from 'antd';
 import ProFormItemDynamic from '../ProFormItemDynamic';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 const ProFormDynamic = (props: any) => {
   // 处理数据
@@ -18,24 +19,24 @@ const ProFormDynamic = (props: any) => {
 
   const formFields = dealFormFields(props.columns);
 
-  const [readonly, setReadonly] = useState(false);
+  const [readonly, setReadonly] = useState(props.readonly);
+  ///开始删除
+  if (props.dynamic) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    React.useEffect(() => {
+      // console.debug('ProFormDynamic readonly 改变', props.readonly);
+      setReadonly(props.readonly);
+    }, [props.readonly]);
+  }
+  ///结束删除
+
   const [formData, setFormData] = useState<any>({});
-  console.debug('ProFormDynamic', formFields);
+  console.debug('ProFormDynamic', props.type, readonly, formFields, props.apiList);
   return (
     <>
-      <Switch
-        style={{
-          marginBlockEnd: 16,
-        }}
-        checked={readonly}
-        checkedChildren="编辑"
-        unCheckedChildren="只读"
-        onChange={setReadonly}
-      />
       <ProForm
         layout="horizontal"
         readonly={readonly}
-        name="validate_other"
         initialValues={formData}
         onValuesChange={(_, values) => {
           console.debug(values);
@@ -50,6 +51,11 @@ const ProFormDynamic = (props: any) => {
   );
 };
 ProFormDynamic.propTypes = {
-  columns: PropTypes.array,
+  type: PropTypes.oneOf(['formAdd', 'formEdit', 'formDetail']),
+  readonly: PropTypes.bool, // 表单是否只读
+  columns: PropTypes.array, // 表单列信息
+  apiList: PropTypes.array, // apiList信息
+  ///开始删除
+  dynamic: PropTypes.bool, // 是否动态组件
 };
 export default ProFormDynamic;

@@ -43,6 +43,8 @@ export const formFieldArray = [
 // 分页位置 不知道为什么配置上不生效
 export type TablePaginationPosition = 'topLeft' | 'topCenter' | 'topRight' | 'bottomLeft' | 'bottomCenter' | 'bottomRight';
 
+export type FormType = 'formAdd' | 'formEdit' | 'formDetail'; // form 类型
+
 export type ApiType = 'apiSelectList' | 'apiSelectDetail' | 'apiAdd' | 'apiUpdate' | 'apiDelete' | 'apiDeleteBatch';
 
 export type ApiInfo = {

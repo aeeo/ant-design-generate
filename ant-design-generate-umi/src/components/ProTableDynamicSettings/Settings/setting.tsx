@@ -56,7 +56,7 @@ const ProTableDynamicSettings = (props: any) => {
   const [generateFormData, setGenerateFormData] = useState<any>({});
   // 去抖配置
   const updateConfig = useDebounceFn(async (state) => {
-    // console.debug('setting更新表单', { ...config, ...state });
+    console.debug('setting更新表单', { ...config, ...state });
     setConfig({ ...config, ...state });
   }, 20);
   React.useEffect(() => {
@@ -132,65 +132,59 @@ const ProTableDynamicSettings = (props: any) => {
     setGenerateFormData(generateFormData);
     generateFormRef?.current?.resetFields();
   };
-  const exetTableDetailDataSource = async (apiSelectDetail: any) => {
-    const { url, method, afterScript } = apiSelectDetail;
-    const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
-  };
 
-  const exetDataSource = (type: any) => {
-    const data = dataSourceFormRef.current?.getFieldsValue(true);
-    if (!data || Object.keys(data).length === 0 || !data.apiList || data.apiList.length === 0) {
-      return;
-    }
-    switch (type) {
+  const exetDataSource = (apiType: ApiType) => {
+    // const data = dataSourceFormRef.current?.getFieldsValue(true);
+    // if (!data || Object.keys(data).length === 0 || !data.apiList || data.apiList.length === 0) {
+    //   return;
+    // }
+    console.debug('exetDataSource', apiType, config);
+    switch (apiType) {
       case 'apiSelectList':
-        exetTableListDataSource(data.apiList[type]);
-        break;
-      case 'apiSelectDetail':
-        exetTableDetailDataSource(data.apiList[type]);
-        break;
-      case 'apiAdd':
-        break;
-      case 'apiDelete':
-        break;
-      case 'apiUpdate':
+        exetTableListDataSource(config.dataSource.apiList[apiType]);
         break;
       default:
-        message.error('数据源类型错误' + type);
+        message.error('数据源类型错误' + apiType);
         return;
     }
   };
   // 一键填写
   const fillDataSource = () => {
-    dataSourceFormRef?.current?.setFieldsValue({
-      apiList: {
-        apiSelectList: {
-          url: '/api/selectList',
-          method: 'GET',
-          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
-        },
-        apiSelectDetail: {
-          url: '/api/selectDetail',
-          method: 'GET',
-          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
-        },
-        apiAdd: {
-          url: '/api/Success',
-          method: 'GET',
-          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
-        },
-        apiDelete: {
-          url: '/api/Success',
-          method: 'GET',
-          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
-        },
-        apiUpdate: {
-          url: '/api/Success',
-          method: 'GET',
-          afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+    setConfig({
+      ...config,
+      ...{
+        dataSource: {
+          apiList: {
+            apiSelectList: {
+              url: '/api/selectList',
+              method: 'GET',
+              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+            },
+            apiSelectDetail: {
+              url: '/api/selectDetail',
+              method: 'GET',
+              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+            },
+            apiAdd: {
+              url: '/api/Success',
+              method: 'GET',
+              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+            },
+            apiDelete: {
+              url: '/api/Success',
+              method: 'GET',
+              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+            },
+            apiUpdate: {
+              url: '/api/Success',
+              method: 'GET',
+              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+            },
+          },
         },
       },
     });
+    dataSourceFormRef?.current?.resetFields();
   };
   //#endregion
 
@@ -606,7 +600,7 @@ const ProTableDynamicSettings = (props: any) => {
             },
             {
               label: '数据源',
-              key: 'tab5',
+              key: 'dataSource',
               children: (
                 <>
                   <ProForm
@@ -619,6 +613,7 @@ const ProTableDynamicSettings = (props: any) => {
                       // console.debug(values);
                       return true;
                     }}
+                    onValuesChange={(_, values) => updateConfig.run(values)}
                   >
                     <Button htmlType="button" onClick={fillDataSource} key="edit">
                       一键填写

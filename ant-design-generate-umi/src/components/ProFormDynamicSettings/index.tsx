@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import {
   ProCard,
   ProForm,
@@ -18,21 +17,23 @@ import {
 import { Button, message } from 'antd';
 import React from 'react';
 import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
-import { valueTypeArray, formFieldArray } from '../ProTableDynamic/entity/types';
+import { valueTypeArray, formFieldArray, EventType, ApiType } from '../ProTableDynamic/entity/types';
 import ProFormDynamic from '../ProTableDynamic/subComps/ProFormDynamic';
 import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { initConfig } from '../ProTableDynamic/subComps/ProFormDynamic/config';
 
 const ProFormDynamicSettings = (props: any) => {
-  const myColumns: any[] = props.columns;
+  let formConfig = initConfig;
+  formConfig.dataSource = props.config.dataSource;
+  formConfig.columns = props.config.columns;
 
-  const [config, setConfig] = useState<any>({ columns: myColumns });
-  const [columns, setColumns] = useState<any>(props.columns);
+  const [config, setConfig] = useState<any>({ ...formConfig });
+  const [columns, setColumns] = useState<any>([...formConfig.columns]);
 
-  /** 去抖配置 */
   const updateConfig = useDebounceFn(async (state) => {
-    setConfig(state);
+    setConfig({ ...config, ...state });
   }, 20);
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
@@ -41,25 +42,43 @@ const ProFormDynamicSettings = (props: any) => {
     // 更新表单项
     // console.debug('更新动态表单字段：props');
     settingFormRef.current?.resetFields();
-    setConfig({ columns: myColumns });
+    setConfig({ ...initConfig, ...config });
   }, [props]);
   React.useEffect(() => {
     // 更新表单项
     const newFormFields: any = [];
-    if (!config?.columns) return;
-    config?.columns?.forEach((columnsItem: any) => {
-      if (columnsItem.formFieldType && !columnsItem.hide) {
-        newFormFields.push({ ...columnsItem });
-      }
-    });
-    console.debug('更新动态表单字段：', config, newFormFields);
+    if (config.columns) {
+      config?.columns?.forEach((columnsItem: any) => {
+        if (columnsItem.formFieldType && !columnsItem.hide) {
+          newFormFields.push({ ...columnsItem });
+        }
+      });
+    }
+    // console.debug('更新动态表单字段：', config, newFormFields);
     setColumns(newFormFields);
   }, [config]);
-  console.debug('ProFormDynamicSettings', props.columns, config);
+
+  const exetTableDetailDataSource = async (apiSelectDetail: any) => {
+    const { url, method, afterScript } = apiSelectDetail;
+    message.info('获取详情');
+    // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
+  };
+  const exetDataSource = (apiType: ApiType) => {
+    // message.info('apiType:' + apiType);
+    switch (apiType) {
+      case 'apiSelectDetail':
+        exetTableDetailDataSource(config.dataSource.apiList[apiType]);
+        break;
+      default:
+        message.error('数据源类型错误' + apiType);
+        return;
+    }
+  };
+  console.debug('ProFormDynamicSettings', props.config);
   return (
     <ProCard split="vertical">
       <ProCard>
-        <ProFormDynamic columns={columns} />
+        <ProFormDynamic readonly={config.readonly} columns={columns} dynamic={true} />
       </ProCard>
       <ProCard
         colSpan="420px"
@@ -151,7 +170,214 @@ const ProFormDynamicSettings = (props: any) => {
             {
               label: '基本配置',
               key: 'tab1',
-              children: <></>,
+              children: (
+                <>
+                  <ProForm layout="inline" size={configSettingUI.size} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
+                    {/* <ProForm.Group title="表单配置" collapsible direction="horizontal" labelLayout="twoLine"> */}
+                    <ProFormSwitch label="只读" tooltip="showEditModal" name="readonly" />
+                    {/* </ProForm.Group> */}
+                  </ProForm>
+                </>
+              ),
+            },
+            {
+              label: '数据源',
+              key: 'dataSource',
+              children: (
+                <>
+                  <ProForm layout="horizontal" size={configSettingUI.size} submitter={false} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
+                    <ProFormSelect
+                      tooltip={`formType={{${config.formType}}}`}
+                      options={[
+                        {
+                          label: '增',
+                          value: 'formAdd',
+                        },
+                        {
+                          label: '改',
+                          value: 'formEdit',
+                        },
+                        {
+                          label: '查',
+                          value: 'formDetail',
+                        },
+                      ]}
+                      label="表单类型"
+                      name="formType"
+                    />
+                    {config.formType === 'formDetail' ? (
+                      <>
+                        <ProFormGroup title="查-详情" collapsible defaultCollapsed={false}>
+                          <ProFormText
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'url']}
+                            label="URL地址"
+                            tooltip="URL地址"
+                            placeholder="请输入URL"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请输入URL',
+                              },
+                            ]}
+                          />
+                          <ProFormSelect
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'method']}
+                            tooltip="请求方式"
+                            label="请求方式"
+                            valueEnum={{
+                              GET: 'GET',
+                              POST: 'POST',
+                              PUT: 'PUT',
+                              DELETE: 'DELETE',
+                            }}
+                            placeholder="请选择请求方式"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请选择请求方式！',
+                              },
+                            ]}
+                          />
+                          <ProFormTextArea
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'afterScript']}
+                            label="后执行脚本"
+                            tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                            placeholder="请输入后执行脚本"
+                          />
+                          <Button type="primary" onClick={() => exetDataSource('apiSelectDetail')}>
+                            执行
+                          </Button>
+                        </ProFormGroup>
+                      </>
+                    ) : config.formType === 'formAdd' ? (
+                      <>
+                        <ProForm.Group title="增" collapsible defaultCollapsed={false}>
+                          <ProFormText
+                            name={['dataSource', 'apiList', 'apiAdd', 'url']}
+                            label="URL地址"
+                            tooltip="URL地址"
+                            placeholder="请输入URL"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请输入URL',
+                              },
+                            ]}
+                          />
+                          <ProFormSelect
+                            name={['dataSource', 'apiList', 'apiAdd', 'method']}
+                            tooltip="请求方式"
+                            label="请求方式"
+                            valueEnum={{
+                              GET: 'GET',
+                              POST: 'POST',
+                              PUT: 'PUT',
+                              DELETE: 'DELETE',
+                            }}
+                            placeholder="请选择请求方式"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请选择请求方式！',
+                              },
+                            ]}
+                          />
+                          <ProFormTextArea
+                            name={['dataSource', 'apiList', 'apiAdd', 'afterScript']}
+                            label="后执行脚本"
+                            tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                            placeholder="请输入后执行脚本"
+                          />
+                        </ProForm.Group>
+                      </>
+                    ) : config.formType === 'formEdit' ? (
+                      <>
+                        <ProFormGroup title="查-详情" collapsible defaultCollapsed={false}>
+                          <ProFormText
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'url']}
+                            label="URL地址"
+                            tooltip="URL地址"
+                            placeholder="请输入URL"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请输入URL',
+                              },
+                            ]}
+                          />
+                          <ProFormSelect
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'method']}
+                            tooltip="请求方式"
+                            label="请求方式"
+                            valueEnum={{
+                              GET: 'GET',
+                              POST: 'POST',
+                              PUT: 'PUT',
+                              DELETE: 'DELETE',
+                            }}
+                            placeholder="请选择请求方式"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请选择请求方式！',
+                              },
+                            ]}
+                          />
+                          <ProFormTextArea
+                            name={['dataSource', 'apiList', 'apiSelectDetail', 'afterScript']}
+                            label="后执行脚本"
+                            tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                            placeholder="请输入后执行脚本"
+                          />
+                          <Button type="primary" onClick={() => exetDataSource('apiSelectDetail')}>
+                            执行
+                          </Button>
+                        </ProFormGroup>
+                        <ProForm.Group title="改" collapsible defaultCollapsed={false}>
+                          <ProFormText
+                            name={['dataSource', 'apiList', 'apiUpdate', 'url']}
+                            label="URL地址"
+                            tooltip="URL地址"
+                            placeholder="请输入URL"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请输入URL',
+                              },
+                            ]}
+                          />
+                          <ProFormSelect
+                            name={['dataSource', 'apiList', 'apiUpdate', 'method']}
+                            tooltip="请求方式"
+                            label="请求方式"
+                            valueEnum={{
+                              GET: 'GET',
+                              POST: 'POST',
+                              PUT: 'PUT',
+                              DELETE: 'DELETE',
+                            }}
+                            placeholder="请选择请求方式"
+                            rules={[
+                              {
+                                required: true,
+                                message: '请选择请求方式！',
+                              },
+                            ]}
+                          />
+                          <ProFormTextArea
+                            name={['dataSource', 'apiList', 'apiUpdate', 'afterScript']}
+                            label="后执行脚本"
+                            tooltip="解析返回的数据,response为响应数据,data代表解析到的数据,total代表总条数"
+                            placeholder="请输入后执行脚本"
+                          />
+                        </ProForm.Group>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </ProForm>
+                </>
+              ),
             },
           ],
         }}
@@ -161,6 +387,7 @@ const ProFormDynamicSettings = (props: any) => {
 };
 
 ProFormDynamicSettings.propTypes = {
-  columns: PropTypes.array,
+  type: PropTypes.oneOf(['formAdd', 'formEdit', 'formDetail']),
+  config: PropTypes.object,
 };
 export default ProFormDynamicSettings;

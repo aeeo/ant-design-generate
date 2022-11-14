@@ -9,16 +9,18 @@ import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的P
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
 import dataSource from '../ProTableDynamic/utils/DataSource';
-import { ApiType, EventInfo } from '../ProTableDynamic/entity/types';
+import { ApiType, EventInfo, EventType, FormType } from '../ProTableDynamic/entity/types';
 
 const ProTableDynamic = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
+  const [modalType, setModalType] = useState<FormType>('formDetail');
+  const [modalReadonly, setModalReadonly] = useState<boolean>(true);
+
   // 控制弹框显示隐藏
   const toggleModalStatus = () => {
     config.event.showDetailModal = !config.event.showDetailModal;
-    console.debug('更新Modal', config.event.showDetailModal);
     setConfig({ ...config });
   };
   // 子组件事件
@@ -28,7 +30,10 @@ const ProTableDynamic = (props: any) => {
       case 'eventDetail': {
         // const { url, method, afterScript } = config.apiList['apiSelectDetail'];
         // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
+        setModalType('formDetail');
+        setModalReadonly(true);
         toggleModalStatus();
+        // console.debug('onSubEvent', modalType, modalReadonly);
         break;
       }
     }
@@ -134,10 +139,10 @@ const ProTableDynamic = (props: any) => {
           {
             ///开始删除
             props.dynamic ? (
-              <ProFormDynamicSettings columns={config.columns} />
+              <ProFormDynamicSettings config={config} />
             ) : (
               ///结束删除
-              <ProFormDynamic columns={config.columns} />
+              <ProFormDynamic type={modalType} readonly={modalReadonly} columns={config.columns} />
               ///开始删除
             )
             ///结束删除
@@ -152,7 +157,9 @@ ProTableDynamic.propTypes = {
   config: PropTypes.object,
   tableData: PropTypes.array,
   eventInfo: PropTypes.object,
+  ///开始删除
   dynamic: PropTypes.bool, // 是否动态组件
+  ///结束删除
 };
 
 export default ProTableDynamic;
