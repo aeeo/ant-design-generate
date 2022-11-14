@@ -1,9 +1,11 @@
 import { ProForm } from '@ant-design/pro-components';
 import { Switch } from 'antd';
 import ProFormItemDynamic from '../ProFormItemDynamic';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ProFormText } from '@ant-design/pro-components';
+import type { ProColumnType, ProFormInstance } from '@ant-design/pro-components';
 
 const ProFormDynamic = (props: any) => {
   // 处理数据
@@ -13,33 +15,24 @@ const ProFormDynamic = (props: any) => {
       formField.formFieldType = formField.formFieldType ?? 'ProFormText'; // 默认赋formFieldType类型为ProFormText
       formField.placeholder = formField.placeholder ?? '请输入';
       formField.tooltip = formField.tooltip ?? '';
+      formField.value = formField.value ?? '';
     });
     return formFields;
   };
+  const formFields = dealFormFields(props.config.columns);
 
-  const formFields = dealFormFields(props.columns);
-
-  const [readonly, setReadonly] = useState(props.readonly);
-  ///开始删除
-  if (props.dynamic) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      // console.debug('ProFormDynamic readonly 改变', props.readonly);
-      setReadonly(props.readonly);
-    }, [props.readonly]);
-  }
-  ///结束删除
-
-  const [formData, setFormData] = useState<any>({});
-  console.debug('ProFormDynamic', props.type, readonly, formFields, props.apiList);
+  const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单
+  // console.debug('ProFormDynamic', props.config, formFields, props.config.tableDataDetail);
+  baseFormRef.current?.resetFields();
   return (
     <>
       <ProForm
+        formRef={baseFormRef}
         layout="horizontal"
-        readonly={readonly}
-        initialValues={formData}
+        readonly={props.config.readonly}
+        initialValues={props.config.tableDataDetail}
         onValuesChange={(_, values) => {
-          console.debug(values);
+          // console.debug(_, values);
         }}
       >
         {formFields?.map((formFieldInfo: any, index: number) => {
@@ -50,11 +43,13 @@ const ProFormDynamic = (props: any) => {
   );
 };
 ProFormDynamic.propTypes = {
-  type: PropTypes.oneOf(['formAdd', 'formEdit', 'formDetail']),
-  readonly: PropTypes.bool, // 表单是否只读
-  columns: PropTypes.array, // 表单列信息
-  apiList: PropTypes.array, // apiList信息
+  config: PropTypes.object,
+  // type: PropTypes.oneOf(['formAdd', 'formEdit', 'formDetail']),
+  // readonly: PropTypes.bool, // 表单是否只读
+  // columns: PropTypes.array, // 表单列信息
+  // apiList: PropTypes.array, // apiList信息
   ///开始删除
   dynamic: PropTypes.bool, // 是否动态组件
+  ///结束删除
 };
 export default ProFormDynamic;

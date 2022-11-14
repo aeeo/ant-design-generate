@@ -23,48 +23,57 @@ import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { initConfig } from '../ProTableDynamic/subComps/ProFormDynamic/config';
-import dataSource from '../ProTableDynamic/utils/DataSource';
+import { dataSource, dealApiSelectDetail } from '../ProTableDynamic/utils/DataSource';
 
 const ProFormDynamicSettings = (props: any) => {
-  let formConfig = initConfig;
+  const dealFormItem = (columns: any[]): any[] => {
+    if (columns) {
+      return columns.map((column: any) => {
+        column.hide = false;
+        return column;
+      });
+    } else {
+      return [];
+    }
+  };
+
+  let formConfig: any = initConfig;
   formConfig.dataSource = props.config.dataSource;
-  formConfig.columns = props.config.columns;
+  formConfig.columns = dealFormItem(props.config.columns ?? []);
 
   const [config, setConfig] = useState<any>({ ...formConfig }); // 配置信息
   const [columns, setColumns] = useState<any>([...formConfig.columns]); // 表单列
 
   const updateConfig = useDebounceFn(async (state) => {
     setConfig({ ...config, ...state });
-  }, 20);
+  }, 100);
 
-  const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
-  const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
+  const columnsRef = useRef<ProFormInstance>(); // 列配置表单
+  const columnsActionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   React.useEffect(() => {
     // 更新表单项
     // console.debug('更新动态表单字段：props');
-    settingFormRef.current?.resetFields();
+    columnsRef.current?.resetFields();
     setConfig({ ...initConfig, ...config });
   }, [props]);
   React.useEffect(() => {
     // 更新表单项
-    const newFormFields: any = [];
-    if (config.columns) {
-      config?.columns?.forEach((columnsItem: any) => {
-        if (columnsItem.formFieldType && !columnsItem.hide) {
-          newFormFields.push({ ...columnsItem });
-        }
-      });
-    }
+    let newFormFields: Array<any> = config.columns.filter((columnsItem: any) => {
+      return !columnsItem.hide;
+    });
+    newFormFields = dealFormItem(newFormFields);
     // console.debug('更新动态表单字段：', config, newFormFields);
     setColumns(newFormFields);
+    columnsRef.current?.setFieldsValue(config);
   }, [config]);
 
   const exetTableDetailDataSource = async (apiSelectDetail: any) => {
     const { url, method, afterScript } = apiSelectDetail;
     const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
-    message.info('获取详情');
-    console.debug(tableDataDetail);
+    let myColumns = dealApiSelectDetail(tableDataDetail);
+    // console.debug('exetTableDetailDataSource', myColumns);
+    setConfig({ ...config, ...{ columns: myColumns }, ...{ tableDataDetail } });
   };
   const exetDataSource = (apiType: ApiType) => {
     // message.info('apiType:' + apiType);
@@ -117,7 +126,7 @@ const ProFormDynamicSettings = (props: any) => {
   return (
     <ProCard split="vertical">
       <ProCard>
-        <ProFormDynamic readonly={config.readonly} columns={columns} dynamic={true} />
+        <ProFormDynamic config={config} dynamic={true} />
       </ProCard>
       <ProCard
         colSpan="420px"
@@ -132,13 +141,13 @@ const ProFormDynamicSettings = (props: any) => {
         tabs={{
           items: [
             {
-              label: '表单项',
+              label: '表单列',
               key: 'tab2',
               children: (
                 <>
-                  <ProForm layout="inline" size={configSettingUI.size} formRef={settingFormRef} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
+                  <ProForm layout="inline" size={configSettingUI.size} formRef={columnsRef} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
                     <ProFormList
-                      actionRef={actionRef}
+                      actionRef={columnsActionRef}
                       name="columns"
                       itemRender={({ listDom, action }) => {
                         return (
@@ -169,7 +178,8 @@ const ProFormDynamicSettings = (props: any) => {
                         );
                       }}
                     >
-                      <ProFormText name="title" label="标题" />
+                      <ProFormText name="title" label="label" />
+                      <ProFormText name="value" label="value" />
                       <ProFormSwitch label="隐藏" name="hide" />
                       <ProFormSelect
                         label="控件类型"
@@ -232,7 +242,7 @@ const ProFormDynamicSettings = (props: any) => {
                     submitter={false}
                     formRef={dataSourceFormRef}
                   >
-                    <Button htmlType="button" onClick={fillDataSource} key="edit">
+                    <Button htmlType="button" onClick={fillDataSource}>
                       一键填写
                     </Button>
                     <ProFormSelect

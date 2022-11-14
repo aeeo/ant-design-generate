@@ -22,7 +22,7 @@ import { request } from 'umi';
 import { valueTypeArray } from '../../ProTableDynamic/entity/types';
 import { genColumns as columnsConfig, initConfig } from '../../ProTableDynamic/config';
 import { configSettingUI } from '../configSettingUI';
-import dataSource from '../../ProTableDynamic/utils/DataSource';
+import { dataSource, dealApiSelectList } from '../../ProTableDynamic/utils/DataSource';
 import IconsDynamic from '../../ProTableDynamic/subComps/IconsDynamic';
 import generateUtil from '../../../utils/generate';
 import { OperationDynamic } from '../../ProTableDynamic/utils/OperationDynamic/index';
@@ -69,28 +69,12 @@ const ProTableDynamicSettings = (props: any) => {
 
   const exetTableListDataSource = async (apiSelectList: any) => {
     const { url, method, afterScript } = apiSelectList;
-    const [tableDataList, tableDataListLength]: [Array<any>, number] = await dataSource('apiSelectList', url, method, afterScript);
-    // 获取响应数据的第一条
-    const responseDataFirst = tableDataList.length > 0 ? tableDataList[0] : undefined;
+    const [tableDataList, tableDataListLength]: [Array<object>, number] = await dataSource('apiSelectList', url, method, afterScript);
 
-    let tableColumn: ProColumnType<any>[] = []; // 表格的列信息
-    let columnsStr = ''; // 表格列中会有函数，无法序列化，用此字符串存储序列化后的值
-    // 处理数据（给数据赋title、valueType）
-    if (responseDataFirst) {
-      Object.entries(responseDataFirst).forEach(([k, v]) => {
-        if (typeof v === 'string') {
-          tableColumn.push({ title: k, dataIndex: k, valueType: 'text' });
-        }
-        if (typeof v === 'number') {
-          tableColumn.push({
-            title: k,
-            dataIndex: k,
-            valueType: 'digit',
-          });
-        }
-      });
-    }
+    let tableColumn: ProColumnType<any>[] = dealApiSelectList(tableDataList); // 处理生成表格的列信息
+
     // #region 操作栏
+    let columnsStr = ''; // 表格列中会有函数，无法序列化，用此字符串存储序列化后的值
     const operationColumn: ProColumnType<any> = {
       title: '操作',
       dataIndex: 'table-operation', // 防止后端字段重名
@@ -135,11 +119,7 @@ const ProTableDynamicSettings = (props: any) => {
   };
 
   const exetDataSource = (apiType: ApiType) => {
-    // const data = dataSourceFormRef.current?.getFieldsValue(true);
-    // if (!data || Object.keys(data).length === 0 || !data.apiList || data.apiList.length === 0) {
-    //   return;
-    // }
-    console.debug('exetDataSource', apiType, config);
+    // console.debug('exetDataSource', apiType, config);
     switch (apiType) {
       case 'apiSelectList':
         exetTableListDataSource(config.dataSource.apiList[apiType]);

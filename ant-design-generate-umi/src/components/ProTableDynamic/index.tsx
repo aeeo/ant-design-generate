@@ -8,17 +8,13 @@ import { genData, initConfig } from './config';
 import ProFormDynamicSettings from '../ProFormDynamicSettings'; // 带配置的ProForm
 import ProFormDynamic from './subComps/ProFormDynamic'; // 不带配置的ProForm
 import type { ProColumns } from '@ant-design/pro-components';
-import dataSource from '../ProTableDynamic/utils/DataSource';
+import { dataSource } from '../ProTableDynamic/utils/DataSource';
 import { ApiType, EventInfo, EventType, FormType } from '../ProTableDynamic/entity/types';
 
 const ProTableDynamic = (props: any) => {
   let [config, setConfig] = new Array();
   let [tableData, setTableData] = new Array();
 
-  const [modalType, setModalType] = useState<FormType>('formDetail');
-  const [modalReadonly, setModalReadonly] = useState<boolean>(true);
-
-  // 控制弹框显示隐藏
   const toggleModalStatus = () => {
     config.event.showDetailModal = !config.event.showDetailModal;
     setConfig({ ...config });
@@ -30,10 +26,9 @@ const ProTableDynamic = (props: any) => {
       case 'eventDetail': {
         // const { url, method, afterScript } = config.apiList['apiSelectDetail'];
         // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
-        setModalType('formDetail');
-        setModalReadonly(true);
+        setConfig({ ...config, formType: 'formDetail', readonly: true });
         toggleModalStatus();
-        // console.debug('onSubEvent', modalType, modalReadonly);
+        // console.debug('onSubEvent', formType, modalReadonly);
         break;
       }
     }
@@ -142,7 +137,7 @@ const ProTableDynamic = (props: any) => {
               <ProFormDynamicSettings config={config} />
             ) : (
               ///结束删除
-              <ProFormDynamic type={modalType} readonly={modalReadonly} columns={config.columns} />
+              <ProFormDynamic config={config} />
               ///开始删除
             )
             ///结束删除

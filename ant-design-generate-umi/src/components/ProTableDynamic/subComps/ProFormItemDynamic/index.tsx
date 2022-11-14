@@ -30,7 +30,6 @@ export const waitTime = (time: number = 100) => {
 
 const ProFormItemDynamic = (props: any) => {
   const formFieldInfo = props.formFieldInfo;
-  // console.debug('表单项：', formFieldInfo);
   const name = formFieldInfo.dataIndex;
   let returnComponent = <></>;
   if (!name) {
@@ -38,6 +37,7 @@ const ProFormItemDynamic = (props: any) => {
     return returnComponent;
   }
   const formFieldProp = { name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder, tooltip: formFieldInfo.tooltip };
+  console.debug('表单项：', formFieldInfo, formFieldProp);
   if (!formFieldInfo?.formFieldType) return returnComponent;
   switch (formFieldInfo.formFieldType) {
     case 'ProFormText':
