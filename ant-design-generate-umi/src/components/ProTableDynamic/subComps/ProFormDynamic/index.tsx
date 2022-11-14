@@ -41,7 +41,6 @@ const ProFormDynamic = (props: any) => {
         onValuesChange={(_, values) => {
           console.debug(values);
         }}
-        onFinish={async (value) => console.debug(value)}
       >
         {formFields?.map((formFieldInfo: any, index: number) => {
           return <ProFormItemDynamic formFieldInfo={formFieldInfo} key={index} />;

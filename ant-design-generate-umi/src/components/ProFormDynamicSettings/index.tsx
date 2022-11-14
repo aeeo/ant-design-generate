@@ -23,14 +23,15 @@ import { configSettingUI } from '../ProTableDynamicSettings/configSettingUI';
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { initConfig } from '../ProTableDynamic/subComps/ProFormDynamic/config';
+import dataSource from '../ProTableDynamic/utils/DataSource';
 
 const ProFormDynamicSettings = (props: any) => {
   let formConfig = initConfig;
   formConfig.dataSource = props.config.dataSource;
   formConfig.columns = props.config.columns;
 
-  const [config, setConfig] = useState<any>({ ...formConfig });
-  const [columns, setColumns] = useState<any>([...formConfig.columns]);
+  const [config, setConfig] = useState<any>({ ...formConfig }); // 配置信息
+  const [columns, setColumns] = useState<any>([...formConfig.columns]); // 表单列
 
   const updateConfig = useDebounceFn(async (state) => {
     setConfig({ ...config, ...state });
@@ -38,6 +39,7 @@ const ProFormDynamicSettings = (props: any) => {
 
   const actionRef = useRef<FormListActionType<any>>(); // 动态数据项表单
   const settingFormRef = useRef<ProFormInstance>(); // 配置全部表单
+  const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   React.useEffect(() => {
     // 更新表单项
     // console.debug('更新动态表单字段：props');
@@ -60,8 +62,9 @@ const ProFormDynamicSettings = (props: any) => {
 
   const exetTableDetailDataSource = async (apiSelectDetail: any) => {
     const { url, method, afterScript } = apiSelectDetail;
+    const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
     message.info('获取详情');
-    // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
+    console.debug(tableDataDetail);
   };
   const exetDataSource = (apiType: ApiType) => {
     // message.info('apiType:' + apiType);
@@ -73,6 +76,42 @@ const ProFormDynamicSettings = (props: any) => {
         message.error('数据源类型错误' + apiType);
         return;
     }
+  };
+  const fillDataSource = () => {
+    const newConfig = {
+      ...config,
+      dataSource: {
+        apiList: {
+          apiSelectList: {
+            url: 'http://localhost:8081/selectList',
+            method: 'GET',
+            afterScript: 'returnData=response.data', // 后执行脚本
+          },
+          apiSelectDetail: {
+            url: 'http://localhost:8081/selectDetail',
+            method: 'GET',
+            afterScript: 'returnData=response.data', // 后执行脚本
+          },
+          apiAdd: {
+            url: 'http://localhost:8081/Success',
+            method: 'GET',
+            afterScript: 'returnData=response.data', // 后执行脚本
+          },
+          apiDelete: {
+            url: 'http://localhost:8081/Success',
+            method: 'GET',
+            afterScript: 'returnData=response.data', // 后执行脚本
+          },
+          apiUpdate: {
+            url: 'http://localhost:8081/Success',
+            method: 'GET',
+            afterScript: 'returnData=response.data', // 后执行脚本
+          },
+        },
+      },
+    };
+    setConfig({ ...newConfig });
+    dataSourceFormRef?.current?.setFieldsValue(newConfig);
   };
   console.debug('ProFormDynamicSettings', props.config);
   return (
@@ -185,7 +224,17 @@ const ProFormDynamicSettings = (props: any) => {
               key: 'dataSource',
               children: (
                 <>
-                  <ProForm layout="horizontal" size={configSettingUI.size} submitter={false} initialValues={config} onValuesChange={(_, values) => updateConfig.run(values)}>
+                  <ProForm
+                    layout="horizontal"
+                    size={configSettingUI.size}
+                    initialValues={config}
+                    onValuesChange={(_, values) => updateConfig.run(values)}
+                    submitter={false}
+                    formRef={dataSourceFormRef}
+                  >
+                    <Button htmlType="button" onClick={fillDataSource} key="edit">
+                      一键填写
+                    </Button>
                     <ProFormSelect
                       tooltip={`formType={{${config.formType}}}`}
                       options={[

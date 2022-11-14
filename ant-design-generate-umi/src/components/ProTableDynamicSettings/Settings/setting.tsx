@@ -62,6 +62,7 @@ const ProTableDynamicSettings = (props: any) => {
   React.useEffect(() => {
     // console.debug('配置的config发生变化', config);
     props.dynamicSetConfig(config, dataSourceFormRef.current?.getFieldsValue(true));
+    dataSourceFormRef?.current?.resetFields();
   }, [config]);
 
   //#region 数据源表单配置
@@ -150,41 +151,42 @@ const ProTableDynamicSettings = (props: any) => {
   };
   // 一键填写
   const fillDataSource = () => {
-    setConfig({
+    const newConfig = {
       ...config,
       ...{
         dataSource: {
           apiList: {
             apiSelectList: {
-              url: '/api/selectList',
+              url: 'http://localhost:8081/selectList',
               method: 'GET',
-              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+              afterScript: 'returnData=response.data', // 后执行脚本
             },
             apiSelectDetail: {
-              url: '/api/selectDetail',
+              url: 'http://localhost:8081/selectDetail',
               method: 'GET',
-              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+              afterScript: 'returnData=response.data', // 后执行脚本
             },
             apiAdd: {
-              url: '/api/Success',
+              url: 'http://localhost:8081/Success',
               method: 'GET',
-              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+              afterScript: 'returnData=response.data', // 后执行脚本
             },
             apiDelete: {
-              url: '/api/Success',
+              url: 'http://localhost:8081/Success',
               method: 'GET',
-              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+              afterScript: 'returnData=response.data', // 后执行脚本
             },
             apiUpdate: {
-              url: '/api/Success',
+              url: 'http://localhost:8081/Success',
               method: 'GET',
-              afterScript: 'console.debug("执行后执行脚本")', // 后执行脚本
+              afterScript: 'returnData=response.data', // 后执行脚本
             },
           },
         },
       },
-    });
-    dataSourceFormRef?.current?.resetFields();
+    };
+    setConfig(newConfig);
+    dataSourceFormRef?.current?.setFieldsValue(newConfig);
   };
   //#endregion
 
@@ -204,7 +206,7 @@ const ProTableDynamicSettings = (props: any) => {
   };
   // 生成
   const generate = async (values: any) => {
-    const url = '/api/generate';
+    const url = 'http://localhost:8081/generate';
     let initData = { ...config };
     const [newInitData, tempColumnsStr] = generateUtil(initData, columnsStr);
     await request(url, {
