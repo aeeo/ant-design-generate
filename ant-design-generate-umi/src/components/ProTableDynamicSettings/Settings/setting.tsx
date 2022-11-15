@@ -38,14 +38,7 @@ const ProTableDynamicSettings = (props: any) => {
   // 组件事件
   const onSettingEvent = (eventInfo: EventInfo) => {
     // console.debug(eventInfo);
-    switch (eventInfo.type) {
-      case 'eventDetail':
-        props.onSettingEvent(eventInfo);
-        // config.event.showDetailModal = !config.event.showDetailModal;
-        // console.debug('setting触发onSettingEvent');
-        // setConfig({ ...config });
-        break;
-    }
+    props.onSettingEvent(eventInfo);
   };
   const initConfigTemp = initConfig((eventInfo: EventInfo) => {
     onSettingEvent(eventInfo);
@@ -180,7 +173,7 @@ const ProTableDynamicSettings = (props: any) => {
       generatePath: 'F:\\zhaotong\\Git\\ant-design-generate\\ant-design-generate-umi\\src\\components\\Generate',
       // templatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\ProTableDynamic',
       // generatePath: 'C:\\custom\\GitRepositories\\ant-design-generate\\ant-design-generate\\src\\components\\Generate',
-      previewUrl: 'http://localhost:8000/generate',
+      previewUrl: 'http://localhost:8081/generate',
       initData: JSON.stringify({ ...config }),
     });
   };

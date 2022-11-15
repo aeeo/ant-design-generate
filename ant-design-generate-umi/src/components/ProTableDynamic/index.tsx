@@ -17,18 +17,25 @@ const ProTableDynamic = (props: any) => {
 
   const toggleModalStatus = () => {
     config.event.showDetailModal = !config.event.showDetailModal;
+    console.debug('toggleModalStatus', config);
     setConfig({ ...config });
+  };
+  const toggleEvent = (formType: FormType, readonly: boolean) => {
+    const newConfig = { ...{ ...config, formType, readonly, event: { ...config.event, ...{ showDetailModal: !config.event.showDetailModal } } } };
+    console.debug('toggleEvent', config, newConfig);
+    setConfig(newConfig);
+    // toggleModalStatus();
   };
   // 子组件事件
   const onSubEvent = async (eventInfo: EventInfo) => {
     // console.warn(tableRecord);
     switch (eventInfo.type) {
       case 'eventDetail': {
-        // const { url, method, afterScript } = config.apiList['apiSelectDetail'];
-        // const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
-        setConfig({ ...config, formType: 'formDetail', readonly: true });
-        toggleModalStatus();
-        // console.debug('onSubEvent', formType, modalReadonly);
+        toggleEvent('formDetail', true);
+        break;
+      }
+      case 'eventEdit': {
+        toggleEvent('formEdit', false);
         break;
       }
     }

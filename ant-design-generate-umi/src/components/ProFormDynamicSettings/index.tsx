@@ -36,13 +36,15 @@ const ProFormDynamicSettings = (props: any) => {
       return [];
     }
   };
+  const dealFormConfig = (initConfig: any, propsConfig: any): any => {
+    let formConfig: any = initConfig;
+    formConfig.readonly = propsConfig.readonly ?? false;
+    formConfig.dataSource = propsConfig.dataSource;
+    formConfig.columns = dealFormItem(propsConfig.columns);
+    return formConfig;
+  };
 
-  let formConfig: any = initConfig;
-  formConfig.dataSource = props.config.dataSource;
-  formConfig.columns = dealFormItem(props.config.columns ?? []);
-
-  const [config, setConfig] = useState<any>({ ...formConfig }); // 配置信息
-  const [columns, setColumns] = useState<any>([...formConfig.columns]); // 表单列
+  const [config, setConfig] = useState<any>({ ...dealFormConfig(initConfig, props.config) }); // 配置信息
 
   const updateConfig = useDebounceFn(async (state) => {
     setConfig({ ...config, ...state });
@@ -53,18 +55,14 @@ const ProFormDynamicSettings = (props: any) => {
   const dataSourceFormRef = useRef<ProFormInstance>(); // 数据源表单
   React.useEffect(() => {
     // 更新表单项
-    // console.debug('更新动态表单字段：props');
-    columnsRef.current?.resetFields();
-    setConfig({ ...initConfig, ...config });
+    const newConfig = dealFormConfig(initConfig, props.config);
+    console.debug('ProFormDynamicSettings 更新动态表单props', newConfig, props.config);
+    setConfig({ ...newConfig });
+    // columnsRef.current?.resetFields();
   }, [props]);
+
   React.useEffect(() => {
-    // 更新表单项
-    let newFormFields: Array<any> = config.columns.filter((columnsItem: any) => {
-      return !columnsItem.hide;
-    });
-    newFormFields = dealFormItem(newFormFields);
-    // console.debug('更新动态表单字段：', config, newFormFields);
-    setColumns(newFormFields);
+    // console.debug('ProFormDynamicSettings 更新动态表单字段：', config);
     columnsRef.current?.setFieldsValue(config);
   }, [config]);
 
@@ -73,7 +71,7 @@ const ProFormDynamicSettings = (props: any) => {
     const tableDataDetail: any = await dataSource('apiSelectDetail', url, method, afterScript);
     let myColumns = dealApiSelectDetail(tableDataDetail);
     // console.debug('exetTableDetailDataSource', myColumns);
-    setConfig({ ...config, ...{ columns: myColumns }, ...{ tableDataDetail } });
+    setConfig({ ...config, columns: myColumns, tableDataDetail });
   };
   const exetDataSource = (apiType: ApiType) => {
     // message.info('apiType:' + apiType);
@@ -123,6 +121,7 @@ const ProFormDynamicSettings = (props: any) => {
     dataSourceFormRef?.current?.setFieldsValue(newConfig);
   };
   console.debug('ProFormDynamicSettings', props.config);
+
   return (
     <ProCard split="vertical">
       <ProCard>

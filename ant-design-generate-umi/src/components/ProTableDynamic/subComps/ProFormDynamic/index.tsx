@@ -22,8 +22,13 @@ const ProFormDynamic = (props: any) => {
   const formFields = dealFormFields(props.config.columns);
 
   const baseFormRef = useRef<ProFormInstance>(); // 基础配置表单
-  // console.debug('ProFormDynamic', props.config, formFields, props.config.tableDataDetail);
-  baseFormRef.current?.resetFields();
+
+  React.useEffect(() => {
+    // 更新表单项
+    // console.debug('ProFormDynamic 更新动态表单字段：', props.config);
+    baseFormRef.current?.setFieldsValue(props.config.tableDataDetail);
+  }, [props.config]);
+  // console.debug('ProFormDynamic', props.config, formFields);
   return (
     <>
       <ProForm

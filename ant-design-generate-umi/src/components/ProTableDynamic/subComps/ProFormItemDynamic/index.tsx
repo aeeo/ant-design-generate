@@ -37,7 +37,7 @@ const ProFormItemDynamic = (props: any) => {
     return returnComponent;
   }
   const formFieldProp = { name, label: formFieldInfo.title, placeholder: formFieldInfo.placeholder, tooltip: formFieldInfo.tooltip };
-  console.debug('表单项：', formFieldInfo, formFieldProp);
+  // console.debug('表单项：', formFieldInfo, formFieldProp);
   if (!formFieldInfo?.formFieldType) return returnComponent;
   switch (formFieldInfo.formFieldType) {
     case 'ProFormText':
