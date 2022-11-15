@@ -21,7 +21,7 @@ const ProTableDynamic = (props: any) => {
     setConfig({ ...config });
   };
   const toggleEvent = (formType: FormType, readonly: boolean) => {
-    const newConfig = { ...{ ...config, formType, readonly, event: { ...config.event, ...{ showDetailModal: !config.event.showDetailModal } } } };
+    const newConfig = { ...config, formType, readonly, event: { ...config.event, showDetailModal: !config.event.showDetailModal } };
     console.debug('toggleEvent', config, newConfig);
     setConfig(newConfig);
     // toggleModalStatus();
